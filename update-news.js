@@ -1,3 +1,7 @@
+// GitHub Actions script: NFL Fantasy heti hír-összefoglaló
+// Sablon-alapú magyar mondat + valódi ESPN hírszöveg (angolul)
+// Nincs szükség semmilyen API kulcsra. Node 20+ szükséges (beépített fetch).
+
 import { writeFile } from "fs/promises";
 
 const STATUS_HU = {
@@ -93,6 +97,36 @@ async function main() {
 
   await writeFile("news.json", JSON.stringify(output, null, 2));
   console.log(`Kész. ${newsItems.length} játékos mentve a news.json fájlba.`);
+
+  // Teljes, kereshető játékos-lista építése (csak aktív, csapattal rendelkező játékosok)
+  console.log("Kereshető játékos-lista építése...");
+  const searchablePlayers = [];
+
+  for (const id in allPlayers) {
+    const p = allPlayers[id];
+    if (!p || !p.full_name || !p.team || p.active === false) continue;
+    if (!["QB", "RB", "WR", "TE", "K", "DEF"].includes(p.position)) continue;
+
+    searchablePlayers.push({
+      name: p.full_name,
+      team: p.team,
+      position: p.position,
+      injury_status: p.injury_status || null,
+      injury_body_part: p.injury_body_part || null,
+    });
+  }
+
+  searchablePlayers.sort((a, b) => a.name.localeCompare(b.name));
+
+  await writeFile(
+    "players.json",
+    JSON.stringify(
+      { updated_at: new Date().toISOString(), players: searchablePlayers },
+      null,
+      2
+    )
+  );
+  console.log(`Kész. ${searchablePlayers.length} játékos mentve a players.json fájlba.`);
 }
 
 main().catch((err) => {

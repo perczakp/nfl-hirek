@@ -1,32 +1,23 @@
-// GitHub Actions script: NFL Fantasy heti hír-összefoglaló
-// Sablon-alapú magyar mondat + valódi ESPN hírszöveg (angolul)
-// Nincs szükség semmilyen API kulcsra. Node 20+ szükséges (beépített fetch).
+// GitHub Actions script: NFL Fantasy weekly news summary
+// Template-based English sentence + real ESPN news text (English)
+// No API key needed. Requires Node 20+ (built-in fetch).
 
 import { writeFile } from "fs/promises";
 
-const STATUS_HU = {
-  Questionable: "Kérdéses",
-  Doubtful: "Valószínűleg nem játszik",
-  Out: "Nem játszik",
-  IR: "Sérültlistán",
-  PUP: "Sérültlistán (PUP)",
-  Suspended: "Eltiltva",
-};
-
-function translateStatus(status) {
-  if (!status) return "Egészséges";
-  return STATUS_HU[status] || status;
+function statusLabel(status) {
+  if (!status) return "Healthy";
+  return status;
 }
 
 function buildTemplateSummary(p) {
-  const statusHu = translateStatus(p.injury_status);
+  const status = statusLabel(p.injury_status);
   const healthy = !p.injury_status;
 
   if (healthy) {
-    return `${p.name} (${p.position}, ${p.team}) egészséges és jelentős fantasy-figyelmet kapott: ${p.adds_48h} felvétel történt az elmúlt 48 órában.`;
+    return `${p.name} (${p.position}, ${p.team}) is healthy and has drawn significant fantasy attention: ${p.adds_48h} adds over the past 48 hours.`;
   }
 
-  return `${p.name} (${p.position}, ${p.team}) sérülés-státusza: ${statusHu}. Az elmúlt 48 órában ${p.adds_48h} alkalommal vették fel fantasy csapatokba.`;
+  return `${p.name} (${p.position}, ${p.team}) injury status: ${status}. Added by ${p.adds_48h} fantasy teams over the past 48 hours.`;
 }
 
 async function fetchEspnNews(espnId) {
@@ -53,13 +44,13 @@ async function fetchEspnNews(espnId) {
 }
 
 async function main() {
-  console.log("Trending játékosok lekérése...");
+  console.log("Fetching trending players...");
   const trendingRes = await fetch(
     "https://api.sleeper.app/v1/players/nfl/trending/add?lookback_hours=48&limit=30"
   );
   const trending = await trendingRes.json();
 
-  console.log("Teljes játékos-lista lekérése...");
+  console.log("Fetching full player list...");
   const playersRes = await fetch("https://api.sleeper.app/v1/players/nfl");
   const allPlayers = await playersRes.json();
 
@@ -77,7 +68,7 @@ async function main() {
       adds_48h: t.count,
     };
 
-    console.log(`Feldolgozás: ${playerData.name}`);
+    console.log(`Processing: ${playerData.name}`);
     const templateSummary = buildTemplateSummary(playerData);
     const espnNews = await fetchEspnNews(p.espn_id);
 
@@ -96,10 +87,9 @@ async function main() {
   };
 
   await writeFile("news.json", JSON.stringify(output, null, 2));
-  console.log(`Kész. ${newsItems.length} játékos mentve a news.json fájlba.`);
+  console.log(`Done. Saved ${newsItems.length} players to news.json.`);
 
-  // Teljes, kereshető játékos-lista építése (csak aktív, csapattal rendelkező játékosok)
-  console.log("Kereshető játékos-lista építése...");
+  console.log("Building searchable player list...");
   const searchablePlayers = [];
 
   for (const id in allPlayers) {
@@ -126,7 +116,7 @@ async function main() {
       2
     )
   );
-  console.log(`Kész. ${searchablePlayers.length} játékos mentve a players.json fájlba.`);
+  console.log(`Done. Saved ${searchablePlayers.length} players to players.json.`);
 }
 
 main().catch((err) => {

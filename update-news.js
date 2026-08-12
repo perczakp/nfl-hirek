@@ -1,7 +1,3 @@
-// GitHub Actions script: NFL Fantasy heti hír-összefoglaló
-// Sablon-alapú magyar mondat + valódi ESPN hírszöveg (angolul)
-// Nincs szükség semmilyen API kulcsra. Node 20+ szükséges (beépített fetch).
-
 import { writeFile } from "fs/promises";
 
 const STATUS_HU = {
@@ -55,7 +51,7 @@ async function fetchEspnNews(espnId) {
 async function main() {
   console.log("Trending játékosok lekérése...");
   const trendingRes = await fetch(
-    "https://api.sleeper.app/v1/players/nfl/trending/add?lookback_hours=48&limit=15"
+    "https://api.sleeper.app/v1/players/nfl/trending/add?lookback_hours=48&limit=30"
   );
   const trending = await trendingRes.json();
 

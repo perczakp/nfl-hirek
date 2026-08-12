@@ -51,6 +51,45 @@
   .nfln-fullwidth { grid-column: 1 / -1; }
   .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }
   .nfln-back a { color: #555; text-decoration: none; }
+  .nfln-search-wrap { max-width: 1000px; margin: 0 auto 28px; position: relative; }
+  .nfln-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+  }
+  .nfln-search-input:focus { border-color: #1a1a1a; }
+  .nfln-search-results {
+    margin-top: 8px;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .nfln-search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .nfln-search-row:last-child { border-bottom: none; }
+  .nfln-search-row-name { font-weight: bold; color: #1a1a1a; }
+  .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }
+  .nfln-search-status {
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .nfln-status-healthy { background: #e6f4ea; color: #1e7e34; }
+  .nfln-status-injured { background: #fdecea; color: #c0392b; }
+  .nfln-search-empty { padding: 12px 16px; font-size: 14px; color: #888; }
 </style>
 </head>
 <body>
@@ -69,12 +108,96 @@
   <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
 </div>
 
+<div class="nfln-search-wrap">
+  <input type="text" id="nfln-search" class="nfln-search-input" placeholder="Játékos keresése (pl. Ja'Marr Chase)..." autocomplete="off">
+  <div id="nfln-search-results" class="nfln-search-results"></div>
+</div>
+
 <div id="nfl-fantasy-news">
   <p class="nfln-fullwidth" style="text-align:center;color:#888;">Hírek betöltése...</p>
 </div>
 
 <script>
 (function () {
+  var STATUS_HU = {
+    Questionable: "Kérdéses",
+    Doubtful: "Valószínűleg nem játszik",
+    Out: "Nem játszik",
+    IR: "Sérültlistán",
+    PUP: "Sérültlistán (PUP)",
+    Suspended: "Eltiltva"
+  };
+
+  function translateStatus(status) {
+    if (!status) return "Egészséges";
+    return STATUS_HU[status] || status;
+  }
+
+  var allSearchPlayers = [];
+  var searchInput = document.getElementById("nfln-search");
+  var searchResults = document.getElementById("nfln-search-results");
+
+  fetch("./players.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      allSearchPlayers = data.players || [];
+    })
+    .catch(function () {
+      allSearchPlayers = [];
+    });
+
+  function renderSearchResults(query) {
+    searchResults.innerHTML = "";
+
+    if (!query) {
+      searchResults.style.display = "none";
+      return;
+    }
+
+    var q = query.toLowerCase();
+    var matches = allSearchPlayers
+      .filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; })
+      .slice(0, 8);
+
+    searchResults.style.display = "block";
+
+    if (matches.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "nfln-search-empty";
+      empty.textContent = "Nincs találat.";
+      searchResults.appendChild(empty);
+      return;
+    }
+
+    matches.forEach(function (p) {
+      var row = document.createElement("div");
+      row.className = "nfln-search-row";
+
+      var left = document.createElement("div");
+      var nameSpan = document.createElement("span");
+      nameSpan.className = "nfln-search-row-name";
+      nameSpan.textContent = p.name;
+      var metaSpan = document.createElement("span");
+      metaSpan.className = "nfln-search-row-meta";
+      metaSpan.textContent = p.position + " · " + p.team;
+      left.appendChild(nameSpan);
+      left.appendChild(metaSpan);
+
+      var statusSpan = document.createElement("span");
+      var healthy = !p.injury_status;
+      statusSpan.className = "nfln-search-status " + (healthy ? "nfln-status-healthy" : "nfln-status-injured");
+      statusSpan.textContent = translateStatus(p.injury_status);
+
+      row.appendChild(left);
+      row.appendChild(statusSpan);
+      searchResults.appendChild(row);
+    });
+  }
+
+  searchInput.addEventListener("input", function () {
+    renderSearchResults(searchInput.value.trim());
+  });
+
   var WORKER_URL = "./news.json";
 
   fetch(WORKER_URL)

@@ -1,0 +1,33 @@
+name: NFL hírek frissítése
+
+on:
+  schedule:
+    # Minden hétfőn 4:00 UTC = 6:00 magyar nyári idő
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository klónozása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Hírek frissítése
+        run: node update-news.js
+
+      - name: Változások mentése a repository-ba
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git diff --staged --quiet || git commit -m "Hírek automatikus frissítése"
+          git push

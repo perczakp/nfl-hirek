@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,52 +12,15 @@
     background: #f5f5f5;
     color: #1a1a1a;
   }
-  .nfln-header {
-    max-width: 700px;
-    margin: 0 auto 16px;
-    text-align: center;
-  }
-  .nfln-header h1 {
-    font-size: 24px;
-    margin-bottom: 4px;
-  }
-  .nfln-header p {
-    color: #777;
-    font-size: 14px;
-  }
-  .nfln-nav {
-    max-width: 700px;
-    margin: 0 auto 24px;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-  }
-  .nfln-nav a {
-    padding: 8px 18px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .nfln-nav a.active {
-    background: #1a1a1a;
-    color: #ffffff;
-  }
-  .nfln-nav a.inactive {
-    background: #ffffff;
-    color: #1a1a1a;
-    border: 1px solid #ddd;
-  }
-  .nfln-back {
-    display: block;
-    max-width: 700px;
-    margin: 0 auto 16px;
-    font-size: 14px;
-  }
-  .nfln-back a {
-    color: #555;
-    text-decoration: none;
-  }
+  .nfln-header { max-width: 700px; margin: 0 auto 16px; text-align: center; }
+  .nfln-header h1 { font-size: 24px; margin-bottom: 4px; }
+  .nfln-header p { color: #777; font-size: 14px; }
+  .nfln-nav { max-width: 700px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; }
+  .nfln-nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: bold; }
+  .nfln-nav a.active { background: #1a1a1a; color: #ffffff; }
+  .nfln-nav a.inactive { background: #ffffff; color: #1a1a1a; border: 1px solid #ddd; }
+  .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }
+  .nfln-back a { color: #555; text-decoration: none; }
   .trade-card {
     max-width: 700px;
     margin: 0 auto;
@@ -68,16 +31,8 @@
     text-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .trade-card h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  .trade-card p {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 22px;
-  }
+  .trade-card h2 { font-size: 20px; margin-bottom: 10px; }
+  .trade-card p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 22px; }
   .trade-btn {
     display: inline-block;
     background: #1a1a1a;
@@ -88,36 +43,32 @@
     font-weight: bold;
     font-size: 15px;
   }
-  .trade-source {
-    margin-top: 18px;
-    font-size: 12px;
-    color: #999;
-  }
+  .trade-source { margin-top: 18px; font-size: 12px; color: #999; }
 </style>
 </head>
 <body>
 
 <div class="nfln-back">
-  <a href="https://fantasyneked.cms.webnode.hu/">&larr; Vissza a főoldalra</a>
+  <a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a>
 </div>
 
 <div class="nfln-header">
   <h1>Dynasty Trade Value Chart</h1>
-  <p>A játékosok aktuális kereskedelmi értéke</p>
+  <p>Current trade values for fantasy players</p>
 </div>
 
 <div class="nfln-nav">
-  <a href="index.html" class="inactive">Hírek</a>
+  <a href="index.html" class="inactive">News</a>
   <a href="trade-chart.html" class="active">Dynasty Trade Value Chart</a>
 </div>
 
 <div class="trade-card">
-  <h2>Naprakész értékek, mindig frissen</h2>
-  <p>A Dynasty Trade Value Chart-ot a FantasyPros szakértői állítják össze és frissítik rendszeresen, konszenzusos rangsorok alapján. Az alábbi gombra kattintva mindig a legfrissebb, élő táblázatot éred el.</p>
+  <h2>Up-to-date values, always fresh</h2>
+  <p>The Dynasty Trade Value Chart is compiled and regularly updated by FantasyPros analysts, based on consensus rankings. Click the button below to always see the latest, live chart.</p>
   <a class="trade-btn" href="https://www.fantasypros.com/content/nfl/dynasty-nfl/nfl-trade-value-chart/" target="_blank" rel="noopener noreferrer">
-    Dynasty Trade Value Chart megnyitása →
+    Open Dynasty Trade Value Chart →
   </a>
-  <div class="trade-source">Forrás: FantasyPros</div>
+  <div class="trade-source">Source: FantasyPros</div>
 </div>
 
 </body>

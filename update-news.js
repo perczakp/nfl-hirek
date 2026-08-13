@@ -95,7 +95,14 @@ async function main() {
   for (const id in allPlayers) {
     const p = allPlayers[id];
     if (!p || !p.full_name || !p.team || p.active === false) continue;
-    if (!["QB", "RB", "WR", "TE", "K", "DEF"].includes(p.position)) continue;
+    if (
+      ![
+        "QB", "RB", "WR", "TE", "K", "DEF",
+        "DL", "DE", "DT", "NT", "EDGE",
+        "LB", "OLB", "ILB", "MLB",
+        "DB", "CB", "S", "FS", "SS",
+      ].includes(p.position)
+    ) continue;
 
     searchablePlayers.push({
       name: p.full_name,

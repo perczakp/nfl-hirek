@@ -103,6 +103,8 @@ async function main() {
       position: p.position,
       injury_status: p.injury_status || null,
       injury_body_part: p.injury_body_part || null,
+      injury_start_date: p.injury_start_date || null,
+      practice_participation: p.practice_participation || null,
       espn_id: p.espn_id || null,
     });
   }

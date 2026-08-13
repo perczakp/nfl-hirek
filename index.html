@@ -275,10 +275,10 @@
     modalOverlay.classList.add("open");
 
     if (p.espn_id) {
-      loadCombinedNews(p.espn_id, p.name);
+      loadCombinedNews(p.espn_id, p.name, p.team);
     } else {
       lookupEspnIdByName(p.name).then(function (foundId) {
-        loadCombinedNews(foundId, p.name);
+        loadCombinedNews(foundId, p.name, p.team);
       });
     }
   }
@@ -313,7 +313,7 @@
   }
 
   function fetchGeneralNewsMatches(name) {
-    return fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50")
+    return fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100")
       .then(function (res) { return res.json(); })
       .then(function (data) {
         var articles = (data && data.articles) || [];
@@ -334,21 +334,46 @@
       .catch(function () { return []; });
   }
 
-  function loadCombinedNews(espnId, name) {
+  function fetchTeamNewsMatches(name, teamAbbr) {
+    if (!teamAbbr) return Promise.resolve([]);
+    return fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=" + encodeURIComponent(teamAbbr) + "&limit=50")
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        var articles = (data && data.articles) || [];
+        var nameLower = name.toLowerCase();
+        return articles
+          .filter(function (a) {
+            var text = ((a.headline || "") + " " + (a.description || "")).toLowerCase();
+            return text.indexOf(nameLower) !== -1;
+          })
+          .map(function (a) {
+            return {
+              headline: a.headline || null,
+              description: a.description || null,
+              published: a.published || null,
+            };
+          });
+      })
+      .catch(function () { return []; });
+  }
+
+  function loadCombinedNews(espnId, name, teamAbbr) {
     Promise.all([
       fetchFantasySpecificNews(espnId),
-      fetchGeneralNewsMatches(name)
+      fetchGeneralNewsMatches(name),
+      fetchTeamNewsMatches(name, teamAbbr)
     ]).then(function (results) {
       var articlesDiv = document.getElementById("nfln-modal-articles");
       if (!articlesDiv) return;
 
       var specific = results[0];
       var general = results[1];
+      var teamNews = results[2];
 
       var seenHeadlines = {};
       var combined = [];
 
-      specific.concat(general).forEach(function (item) {
+      specific.concat(teamNews).concat(general).forEach(function (item) {
         var key = (item.headline || "") + "|" + (item.published || "");
         if (item.headline && !seenHeadlines[key]) {
           seenHeadlines[key] = true;

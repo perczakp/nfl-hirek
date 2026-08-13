@@ -263,6 +263,12 @@
     if (p.injury_body_part) {
       html += '<p class="nfln-modal-meta">Injury: ' + escapeHtml(p.injury_body_part) + "</p>";
     }
+    if (p.injury_start_date) {
+      html += '<p class="nfln-modal-meta">Injury reported: ' + escapeHtml(p.injury_start_date) + "</p>";
+    }
+    if (p.practice_participation) {
+      html += '<p class="nfln-modal-meta">Practice status: ' + escapeHtml(p.practice_participation) + "</p>";
+    }
     html += '<div id="nfln-modal-articles"><p class="nfln-modal-loading">Loading full story...</p></div>';
 
     modalBody.innerHTML = html;

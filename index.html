@@ -164,6 +164,8 @@
 <div class="nfln-nav">
   <a href="index.html" class="active">News</a>
   <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
+  <a href="idp-rankings.html" class="inactive">IDP Rankings</a>
+  <a href="standings.html" class="inactive">Standings</a>
 </div>
 
 <div class="nfln-search-wrap">
@@ -622,23 +624,8 @@
 
   function escapeHtml(str) {
     var div = document.createElement("div");
-    div.textContent = str == null ? "" : String(str);
+    div.textContent = str;
     return div.innerHTML;
-  }
-
-  // Google News RSS descriptions can contain HTML like <a>, <font> and &nbsp;.
-  // Convert them to clean readable text before showing them on the front page.
-  function cleanNewsText(value) {
-    if (value == null) return "";
-
-    var div = document.createElement("div");
-    div.innerHTML = String(value);
-
-    var text = div.textContent || div.innerText || "";
-    return text
-      .replace(/\u00a0/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
   }
 
   var NEWS_URL = "./news.json";
@@ -678,27 +665,16 @@
           headline.textContent = player.real_news_headline;
           realNews.appendChild(headline);
 
-          var cleanHeadline = cleanNewsText(player.real_news_headline);
-          var cleanDescription = cleanNewsText(player.real_news_description);
-
-          // The Google News RSS description often repeats the headline and source.
-          // Only show it when it contains additional useful information.
-          if (cleanDescription) {
-            var descriptionLooksRedundant =
-              cleanDescription === cleanHeadline ||
-              cleanDescription.indexOf(cleanHeadline + " ") === 0;
-
-            if (!descriptionLooksRedundant) {
-              var desc = document.createElement("p");
-              desc.className = "nfln-real-desc";
-              desc.textContent = cleanDescription;
-              realNews.appendChild(desc);
-            }
+          if (player.real_news_description) {
+            var desc = document.createElement("p");
+            desc.className = "nfln-real-desc";
+            desc.textContent = player.real_news_description;
+            realNews.appendChild(desc);
           }
 
           var source = document.createElement("div");
           source.className = "nfln-real-source";
-          source.textContent = "Source: " + cleanNewsText(player.real_news_source || "ESPN");
+          source.textContent = "Source: ESPN";
           realNews.appendChild(source);
 
           card.appendChild(realNews);

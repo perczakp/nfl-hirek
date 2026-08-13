@@ -395,6 +395,8 @@
     else if (Array.isArray(data.contents)) raw = data.contents;
     else if (data.feed && Array.isArray(data.feed.articles)) raw = data.feed.articles;
     else if (data.news && Array.isArray(data.news.articles)) raw = data.news.articles;
+    else if (data.news && Array.isArray(data.news.items)) raw = data.news.items;
+    else if (data.news && Array.isArray(data.news.contents)) raw = data.news.contents;
 
     return raw.map(function (a) {
       return normalizeArticle(a, source);
@@ -406,15 +408,34 @@
   function fetchAthleteSpecificNews(espnId) {
     if (!espnId) return Promise.resolve([]);
 
-    var url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/athletes/" +
+    // ESPN exposes athlete news through the athlete page/overview API.
+    // Keep the dedicated /news endpoint as the first attempt, then fall back
+    // to the athlete overview endpoint used by ESPN player pages.
+    var dedicatedUrl = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/athletes/" +
       encodeURIComponent(espnId) + "/news?limit=20";
 
-    return fetchJson(url)
+    return fetchJson(dedicatedUrl)
       .then(function (data) {
-        return extractArticles(data, "ESPN Athlete");
+        var articles = extractArticles(data, "ESPN Athlete");
+        if (articles.length) return articles;
+        return fetchJson(
+          "https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/" +
+          encodeURIComponent(espnId)
+        ).then(function (overview) {
+          return extractArticles(overview, "ESPN Athlete");
+        });
       })
       .catch(function () {
-        return [];
+        return fetchJson(
+          "https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/" +
+          encodeURIComponent(espnId)
+        )
+          .then(function (overview) {
+            return extractArticles(overview, "ESPN Athlete");
+          })
+          .catch(function () {
+            return [];
+          });
       });
   }
 
@@ -566,18 +587,32 @@
       return;
     }
 
-    // All feeds are requested in parallel. The athlete feed is first in the
-    // merge order, but every available source can contribute recent articles.
-    Promise.all([
-      fetchAthleteSpecificNews(espnId),
-      fetchFantasySpecificNews(espnId),
-      fetchTeamNewsMatches(name, teamAbbr),
-      fetchGeneralNewsMatches(name)
-    ]).then(function (results) {
+    var sources = [
+      { name: "ESPN Athlete", fn: function () { return fetchAthleteSpecificNews(espnId); } },
+      { name: "ESPN Fantasy", fn: function () { return fetchFantasySpecificNews(espnId); } },
+      { name: "ESPN Team", fn: function () { return fetchTeamNewsMatches(name, teamAbbr); } },
+      { name: "ESPN NFL", fn: function () { return fetchGeneralNewsMatches(name); } }
+    ];
+
+    Promise.all(sources.map(function (source) {
+      return source.fn()
+        .then(function (articles) {
+          console.log("[NFL Fantasy News] " + source.name + ":", articles.length, "articles");
+          return articles;
+        })
+        .catch(function (err) {
+          console.warn("[NFL Fantasy News] " + source.name + " failed:", err);
+          return [];
+        });
+    })).then(function (results) {
       var combined = dedupeArticles(results);
       renderModalArticles(articlesDiv, combined);
-    }).catch(function () {
-      articlesDiv.innerHTML = '<p class="nfln-modal-empty">Unable to load detailed news right now.</p>';
+
+      if (combined.length === 0) {
+        articlesDiv.innerHTML =
+          '<p class="nfln-modal-empty">No detailed ESPN news was found for this player.</p>' +
+          '<p class="nfln-modal-source">ESPN ID: ' + escapeHtml(String(espnId)) + '. Open the browser console (F12) to see which feeds returned zero results or failed.</p>';
+      }
     });
   }
 

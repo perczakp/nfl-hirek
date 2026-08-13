@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-13T13:46:37.720Z",
+  "updated_at": "2026-08-13T14:18:53.556Z",
   "players": [
     {
       "name": "A.J. Bouye",
@@ -5795,8 +5795,8 @@
       "name": "Danny Gray",
       "team": "PHI",
       "position": "WR",
-      "injury_status": "Questionable",
-      "injury_body_part": "Concussion",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null

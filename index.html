@@ -274,13 +274,45 @@
     modalBody.innerHTML = html;
     modalOverlay.classList.add("open");
 
-    if (!p.espn_id) {
-      document.getElementById("nfln-modal-articles").innerHTML =
-        '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
-      return;
+    if (p.espn_id) {
+      loadEspnNewsById(p.espn_id);
+    } else {
+      lookupEspnIdByName(p.name).then(function (foundId) {
+        if (foundId) {
+          loadEspnNewsById(foundId);
+        } else {
+          var articlesDiv = document.getElementById("nfln-modal-articles");
+          if (articlesDiv) {
+            articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
+          }
+        }
+      });
     }
+  }
 
-    fetch("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" + encodeURIComponent(p.espn_id) + "&limit=5")
+  function lookupEspnIdByName(name) {
+    return fetch("https://site.web.api.espn.com/apis/search/v2?limit=5&query=" + encodeURIComponent(name))
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        var groups = (data && data.results) || [];
+        for (var i = 0; i < groups.length; i++) {
+          var contents = groups[i].contents || [];
+          for (var j = 0; j < contents.length; j++) {
+            var item = contents[j];
+            if (item.uid) {
+              var m = item.uid.match(/a:(\d+)/);
+              if (m) return m[1];
+            }
+            if (item.id) return item.id;
+          }
+        }
+        return null;
+      })
+      .catch(function () { return null; });
+  }
+
+  function loadEspnNewsById(espnId) {
+    fetch("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" + encodeURIComponent(espnId) + "&limit=5")
       .then(function (res) { return res.json(); })
       .then(function (data) {
         var articlesDiv = document.getElementById("nfln-modal-articles");

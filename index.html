@@ -335,7 +335,10 @@
       }
 
       if (article.description) {
-        html += '<p class="nfln-modal-desc">' + escapeHtml(article.description) + "</p>";
+        var cleanDescription = stripHtml(article.description);
+        if (cleanDescription) {
+          html += '<p class="nfln-modal-desc">' + escapeHtml(cleanDescription) + "</p>";
+        }
       }
 
       var dateText = article.published || "";
@@ -367,6 +370,15 @@
   modalOverlay.addEventListener("click", function (e) {
     if (e.target === modalOverlay) closeModal();
   });
+
+  function stripHtml(str) {
+    var div = document.createElement("div");
+    div.innerHTML = String(str || "");
+    return (div.textContent || div.innerText || "")
+      .replace(/\s+/g, " ")
+      .replace(/\s+([,.!?;:])/g, "$1")
+      .trim();
+  }
 
   function escapeHtml(str) {
     var div = document.createElement("div");

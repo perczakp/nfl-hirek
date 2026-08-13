@@ -1,208 +1,215 @@
 {
-  "updated_at": "2026-08-12T12:06:03.067Z",
+  "updated_at": "2026-08-13T07:31:35.409Z",
   "players": [
     {
-      "name": "Barion Brown",
-      "summary": "Barion Brown (WR, NO) is healthy and has drawn significant fantasy attention: 88119 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
+      "name": "Darren Waller",
+      "summary": "Darren Waller (TE, CAR) is healthy and has drawn significant fantasy attention: 246249 adds over the past 48 hours.",
+      "real_news_headline": "The Panthers signed Waller (groin) to a one-year contract Wednesday, Adam Schefter of ESPN reports.",
+      "real_news_description": "The Panthers signed Waller (groin) to a one-year contract Wednesday, Adam Schefter of ESPN reports.",
+      "real_news_published": "2026-08-13T00:33:57Z"
     },
     {
-      "name": "Seth McGowan",
-      "summary": "Seth McGowan (RB, IND) is healthy and has drawn significant fantasy attention: 46856 adds over the past 48 hours.",
+      "name": "Barion Brown",
+      "summary": "Barion Brown (WR, NO) is healthy and has drawn significant fantasy attention: 77166 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Caleb Douglas",
-      "summary": "Caleb Douglas (WR, MIA) is healthy and has drawn significant fantasy attention: 42520 adds over the past 48 hours.",
+      "summary": "Caleb Douglas (WR, MIA) is healthy and has drawn significant fantasy attention: 52184 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Seth McGowan",
+      "summary": "Seth McGowan (RB, IND) is healthy and has drawn significant fantasy attention: 36240 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "MarShawn Lloyd",
+      "summary": "MarShawn Lloyd (RB, GB) is healthy and has drawn significant fantasy attention: 27756 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Darius Cooper",
-      "summary": "Darius Cooper (WR, PHI) is healthy and has drawn significant fantasy attention: 28980 adds over the past 48 hours.",
+      "summary": "Darius Cooper (WR, PHI) is healthy and has drawn significant fantasy attention: 27328 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Cyrus Allen",
-      "summary": "Cyrus Allen (WR, KC) is healthy and has drawn significant fantasy attention: 24534 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Justice Hill",
-      "summary": "Justice Hill (RB, BAL) is healthy and has drawn significant fantasy attention: 21888 adds over the past 48 hours.",
-      "real_news_headline": "Fantasy football insurance RB rankings: Which backups are must-drafts?",
-      "real_news_description": "Looking for insurance or just seeking upside at running back? Eric Moody lists those with the most potential.",
-      "real_news_published": "2026-08-04T10:42:03Z"
-    },
-    {
-      "name": "MarShawn Lloyd",
-      "summary": "MarShawn Lloyd (RB, GB) is healthy and has drawn significant fantasy attention: 20322 adds over the past 48 hours.",
+      "summary": "Cyrus Allen (WR, KC) is healthy and has drawn significant fantasy attention: 25302 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Pat Bryant",
-      "summary": "Pat Bryant (WR, DEN) is healthy and has drawn significant fantasy attention: 19512 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Jalen Nailor",
-      "summary": "Jalen Nailor (WR, LV) is healthy and has drawn significant fantasy attention: 18972 adds over the past 48 hours.",
+      "summary": "Pat Bryant (WR, DEN) is healthy and has drawn significant fantasy attention: 21392 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Malik Benson",
-      "summary": "Malik Benson (WR, LV) is healthy and has drawn significant fantasy attention: 17580 adds over the past 48 hours.",
+      "summary": "Malik Benson (WR, LV) is healthy and has drawn significant fantasy attention: 20838 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
-      "name": "Khalil Herbert",
-      "summary": "Khalil Herbert (RB, SF) is healthy and has drawn significant fantasy attention: 16596 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
+      "name": "Justice Hill",
+      "summary": "Justice Hill (RB, BAL) is healthy and has drawn significant fantasy attention: 17505 adds over the past 48 hours.",
+      "real_news_headline": "Fantasy football insurance RB rankings: Which backups are must-drafts?",
+      "real_news_description": "Looking for insurance or just seeking upside at running back? Eric Moody lists those with the most potential.",
+      "real_news_published": "2026-08-04T10:42:03Z"
     },
     {
-      "name": "Zavion Thomas",
-      "summary": "Zavion Thomas (WR, CHI) injury status: Questionable. Added by 16065 fantasy teams over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Ryan Flournoy",
-      "summary": "Ryan Flournoy (WR, DAL) is healthy and has drawn significant fantasy attention: 13808 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Malik Willis",
-      "summary": "Malik Willis (QB, MIA) is healthy and has drawn significant fantasy attention: 12607 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Keaton Mitchell",
-      "summary": "Keaton Mitchell (RB, LAC) is healthy and has drawn significant fantasy attention: 12375 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Odell Beckham",
-      "summary": "Odell Beckham (WR, NYG) is healthy and has drawn significant fantasy attention: 12320 adds over the past 48 hours.",
-      "real_news_headline": "Beckham is competing for one of the final receiver spots on the Giants' depth chart this summer, Jordan Raanan of ESPN.com reports.",
-      "real_news_description": "Beckham is competing for one of the final receiver spots on the Giants' depth chart this summer, Jordan Raanan of ESPN.com reports.",
-      "real_news_published": "2026-07-23T17:26:32Z"
-    },
-    {
-      "name": "Malik Washington",
-      "summary": "Malik Washington (WR, MIA) is healthy and has drawn significant fantasy attention: 10360 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Eli Raridon",
-      "summary": "Eli Raridon (TE, NE) is healthy and has drawn significant fantasy attention: 10276 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Roman Wilson",
-      "summary": "Roman Wilson (WR, PIT) is healthy and has drawn significant fantasy attention: 10269 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Matt Hibner",
-      "summary": "Matt Hibner (TE, BAL) is healthy and has drawn significant fantasy attention: 10136 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Deshaun Watson",
-      "summary": "Deshaun Watson (QB, CLE) is healthy and has drawn significant fantasy attention: 10048 adds over the past 48 hours.",
-      "real_news_headline": "When the Brown' unofficial depth chart is posted later Tuesday, the top QB slot will be listed 'Watson or Shedeur Sanders,' Zac Jackson of The Athletic reports.",
-      "real_news_description": "When the Brown' unofficial depth chart is posted later Tuesday, the top QB slot will be listed 'Watson or Shedeur Sanders,' Zac Jackson of The Athletic reports.",
-      "real_news_published": "2026-08-11T17:24:14Z"
-    },
-    {
-      "name": "Colbie Young",
-      "summary": "Colbie Young (WR, CIN) is healthy and has drawn significant fantasy attention: 8934 adds over the past 48 hours.",
+      "name": "Jalen Nailor",
+      "summary": "Jalen Nailor (WR, LV) is healthy and has drawn significant fantasy attention: 16137 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Erick All",
-      "summary": "Erick All (TE, CIN) is healthy and has drawn significant fantasy attention: 8790 adds over the past 48 hours.",
+      "summary": "Erick All (TE, CIN) is healthy and has drawn significant fantasy attention: 14724 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
-      "name": "Tank Dell",
-      "summary": "Tank Dell (WR, HOU) injury status: Questionable. Added by 8648 fantasy teams over the past 48 hours.",
+      "name": "Ryan Flournoy",
+      "summary": "Ryan Flournoy (WR, DAL) is healthy and has drawn significant fantasy attention: 13064 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Malik Willis",
+      "summary": "Malik Willis (QB, MIA) is healthy and has drawn significant fantasy attention: 12159 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Roman Wilson",
+      "summary": "Roman Wilson (WR, PIT) is healthy and has drawn significant fantasy attention: 12069 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Eli Raridon",
+      "summary": "Eli Raridon (TE, NE) is healthy and has drawn significant fantasy attention: 12033 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Khalil Herbert",
+      "summary": "Khalil Herbert (RB, SF) is healthy and has drawn significant fantasy attention: 12006 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Zavion Thomas",
+      "summary": "Zavion Thomas (WR, CHI) injury status: Questionable. Added by 11205 fantasy teams over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Deshaun Watson",
+      "summary": "Deshaun Watson (QB, CLE) is healthy and has drawn significant fantasy attention: 9984 adds over the past 48 hours.",
+      "real_news_headline": "Watson will start Saturday's preseason game at Chicago, Kelsey Russo of the Browns' official site reports.",
+      "real_news_description": "Watson will start Saturday's preseason game at Chicago, Kelsey Russo of the Browns' official site reports.",
+      "real_news_published": "2026-08-12T22:05:27Z"
+    },
+    {
+      "name": "Keaton Mitchell",
+      "summary": "Keaton Mitchell (RB, LAC) is healthy and has drawn significant fantasy attention: 9936 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Colbie Young",
+      "summary": "Colbie Young (WR, CIN) is healthy and has drawn significant fantasy attention: 9270 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Matt Hibner",
+      "summary": "Matt Hibner (TE, BAL) is healthy and has drawn significant fantasy attention: 9044 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Odell Beckham",
+      "summary": "Odell Beckham (WR, NYG) is healthy and has drawn significant fantasy attention: 8918 adds over the past 48 hours.",
+      "real_news_headline": "Beckham will play in Saturday's preseason opener against the Vikings, Ryan Dunleavy of the New York Post reports.",
+      "real_news_description": "Beckham will play in Saturday's preseason opener against the Vikings, Ryan Dunleavy of the New York Post reports.",
+      "real_news_published": "2026-08-13T02:41:47Z"
+    },
+    {
+      "name": "Malik Washington",
+      "summary": "Malik Washington (WR, MIA) is healthy and has drawn significant fantasy attention: 8736 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Dontayvion Wicks",
-      "summary": "Dontayvion Wicks (WR, PHI) is healthy and has drawn significant fantasy attention: 8439 adds over the past 48 hours.",
+      "summary": "Dontayvion Wicks (WR, PHI) is healthy and has drawn significant fantasy attention: 8307 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Adonai Mitchell",
+      "summary": "Adonai Mitchell (WR, NYJ) is healthy and has drawn significant fantasy attention: 7744 adds over the past 48 hours.",
+      "real_news_headline": null,
+      "real_news_description": null,
+      "real_news_published": null
+    },
+    {
+      "name": "Isaiah Williams",
+      "summary": "Isaiah Williams (WR, NYJ) is healthy and has drawn significant fantasy attention: 7668 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
       "name": "Chris Rodriguez",
-      "summary": "Chris Rodriguez (RB, JAX) is healthy and has drawn significant fantasy attention: 7407 adds over the past 48 hours.",
+      "summary": "Chris Rodriguez (RB, JAX) is healthy and has drawn significant fantasy attention: 7362 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
-      "name": "Taylen Green",
-      "summary": "Taylen Green (QB, CLE) is healthy and has drawn significant fantasy attention: 7192 adds over the past 48 hours.",
+      "name": "Terrance Ferguson",
+      "summary": "Terrance Ferguson (TE, LAR) is healthy and has drawn significant fantasy attention: 7352 adds over the past 48 hours.",
       "real_news_headline": null,
       "real_news_description": null,
       "real_news_published": null
     },
     {
-      "name": "Kaelon Black",
-      "summary": "Kaelon Black (RB, SF) injury status: Questionable. Added by 6958 fantasy teams over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
-    },
-    {
-      "name": "Jake Bates",
-      "summary": "Jake Bates (K, DET) is healthy and has drawn significant fantasy attention: 6864 adds over the past 48 hours.",
-      "real_news_headline": null,
-      "real_news_description": null,
-      "real_news_published": null
+      "name": "Kyler Murray",
+      "summary": "Kyler Murray (QB, MIN) is healthy and has drawn significant fantasy attention: 7072 adds over the past 48 hours.",
+      "real_news_headline": "The Vikings have named Murray their starting quarterback, Adam Schefter of ESPN reports.",
+      "real_news_description": "The Vikings have named Murray their starting quarterback, Adam Schefter of ESPN reports.",
+      "real_news_published": "2026-08-11T16:26:22Z"
     }
   ]
 }

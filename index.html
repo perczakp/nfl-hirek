@@ -255,6 +255,23 @@
     renderSearchResults(searchInput.value.trim());
   });
 
+  var playerNewsByName = {};
+
+  fetch("./player-news.json")
+    .then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      (data.players || []).forEach(function (item) {
+        playerNewsByName[(item.name || "").toLowerCase()] = item;
+      });
+    })
+    .catch(function (err) {
+      console.warn("Detailed player news could not be loaded:", err);
+      playerNewsByName = {};
+    });
+
   function openPlayerModal(p) {
     var healthy = !p.injury_status;
 
@@ -262,6 +279,7 @@
     html += '<p class="nfln-modal-name">' + escapeHtml(p.name) + "</p>";
     html += '<p class="nfln-modal-meta">' + escapeHtml(p.position) + " · " + escapeHtml(p.team) + "</p>";
     html += '<span class="nfln-modal-status ' + (healthy ? "nfln-status-healthy" : "nfln-status-injured") + '">' + escapeHtml(STATUS_LABEL(p.injury_status)) + "</span>";
+
     if (p.injury_body_part) {
       html += '<p class="nfln-modal-meta">Injury: ' + escapeHtml(p.injury_body_part) + "</p>";
     }
@@ -271,349 +289,73 @@
     if (p.practice_participation) {
       html += '<p class="nfln-modal-meta">Practice status: ' + escapeHtml(p.practice_participation) + "</p>";
     }
+
     html += '<div id="nfln-modal-articles"><p class="nfln-modal-loading">Loading full story...</p></div>';
 
     modalBody.innerHTML = html;
     modalOverlay.classList.add("open");
 
-    if (p.espn_id) {
-      loadCombinedNews(p.espn_id, p.name, p.team);
-    } else {
-      lookupEspnIdByName(p.name).then(function (foundId) {
-        loadCombinedNews(foundId, p.name, p.team);
-      });
-    }
+    renderPlayerNewsFromJson(p);
   }
 
-  function lookupEspnIdByName(name) {
-    return fetch("https://site.web.api.espn.com/apis/search/v2?limit=5&query=" + encodeURIComponent(name))
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        var groups = (data && data.results) || [];
-        for (var i = 0; i < groups.length; i++) {
-          var contents = groups[i].contents || [];
-          for (var j = 0; j < contents.length; j++) {
-            var item = contents[j];
-            if (item.uid) {
-              var m = item.uid.match(/a:(\d+)/);
-              if (m) return m[1];
-            }
-            if (item.id) return item.id;
-          }
-        }
-        return null;
-      })
-      .catch(function () { return null; });
-  }
-
-  function fetchJson(url) {
-    return fetch(url, {
-      headers: { "Accept": "application/json" }
-    }).then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.json();
-    });
-  }
-
-  function firstNonEmpty() {
-    for (var i = 0; i < arguments.length; i++) {
-      if (arguments[i] !== undefined && arguments[i] !== null && String(arguments[i]).trim() !== "") {
-        return arguments[i];
-      }
-    }
-    return null;
-  }
-
-  function normalizeArticle(a, source) {
-    if (!a || typeof a !== "object") return null;
-
-    var headline = firstNonEmpty(
-      a.headline,
-      a.title,
-      a.story && a.story.headline,
-      a.news && a.news.headline
-    );
-
-    var description = firstNonEmpty(
-      a.description,
-      a.summary,
-      a.story && a.story.description,
-      a.story && a.story.summary,
-      a.news && a.news.description
-    );
-
-    var published = firstNonEmpty(
-      a.published,
-      a.publishedAt,
-      a.date,
-      a.publishedDate,
-      a.story && a.story.published,
-      a.news && a.news.published
-    );
-
-    var link = firstNonEmpty(
-      a.links && a.links.web && a.links.web.href,
-      a.links && a.links.web && a.links.web[0] && a.links.web[0].href,
-      a.link,
-      a.href,
-      a.story && a.story.link,
-      a.news && a.news.link
-    );
-
-    var id = firstNonEmpty(
-      a.id,
-      a.uid,
-      a.guid,
-      a.storyId,
-      a.newsId,
-      a.story && a.story.id,
-      a.news && a.news.id
-    );
-
-    if (!headline) return null;
-
-    return {
-      id: id ? String(id) : null,
-      headline: String(headline),
-      description: description ? String(description) : null,
-      published: published ? String(published) : null,
-      link: link ? String(link) : null,
-      source: source || "ESPN"
-    };
-  }
-
-  function extractArticles(data, source) {
-    var raw = [];
-
-    if (!data) return [];
-
-    if (Array.isArray(data)) raw = data;
-    else if (Array.isArray(data.articles)) raw = data.articles;
-    else if (Array.isArray(data.feed)) raw = data.feed;
-    else if (Array.isArray(data.news)) raw = data.news;
-    else if (Array.isArray(data.items)) raw = data.items;
-    else if (Array.isArray(data.contents)) raw = data.contents;
-    else if (data.feed && Array.isArray(data.feed.articles)) raw = data.feed.articles;
-    else if (data.news && Array.isArray(data.news.articles)) raw = data.news.articles;
-    else if (data.news && Array.isArray(data.news.items)) raw = data.news.items;
-    else if (data.news && Array.isArray(data.news.contents)) raw = data.news.contents;
-
-    return raw.map(function (a) {
-      return normalizeArticle(a, source);
-    }).filter(Boolean);
-  }
-
-  // ESPN's dedicated athlete news endpoint should be the primary source.
-  // This is much more reliable than searching the latest league-wide articles by name.
-  function fetchAthleteSpecificNews(espnId) {
-    if (!espnId) return Promise.resolve([]);
-
-    // ESPN exposes athlete news through the athlete page/overview API.
-    // Keep the dedicated /news endpoint as the first attempt, then fall back
-    // to the athlete overview endpoint used by ESPN player pages.
-    var dedicatedUrl = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/athletes/" +
-      encodeURIComponent(espnId) + "/news?limit=20";
-
-    return fetchJson(dedicatedUrl)
-      .then(function (data) {
-        var articles = extractArticles(data, "ESPN Athlete");
-        if (articles.length) return articles;
-        return fetchJson(
-          "https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/" +
-          encodeURIComponent(espnId)
-        ).then(function (overview) {
-          return extractArticles(overview, "ESPN Athlete");
-        });
-      })
-      .catch(function () {
-        return fetchJson(
-          "https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/" +
-          encodeURIComponent(espnId)
-        )
-          .then(function (overview) {
-            return extractArticles(overview, "ESPN Athlete");
-          })
-          .catch(function () {
-            return [];
-          });
-      });
-  }
-
-  function fetchFantasySpecificNews(espnId) {
-    if (!espnId) return Promise.resolve([]);
-
-    return fetchJson("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" +
-      encodeURIComponent(espnId) + "&limit=20")
-      .then(function (data) {
-        return extractArticles(data, "ESPN Fantasy");
-      })
-      .catch(function () {
-        return [];
-      });
-  }
-
-  function fetchGeneralNewsMatches(name) {
-    return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100")
-      .then(function (data) {
-        return extractArticles(data, "ESPN NFL")
-          .filter(function (a) {
-            return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
-          });
-      })
-      .catch(function () {
-        return [];
-      });
-  }
-
-  function textMatchesPlayer(text, fullName) {
-    var t = (text || "").toLowerCase();
-    var full = (fullName || "").toLowerCase().trim();
-    if (!full) return false;
-    if (t.indexOf(full) !== -1) return true;
-
-    var parts = full.split(/\s+/);
-    var lastName = parts[parts.length - 1];
-    if (lastName.length >= 4 && t.indexOf(lastName) !== -1) return true;
-
-    return false;
-  }
-
-  var ESPN_TEAM_IDS = {
-    ARI: 22, ATL: 1, BAL: 33, BUF: 2, CAR: 29, CHI: 3, CIN: 4, CLE: 5,
-    DAL: 6, DEN: 7, DET: 8, GB: 9, HOU: 34, IND: 11, JAX: 30, KC: 12,
-    LV: 13, LAC: 24, LAR: 14, MIA: 15, MIN: 16, NE: 17, NO: 18, NYG: 19,
-    NYJ: 20, PHI: 21, PIT: 23, SF: 25, SEA: 26, TB: 27, TEN: 10, WAS: 28
-  };
-
-  function fetchTeamNewsMatches(name, teamAbbr) {
-    var teamId = teamAbbr && ESPN_TEAM_IDS[teamAbbr.toUpperCase()];
-    if (!teamId) return Promise.resolve([]);
-
-    return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/" +
-      encodeURIComponent(teamId) + "/news?limit=50")
-      .then(function (data) {
-        return extractArticles(data, "ESPN Team")
-          .filter(function (a) {
-            return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
-          });
-      })
-      .catch(function () {
-        // Keep the old query-style endpoint as a compatibility fallback.
-        return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=" + teamId)
-          .then(function (data) {
-            return extractArticles(data, "ESPN Team")
-              .filter(function (a) {
-                return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
-              });
-          })
-          .catch(function () { return []; });
-      });
-  }
-
-  function dedupeArticles(articleGroups) {
-    var seen = {};
-    var combined = [];
-
-    articleGroups.forEach(function (group) {
-      (group || []).forEach(function (item) {
-        if (!item || !item.headline) return;
-
-        var normalizedHeadline = item.headline
-          .toLowerCase()
-          .replace(/\s+/g, " ")
-          .trim();
-        var key = item.id || item.link || (normalizedHeadline + "|" + (item.published || ""));
-
-        if (!seen[key]) {
-          seen[key] = true;
-          combined.push(item);
-        }
-      });
-    });
-
-    combined.sort(function (a, b) {
-      var da = new Date(a.published || 0).getTime();
-      var db = new Date(b.published || 0).getTime();
-      return db - da;
-    });
-
-    return combined;
-  }
-
-  function renderModalArticles(articlesDiv, combined) {
-    if (!articlesDiv) return;
-
-    combined = (combined || []).slice(0, 6);
-
-    if (combined.length === 0) {
-      articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
-      return;
-    }
-
-    var html2 = "";
-    combined.forEach(function (item) {
-      html2 += '<div class="nfln-modal-article">';
-      if (item.headline) {
-        if (item.link) {
-          html2 += '<p class="nfln-modal-headline"><a href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.headline) + "</a></p>";
-        } else {
-          html2 += '<p class="nfln-modal-headline">' + escapeHtml(item.headline) + "</p>";
-        }
-      }
-      if (item.description) html2 += '<p class="nfln-modal-desc">' + escapeHtml(item.description) + "</p>";
-      if (item.published) {
-        var dateText = item.published;
-        var parsedDate = new Date(item.published);
-        if (!isNaN(parsedDate.getTime())) {
-          dateText = parsedDate.toLocaleString("en-US");
-        }
-        html2 += '<p class="nfln-modal-date">' + escapeHtml(dateText) + " · " + escapeHtml(item.source) + "</p>";
-      } else {
-        html2 += '<p class="nfln-modal-date">' + escapeHtml(item.source) + "</p>";
-      }
-      html2 += "</div>";
-    });
-
-    html2 += '<div class="nfln-modal-source">Sources: ESPN athlete, fantasy, team and NFL news feeds</div>';
-    articlesDiv.innerHTML = html2;
-  }
-
-  function loadCombinedNews(espnId, name, teamAbbr) {
+  function renderPlayerNewsFromJson(p) {
     var articlesDiv = document.getElementById("nfln-modal-articles");
     if (!articlesDiv) return;
 
-    if (!espnId) {
-      articlesDiv.innerHTML = '<p class="nfln-modal-empty">Could not identify this player on ESPN, so detailed news cannot be loaded.</p>';
+    var item = playerNewsByName[(p.name || "").toLowerCase()];
+    var articles = item && Array.isArray(item.articles) ? item.articles.slice() : [];
+
+    articles.sort(function (a, b) {
+      return new Date(b.published || 0).getTime() - new Date(a.published || 0).getTime();
+    });
+
+    articles = articles.slice(0, 6);
+
+    if (articles.length === 0) {
+      articlesDiv.innerHTML =
+        '<p class="nfln-modal-empty">Ehhez a játékoshoz jelenleg nincs részletes hír a frissített adatbázisban.</p>' +
+        (p.espn_id ? '<p class="nfln-modal-date">ESPN ID: ' + escapeHtml(String(p.espn_id)) + "</p>" : "");
       return;
     }
 
-    var sources = [
-      { name: "ESPN Athlete", fn: function () { return fetchAthleteSpecificNews(espnId); } },
-      { name: "ESPN Fantasy", fn: function () { return fetchFantasySpecificNews(espnId); } },
-      { name: "ESPN Team", fn: function () { return fetchTeamNewsMatches(name, teamAbbr); } },
-      { name: "ESPN NFL", fn: function () { return fetchGeneralNewsMatches(name); } }
-    ];
+    var html = "";
+    articles.forEach(function (article) {
+      html += '<div class="nfln-modal-article">';
 
-    Promise.all(sources.map(function (source) {
-      return source.fn()
-        .then(function (articles) {
-          console.log("[NFL Fantasy News] " + source.name + ":", articles.length, "articles");
-          return articles;
-        })
-        .catch(function (err) {
-          console.warn("[NFL Fantasy News] " + source.name + " failed:", err);
-          return [];
-        });
-    })).then(function (results) {
-      var combined = dedupeArticles(results);
-      renderModalArticles(articlesDiv, combined);
-
-      if (combined.length === 0) {
-        articlesDiv.innerHTML =
-          '<p class="nfln-modal-empty">No detailed ESPN news was found for this player.</p>' +
-          '<p class="nfln-modal-source">ESPN ID: ' + escapeHtml(String(espnId)) + '. Open the browser console (F12) to see which feeds returned zero results or failed.</p>';
+      if (article.headline) {
+        if (article.link) {
+          html += '<p class="nfln-modal-headline"><a href="' +
+            escapeHtml(article.link) +
+            '" target="_blank" rel="noopener noreferrer">' +
+            escapeHtml(article.headline) +
+            "</a></p>";
+        } else {
+          html += '<p class="nfln-modal-headline">' + escapeHtml(article.headline) + "</p>";
+        }
       }
+
+      if (article.description) {
+        html += '<p class="nfln-modal-desc">' + escapeHtml(article.description) + "</p>";
+      }
+
+      var dateText = article.published || "";
+      if (article.published) {
+        var parsedDate = new Date(article.published);
+        if (!isNaN(parsedDate.getTime())) {
+          dateText = parsedDate.toLocaleString("en-US");
+        }
+      }
+
+      html += '<p class="nfln-modal-date">' +
+        escapeHtml(dateText) +
+        (article.source ? " · " + escapeHtml(article.source) : "") +
+        "</p>";
+
+      html += "</div>";
     });
+
+    html += '<div class="nfln-modal-source">Források: ESPN + Google News RSS (GitHub Actions által frissítve)</div>';
+    articlesDiv.innerHTML = html;
   }
 
   function closeModal() {
@@ -666,7 +408,18 @@
 
           var headline = document.createElement("p");
           headline.className = "nfln-real-headline";
-          headline.textContent = player.real_news_headline;
+
+          if (player.real_news_link) {
+            var headlineLink = document.createElement("a");
+            headlineLink.href = player.real_news_link;
+            headlineLink.target = "_blank";
+            headlineLink.rel = "noopener noreferrer";
+            headlineLink.textContent = player.real_news_headline;
+            headline.appendChild(headlineLink);
+          } else {
+            headline.textContent = player.real_news_headline;
+          }
+
           realNews.appendChild(headline);
 
           if (player.real_news_description) {
@@ -678,7 +431,7 @@
 
           var source = document.createElement("div");
           source.className = "nfln-real-source";
-          source.textContent = "Source: ESPN";
+          source.textContent = "Source: " + (player.real_news_source || "ESPN");
           realNews.appendChild(source);
 
           card.appendChild(realNews);

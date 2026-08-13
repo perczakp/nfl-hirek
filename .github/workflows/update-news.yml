@@ -2,8 +2,8 @@ name: NFL hírek frissítése
 
 on:
   schedule:
-    # Minden hétfőn 4:00 UTC = 6:00 magyar nyári idő
-    - cron: "0 4 * * 1"
+    # Naponta 04:00 UTC = 06:00 magyar idő (nyáron CEST)
+    - cron: "0 4 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -28,6 +28,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add news.json players.json
+          git add news.json players.json player-news.json
           git diff --staged --quiet || git commit -m "Hírek automatikus frissítése"
           git push

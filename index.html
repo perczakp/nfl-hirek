@@ -275,17 +275,10 @@
     modalOverlay.classList.add("open");
 
     if (p.espn_id) {
-      loadEspnNewsById(p.espn_id);
+      loadCombinedNews(p.espn_id, p.name);
     } else {
       lookupEspnIdByName(p.name).then(function (foundId) {
-        if (foundId) {
-          loadEspnNewsById(foundId);
-        } else {
-          var articlesDiv = document.getElementById("nfln-modal-articles");
-          if (articlesDiv) {
-            articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
-          }
-        }
+        loadCombinedNews(foundId, p.name);
       });
     }
   }
@@ -311,37 +304,81 @@
       .catch(function () { return null; });
   }
 
-  function loadEspnNewsById(espnId) {
-    fetch("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" + encodeURIComponent(espnId) + "&limit=5")
+  function fetchFantasySpecificNews(espnId) {
+    if (!espnId) return Promise.resolve([]);
+    return fetch("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" + encodeURIComponent(espnId) + "&limit=5")
+      .then(function (res) { return res.json(); })
+      .then(function (data) { return (data && data.feed) || []; })
+      .catch(function () { return []; });
+  }
+
+  function fetchGeneralNewsMatches(name) {
+    return fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50")
       .then(function (res) { return res.json(); })
       .then(function (data) {
-        var articlesDiv = document.getElementById("nfln-modal-articles");
-        if (!articlesDiv) return;
-
-        var feed = (data && data.feed) || [];
-        if (feed.length === 0) {
-          articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
-          return;
-        }
-
-        var html2 = "";
-        feed.forEach(function (item) {
-          html2 += '<div class="nfln-modal-article">';
-          if (item.headline) html2 += '<p class="nfln-modal-headline">' + escapeHtml(item.headline) + "</p>";
-          if (item.description) html2 += '<p class="nfln-modal-desc">' + escapeHtml(item.description) + "</p>";
-          if (item.published) html2 += '<p class="nfln-modal-date">' + escapeHtml(new Date(item.published).toLocaleString("en-US")) + "</p>";
-          html2 += "</div>";
-        });
-        html2 += '<div class="nfln-modal-source">Source: ESPN</div>';
-
-        articlesDiv.innerHTML = html2;
+        var articles = (data && data.articles) || [];
+        var nameLower = name.toLowerCase();
+        return articles
+          .filter(function (a) {
+            var text = ((a.headline || "") + " " + (a.description || "")).toLowerCase();
+            return text.indexOf(nameLower) !== -1;
+          })
+          .map(function (a) {
+            return {
+              headline: a.headline || null,
+              description: a.description || null,
+              published: a.published || null,
+            };
+          });
       })
-      .catch(function () {
-        var articlesDiv = document.getElementById("nfln-modal-articles");
-        if (articlesDiv) {
-          articlesDiv.innerHTML = '<p class="nfln-modal-empty">Could not load detailed news right now. Please try again later.</p>';
+      .catch(function () { return []; });
+  }
+
+  function loadCombinedNews(espnId, name) {
+    Promise.all([
+      fetchFantasySpecificNews(espnId),
+      fetchGeneralNewsMatches(name)
+    ]).then(function (results) {
+      var articlesDiv = document.getElementById("nfln-modal-articles");
+      if (!articlesDiv) return;
+
+      var specific = results[0];
+      var general = results[1];
+
+      var seenHeadlines = {};
+      var combined = [];
+
+      specific.concat(general).forEach(function (item) {
+        var key = (item.headline || "") + "|" + (item.published || "");
+        if (item.headline && !seenHeadlines[key]) {
+          seenHeadlines[key] = true;
+          combined.push(item);
         }
       });
+
+      combined.sort(function (a, b) {
+        return new Date(b.published || 0) - new Date(a.published || 0);
+      });
+
+      combined = combined.slice(0, 6);
+
+      if (combined.length === 0) {
+        articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
+        return;
+      }
+
+      var html2 = "";
+      combined.forEach(function (item) {
+        html2 += '<div class="nfln-modal-article">';
+        if (item.headline) html2 += '<p class="nfln-modal-headline">' + escapeHtml(item.headline) + "</p>";
+        if (item.description) html2 += '<p class="nfln-modal-desc">' + escapeHtml(item.description) + "</p>";
+        if (item.published) html2 += '<p class="nfln-modal-date">' + escapeHtml(new Date(item.published).toLocaleString("en-US")) + "</p>";
+        html2 += "</div>";
+      });
+      html2 += '<div class="nfln-modal-source">Source: ESPN</div>';
+
+      articlesDiv.innerHTML = html2;
+    });
   }
 
   function closeModal() {

@@ -15,7 +15,7 @@
   .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }
   .nfln-header h1 { font-size: 24px; margin-bottom: 4px; }
   .nfln-header p { color: #777; font-size: 14px; }
-  .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; }
+  .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
   .nfln-nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: bold; }
   .nfln-nav a.active { background: #1a1a1a; color: #ffffff; }
   .nfln-nav a.inactive { background: #ffffff; color: #1a1a1a; border: 1px solid #ddd; }
@@ -48,10 +48,11 @@
     border-bottom: 1px solid #f0f0f0;
     font-size: 14px;
     cursor: pointer;
+    gap: 10px;
   }
   .nfln-search-row:hover { background: #f7f7f7; }
   .nfln-search-row:last-child { border-bottom: none; }
-  .nfln-search-row-name { font-weight: bold; color: #1a1a1a; }
+  .nfln-search-row-name { font-weight: bold; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
   .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }
   .nfln-search-status {
     font-size: 12.5px;
@@ -81,16 +82,19 @@
     padding: 16px 20px;
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
-  .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #1a1a1a; }
-  .nfln-summary { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 10px 0; }
+  .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-summary { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 10px 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-real-news {
     border-top: 1px solid #eee;
     padding-top: 10px;
     margin-top: 4px;
   }
-  .nfln-real-headline { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 0 0 4px 0; }
-  .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: #555; margin: 0; }
+  .nfln-real-headline { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: #555; margin: 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-real-source { font-size: 11px; color: #aaa; margin-top: 6px; }
   .nfln-updated { grid-column: 1 / -1; text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
   .nfln-fullwidth { grid-column: 1 / -1; }
@@ -126,8 +130,8 @@
     color: #888;
     line-height: 1;
   }
-  .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; }
-  .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; }
+  .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; overflow-wrap: break-word; word-break: break-word; }
   .nfln-modal-status {
     display: inline-block;
     font-size: 12.5px;
@@ -141,10 +145,10 @@
     padding-top: 12px;
     margin-top: 12px;
   }
-  .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; }
+  .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-modal-headline a { color: #1a1a1a; text-decoration: none; }
   .nfln-modal-headline a:hover { text-decoration: underline; }
-  .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; }
+  .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-modal-date { font-size: 11.5px; color: #aaa; }
   .nfln-modal-source { font-size: 11px; color: #aaa; margin-top: 14px; }
   .nfln-modal-loading, .nfln-modal-empty { font-size: 14px; color: #888; padding: 10px 0; }
@@ -164,7 +168,7 @@
 <div class="nfln-nav">
   <a href="index.html" class="active">News</a>
   <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
-  <a href="idp-rankings.html" class="inactive">IDP Rankings</a>
+  <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
   <a href="standings.html" class="inactive">Standings</a>
 </div>
 

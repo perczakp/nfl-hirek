@@ -24,10 +24,13 @@ jobs:
       - name: Hírek frissítése
         run: node update-news.js
 
+      - name: Tippek frissítése
+        run: node update-tips.js
+
       - name: Változások mentése a repository-ba
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add news.json players.json player-news.json
-          git diff --staged --quiet || git commit -m "Hírek automatikus frissítése"
+          git add news.json players.json player-news.json tips.json
+          git diff --staged --quiet || git commit -m "Hírek és tippek automatikus frissítése"
           git push

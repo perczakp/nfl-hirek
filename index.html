@@ -666,13 +666,13 @@
 
           var headline = document.createElement("p");
           headline.className = "nfln-real-headline";
-          headline.textContent = player.real_news_headline;
+          headline.textContent = htmlToText(player.real_news_headline) || player.real_news_headline;
           realNews.appendChild(headline);
 
           if (player.real_news_description) {
             var desc = document.createElement("p");
             desc.className = "nfln-real-desc";
-            desc.textContent = player.real_news_description;
+            desc.textContent = htmlToText(player.real_news_description) || player.real_news_description;
             realNews.appendChild(desc);
           }
 

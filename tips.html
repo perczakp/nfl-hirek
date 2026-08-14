@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tips</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+  }
+  .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }
+  .nfln-header h1 { font-size: 24px; margin-bottom: 4px; }
+  .nfln-header p { color: #777; font-size: 14px; }
+  .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .nfln-nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: bold; }
+  .nfln-nav a.active { background: #1a1a1a; color: #ffffff; }
+  .nfln-nav a.inactive { background: #ffffff; color: #1a1a1a; border: 1px solid #ddd; }
+  .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }
+  .nfln-back a { color: #555; text-decoration: none; }
+
+  #tips-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    #tips-container { grid-template-columns: 1fr; }
+  }
+  .tips-fullwidth { grid-column: 1 / -1; }
+
+  .tips-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .tips-name { font-weight: bold; font-size: 17px; margin: 0 0 10px 0; color: #1a1a1a; }
+  .tips-pick-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid #f0f0f0;
+    font-size: 14.5px;
+  }
+  .tips-pick-row:first-of-type { border-top: none; }
+  .tips-pick-team { color: #444; }
+  .tips-pick-result {
+    font-weight: bold;
+    background: #eef2ff;
+    color: #3730a3;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tips-updated { text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
+
+  .tips-cta {
+    max-width: 700px;
+    margin: 0 auto 28px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 24px 26px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .tips-cta p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 18px; }
+  .tips-btn {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div class="nfln-back">
+  <a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a>
+</div>
+
+<div class="nfln-header">
+  <h1>Tips</h1>
+  <p>Season predictions from the crew</p>
+</div>
+
+<div class="nfln-nav">
+  <a href="index.html" class="inactive">News</a>
+  <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
+  <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+  <a href="tips.html" class="active">Tips</a>
+</div>
+
+<div class="tips-cta">
+  <p>Predict how many wins and losses each NFL team will have this season, then submit it below. Your prediction will show up here, grouped under your name.</p>
+  <a class="tips-btn" href="PASTE_YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" rel="noopener noreferrer">
+    Submit a prediction →
+  </a>
+</div>
+
+<div id="tips-container">
+  <p class="tips-fullwidth" style="text-align:center;color:#888;">Loading predictions...</p>
+</div>
+
+<script>
+(function () {
+  fetch("./tips.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var container = document.getElementById("tips-container");
+      container.innerHTML = "";
+
+      if (!data.predictors || data.predictors.length === 0) {
+        container.innerHTML = '<p class="tips-fullwidth" style="text-align:center;color:#888;">No predictions submitted yet.</p>';
+        return;
+      }
+
+      data.predictors.forEach(function (predictor) {
+        var card = document.createElement("div");
+        card.className = "tips-card";
+
+        var name = document.createElement("p");
+        name.className = "tips-name";
+        name.textContent = predictor.name;
+        card.appendChild(name);
+
+        predictor.picks.forEach(function (pick) {
+          var row = document.createElement("div");
+          row.className = "tips-pick-row";
+
+          var team = document.createElement("span");
+          team.className = "tips-pick-team";
+          team.textContent = pick.team;
+
+          var result = document.createElement("span");
+          result.className = "tips-pick-result";
+          result.textContent = pick.prediction;
+
+          row.appendChild(team);
+          row.appendChild(result);
+          card.appendChild(row);
+        });
+
+        container.appendChild(card);
+      });
+
+      if (data.updated_at) {
+        var updated = document.createElement("div");
+        updated.className = "tips-updated tips-fullwidth";
+        var d = new Date(data.updated_at);
+        updated.textContent = "Last updated: " + d.toLocaleString("en-US");
+        container.appendChild(updated);
+      }
+    })
+    .catch(function () {
+      var container = document.getElementById("tips-container");
+      container.innerHTML = '<p class="tips-fullwidth" style="text-align:center;color:#c0392b;">Failed to load predictions.</p>';
+    });
+})();
+</script>
+
+</body>
+</html>

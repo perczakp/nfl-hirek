@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IDP Rankings</title>
+<title>NFL Fantasy News</title>
 <style>
   body {
     margin: 0;
@@ -12,38 +12,142 @@
     background: #f5f5f5;
     color: #1a1a1a;
   }
-  .nfln-header { max-width: 700px; margin: 0 auto 16px; text-align: center; }
+  .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }
   .nfln-header h1 { font-size: 24px; margin-bottom: 4px; }
   .nfln-header p { color: #777; font-size: 14px; }
-  .nfln-nav { max-width: 700px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
   .nfln-nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: bold; }
   .nfln-nav a.active { background: #1a1a1a; color: #ffffff; }
   .nfln-nav a.inactive { background: #ffffff; color: #1a1a1a; border: 1px solid #ddd; }
   .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }
   .nfln-back a { color: #555; text-decoration: none; }
-  .trade-card {
-    max-width: 700px;
-    margin: 0 auto;
+  .nfln-search-wrap { max-width: 1000px; margin: 0 auto 28px; position: relative; }
+  .nfln-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+  }
+  .nfln-search-input:focus { border-color: #1a1a1a; }
+  .nfln-search-results {
+    margin-top: 8px;
     background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .nfln-search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .nfln-search-row:hover { background: #f7f7f7; }
+  .nfln-search-row:last-child { border-bottom: none; }
+  .nfln-search-row-name { font-weight: bold; color: #1a1a1a; }
+  .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }
+  .nfln-search-status {
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .nfln-status-healthy { background: #e6f4ea; color: #1e7e34; }
+  .nfln-status-injured { background: #fdecea; color: #c0392b; }
+  .nfln-search-empty { padding: 12px 16px; font-size: 14px; color: #888; }
+
+  #nfl-fantasy-news {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    #nfl-fantasy-news { grid-template-columns: 1fr; }
+  }
+  .nfln-card {
     border: 1px solid #e0e0e0;
-    border-radius: 14px;
-    padding: 32px 28px;
-    text-align: center;
+    border-radius: 10px;
+    padding: 16px 20px;
+    background: #ffffff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .trade-card h2 { font-size: 20px; margin-bottom: 10px; }
-  .trade-card p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 22px; }
-  .trade-btn {
-    display: inline-block;
-    background: #1a1a1a;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 12px 28px;
-    border-radius: 999px;
-    font-weight: bold;
-    font-size: 15px;
+  .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #1a1a1a; }
+  .nfln-summary { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 10px 0; }
+  .nfln-real-news {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 4px;
   }
-  .trade-source { margin-top: 18px; font-size: 12px; color: #999; }
+  .nfln-real-headline { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 0 0 4px 0; }
+  .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: #555; margin: 0; }
+  .nfln-real-source { font-size: 11px; color: #aaa; margin-top: 6px; }
+  .nfln-updated { grid-column: 1 / -1; text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
+  .nfln-fullwidth { grid-column: 1 / -1; }
+
+  .nfln-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .nfln-modal-overlay.open { display: flex; }
+  .nfln-modal {
+    background: #ffffff;
+    border-radius: 14px;
+    max-width: 600px;
+    width: 100%;
+    padding: 24px 26px;
+    position: relative;
+  }
+  .nfln-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+  }
+  .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; }
+  .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; }
+  .nfln-modal-status {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .nfln-modal-article {
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+  .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; }
+  .nfln-modal-headline a { color: #1a1a1a; text-decoration: none; }
+  .nfln-modal-headline a:hover { text-decoration: underline; }
+  .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; }
+  .nfln-modal-date { font-size: 11.5px; color: #aaa; }
+  .nfln-modal-source { font-size: 11px; color: #aaa; margin-top: 14px; }
+  .nfln-modal-loading, .nfln-modal-empty { font-size: 14px; color: #888; padding: 10px 0; }
 </style>
 </head>
 <body>
@@ -53,25 +157,546 @@
 </div>
 
 <div class="nfln-header">
-  <h1>IDP Rankings</h1>
-  <p>Dynasty rankings for individual defensive players</p>
+  <h1>NFL Fantasy News</h1>
+  <p>Weekly updates on the most talked-about players</p>
 </div>
 
 <div class="nfln-nav">
-  <a href="index.html" class="inactive">News</a>
+  <a href="index.html" class="active">News</a>
   <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
-  <a href="idp-rankings.html" class="active">IDP Rankings (Rookies)</a>
+  <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
   <a href="standings.html" class="inactive">Standings</a>
 </div>
 
-<div class="trade-card">
-  <h2>Dynasty IDP rookie rankings, updated for 2026</h2>
-  <p>These dynasty IDP (Individual Defensive Player) rookie draft rankings are compiled by FantasyPros' expert consensus community, covering defensive linemen, linebackers, and defensive backs. Click the button below to always see the latest, live rankings.</p>
-  <a class="trade-btn" href="https://www.fantasypros.com/2026/08/idp-dynasty-rookie-draft-rankings-2026-fantasy-football-david-bailey/" target="_blank" rel="noopener noreferrer">
-    Open IDP Dynasty Rookie Rankings →
-  </a>
-  <div class="trade-source">Source: FantasyPros</div>
+<div class="nfln-search-wrap">
+  <input type="text" id="nfln-search" class="nfln-search-input" placeholder="Search for a player (e.g. Ja'Marr Chase)..." autocomplete="off">
+  <div id="nfln-search-results" class="nfln-search-results"></div>
 </div>
+
+<div id="nfl-fantasy-news">
+  <p class="nfln-fullwidth" style="text-align:center;color:#888;">Loading news...</p>
+</div>
+
+<div id="nfln-modal-overlay" class="nfln-modal-overlay">
+  <div class="nfln-modal">
+    <button id="nfln-modal-close" class="nfln-modal-close">&times;</button>
+    <div id="nfln-modal-body"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var STATUS_LABEL = function (status) { return status || "Healthy"; };
+
+  var allSearchPlayers = [];
+  var searchInput = document.getElementById("nfln-search");
+  var searchResults = document.getElementById("nfln-search-results");
+  var modalOverlay = document.getElementById("nfln-modal-overlay");
+  var modalBody = document.getElementById("nfln-modal-body");
+  var modalClose = document.getElementById("nfln-modal-close");
+
+  fetch("./players.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      allSearchPlayers = data.players || [];
+    })
+    .catch(function () {
+      allSearchPlayers = [];
+    });
+
+  function renderSearchResults(query) {
+    searchResults.innerHTML = "";
+
+    if (!query) {
+      searchResults.style.display = "none";
+      return;
+    }
+
+    var q = query.toLowerCase();
+    var matches = allSearchPlayers
+      .filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; })
+      .slice(0, 8);
+
+    searchResults.style.display = "block";
+
+    if (matches.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "nfln-search-empty";
+      empty.textContent = "No matches found.";
+      searchResults.appendChild(empty);
+      return;
+    }
+
+    matches.forEach(function (p) {
+      var row = document.createElement("div");
+      row.className = "nfln-search-row";
+      row.addEventListener("click", function () { openPlayerModal(p); });
+
+      var left = document.createElement("div");
+      var nameSpan = document.createElement("span");
+      nameSpan.className = "nfln-search-row-name";
+      nameSpan.textContent = p.name;
+      var metaSpan = document.createElement("span");
+      metaSpan.className = "nfln-search-row-meta";
+      metaSpan.textContent = p.position + " · " + p.team;
+      left.appendChild(nameSpan);
+      left.appendChild(metaSpan);
+
+      var statusSpan = document.createElement("span");
+      var healthy = !p.injury_status;
+      statusSpan.className = "nfln-search-status " + (healthy ? "nfln-status-healthy" : "nfln-status-injured");
+      statusSpan.textContent = STATUS_LABEL(p.injury_status);
+
+      row.appendChild(left);
+      row.appendChild(statusSpan);
+      searchResults.appendChild(row);
+    });
+  }
+
+  searchInput.addEventListener("input", function () {
+    renderSearchResults(searchInput.value.trim());
+  });
+
+  function openPlayerModal(p) {
+    var healthy = !p.injury_status;
+
+    var html = "";
+    html += '<p class="nfln-modal-name">' + escapeHtml(p.name) + "</p>";
+    html += '<p class="nfln-modal-meta">' + escapeHtml(p.position) + " · " + escapeHtml(p.team) + "</p>";
+    html += '<span class="nfln-modal-status ' + (healthy ? "nfln-status-healthy" : "nfln-status-injured") + '">' + escapeHtml(STATUS_LABEL(p.injury_status)) + "</span>";
+    if (p.injury_body_part) {
+      html += '<p class="nfln-modal-meta">Injury: ' + escapeHtml(p.injury_body_part) + "</p>";
+    }
+    if (p.injury_start_date) {
+      html += '<p class="nfln-modal-meta">Injury reported: ' + escapeHtml(p.injury_start_date) + "</p>";
+    }
+    if (p.practice_participation) {
+      html += '<p class="nfln-modal-meta">Practice status: ' + escapeHtml(p.practice_participation) + "</p>";
+    }
+    html += '<div id="nfln-modal-articles"><p class="nfln-modal-loading">Loading full story...</p></div>';
+
+    modalBody.innerHTML = html;
+    modalOverlay.classList.add("open");
+
+    if (p.espn_id) {
+      loadCombinedNews(p.espn_id, p.name, p.team);
+    } else {
+      lookupEspnIdByName(p.name).then(function (foundId) {
+        loadCombinedNews(foundId, p.name, p.team);
+      });
+    }
+  }
+
+  function lookupEspnIdByName(name) {
+    return fetch("https://site.web.api.espn.com/apis/search/v2?limit=5&query=" + encodeURIComponent(name))
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        var groups = (data && data.results) || [];
+        for (var i = 0; i < groups.length; i++) {
+          var contents = groups[i].contents || [];
+          for (var j = 0; j < contents.length; j++) {
+            var item = contents[j];
+            if (item.uid) {
+              var m = item.uid.match(/a:(\d+)/);
+              if (m) return m[1];
+            }
+            if (item.id) return item.id;
+          }
+        }
+        return null;
+      })
+      .catch(function () { return null; });
+  }
+
+  function fetchJson(url) {
+    return fetch(url, {
+      headers: { "Accept": "application/json" }
+    }).then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    });
+  }
+
+  function firstNonEmpty() {
+    for (var i = 0; i < arguments.length; i++) {
+      if (arguments[i] !== undefined && arguments[i] !== null && String(arguments[i]).trim() !== "") {
+        return arguments[i];
+      }
+    }
+    return null;
+  }
+
+  function normalizeArticle(a, source) {
+    if (!a || typeof a !== "object") return null;
+
+    var headline = firstNonEmpty(
+      a.headline,
+      a.title,
+      a.story && a.story.headline,
+      a.news && a.news.headline
+    );
+
+    var description = firstNonEmpty(
+      a.description,
+      a.summary,
+      a.story && a.story.description,
+      a.story && a.story.summary,
+      a.news && a.news.description
+    );
+
+    var published = firstNonEmpty(
+      a.published,
+      a.publishedAt,
+      a.date,
+      a.publishedDate,
+      a.story && a.story.published,
+      a.news && a.news.published
+    );
+
+    var link = firstNonEmpty(
+      a.links && a.links.web && a.links.web.href,
+      a.links && a.links.web && a.links.web[0] && a.links.web[0].href,
+      a.link,
+      a.href,
+      a.story && a.story.link,
+      a.news && a.news.link
+    );
+
+    var id = firstNonEmpty(
+      a.id,
+      a.uid,
+      a.guid,
+      a.storyId,
+      a.newsId,
+      a.story && a.story.id,
+      a.news && a.news.id
+    );
+
+    if (!headline) return null;
+
+    return {
+      id: id ? String(id) : null,
+      headline: String(headline),
+      description: description ? String(description) : null,
+      published: published ? String(published) : null,
+      link: link ? String(link) : null,
+      source: source || "ESPN"
+    };
+  }
+
+  function extractArticles(data, source) {
+    var raw = [];
+
+    if (!data) return [];
+
+    if (Array.isArray(data)) raw = data;
+    else if (Array.isArray(data.articles)) raw = data.articles;
+    else if (Array.isArray(data.feed)) raw = data.feed;
+    else if (Array.isArray(data.news)) raw = data.news;
+    else if (Array.isArray(data.items)) raw = data.items;
+    else if (Array.isArray(data.contents)) raw = data.contents;
+    else if (data.feed && Array.isArray(data.feed.articles)) raw = data.feed.articles;
+    else if (data.news && Array.isArray(data.news.articles)) raw = data.news.articles;
+
+    return raw.map(function (a) {
+      return normalizeArticle(a, source);
+    }).filter(Boolean);
+  }
+
+  // ESPN's dedicated athlete news endpoint should be the primary source.
+  // This is much more reliable than searching the latest league-wide articles by name.
+  function fetchAthleteSpecificNews(espnId) {
+    if (!espnId) return Promise.resolve([]);
+
+    var url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/athletes/" +
+      encodeURIComponent(espnId) + "/news?limit=20";
+
+    return fetchJson(url)
+      .then(function (data) {
+        return extractArticles(data, "ESPN Athlete");
+      })
+      .catch(function () {
+        return [];
+      });
+  }
+
+  function fetchFantasySpecificNews(espnId) {
+    if (!espnId) return Promise.resolve([]);
+
+    return fetchJson("https://site.api.espn.com/apis/fantasy/v2/games/ffl/news/players?playerId=" +
+      encodeURIComponent(espnId) + "&limit=20")
+      .then(function (data) {
+        return extractArticles(data, "ESPN Fantasy");
+      })
+      .catch(function () {
+        return [];
+      });
+  }
+
+  function fetchGeneralNewsMatches(name) {
+    return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100")
+      .then(function (data) {
+        return extractArticles(data, "ESPN NFL")
+          .filter(function (a) {
+            return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
+          });
+      })
+      .catch(function () {
+        return [];
+      });
+  }
+
+  function textMatchesPlayer(text, fullName) {
+    var t = (text || "").toLowerCase();
+    var full = (fullName || "").toLowerCase().trim();
+    if (!full) return false;
+    if (t.indexOf(full) !== -1) return true;
+
+    var parts = full.split(/\s+/);
+    var lastName = parts[parts.length - 1];
+    if (lastName.length >= 4 && t.indexOf(lastName) !== -1) return true;
+
+    return false;
+  }
+
+  var ESPN_TEAM_IDS = {
+    ARI: 22, ATL: 1, BAL: 33, BUF: 2, CAR: 29, CHI: 3, CIN: 4, CLE: 5,
+    DAL: 6, DEN: 7, DET: 8, GB: 9, HOU: 34, IND: 11, JAX: 30, KC: 12,
+    LV: 13, LAC: 24, LAR: 14, MIA: 15, MIN: 16, NE: 17, NO: 18, NYG: 19,
+    NYJ: 20, PHI: 21, PIT: 23, SF: 25, SEA: 26, TB: 27, TEN: 10, WAS: 28
+  };
+
+  function fetchTeamNewsMatches(name, teamAbbr) {
+    var teamId = teamAbbr && ESPN_TEAM_IDS[teamAbbr.toUpperCase()];
+    if (!teamId) return Promise.resolve([]);
+
+    return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/" +
+      encodeURIComponent(teamId) + "/news?limit=50")
+      .then(function (data) {
+        return extractArticles(data, "ESPN Team")
+          .filter(function (a) {
+            return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
+          });
+      })
+      .catch(function () {
+        // Keep the old query-style endpoint as a compatibility fallback.
+        return fetchJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=" + teamId)
+          .then(function (data) {
+            return extractArticles(data, "ESPN Team")
+              .filter(function (a) {
+                return textMatchesPlayer((a.headline || "") + " " + (a.description || ""), name);
+              });
+          })
+          .catch(function () { return []; });
+      });
+  }
+
+  function dedupeArticles(articleGroups) {
+    var seen = {};
+    var combined = [];
+
+    articleGroups.forEach(function (group) {
+      (group || []).forEach(function (item) {
+        if (!item || !item.headline) return;
+
+        var normalizedHeadline = item.headline
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .trim();
+        var key = item.id || item.link || (normalizedHeadline + "|" + (item.published || ""));
+
+        if (!seen[key]) {
+          seen[key] = true;
+          combined.push(item);
+        }
+      });
+    });
+
+    combined.sort(function (a, b) {
+      var da = new Date(a.published || 0).getTime();
+      var db = new Date(b.published || 0).getTime();
+      return db - da;
+    });
+
+    return combined;
+  }
+
+  function htmlToText(value) {
+    if (!value) return "";
+    var div = document.createElement("div");
+    div.innerHTML = String(value);
+    return (div.textContent || div.innerText || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function findPlayerNews(data, playerName, espnId) {
+    var players = (data && data.players) || [];
+    var targetId = espnId ? String(espnId) : null;
+    var targetName = (playerName || "").toLowerCase().trim();
+
+    for (var i = 0; i < players.length; i++) {
+      var p = players[i] || {};
+      if (targetId && p.espn_id != null && String(p.espn_id) === targetId) return p;
+      if (targetName && String(p.name || "").toLowerCase().trim() === targetName) return p;
+    }
+    return null;
+  }
+
+  function renderModalArticles(articlesDiv, articles) {
+    if (!articlesDiv) return;
+
+    articles = (articles || []).slice().sort(function (a, b) {
+      return new Date(b.published || 0).getTime() - new Date(a.published || 0).getTime();
+    }).slice(0, 6);
+
+    if (articles.length === 0) {
+      articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';
+      return;
+    }
+
+    var html2 = "";
+    articles.forEach(function (item) {
+      var description = htmlToText(item.description);
+      var headline = htmlToText(item.headline) || item.headline || "";
+      var source = htmlToText(item.source) || item.source || "ESPN";
+
+      html2 += '<div class="nfln-modal-article">';
+      if (headline) {
+        if (item.link) {
+          html2 += '<p class="nfln-modal-headline"><a href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(headline) + '</a></p>';
+        } else {
+          html2 += '<p class="nfln-modal-headline">' + escapeHtml(headline) + '</p>';
+        }
+      }
+      if (description) {
+        // Google News RSS descriptions contain HTML; display only readable text.
+        html2 += '<p class="nfln-modal-desc">' + escapeHtml(description) + '</p>';
+      }
+      if (item.published) {
+        var parsedDate = new Date(item.published);
+        var dateText = !isNaN(parsedDate.getTime()) ? parsedDate.toLocaleString("en-US") : String(item.published);
+        html2 += '<p class="nfln-modal-date">' + escapeHtml(dateText) + ' · ' + escapeHtml(source) + '</p>';
+      } else {
+        html2 += '<p class="nfln-modal-date">' + escapeHtml(source) + '</p>';
+      }
+      html2 += '</div>';
+    });
+
+    html2 += '<div class="nfln-modal-source">Sources: ESPN + Google News</div>';
+    articlesDiv.innerHTML = html2;
+  }
+
+  function loadCombinedNews(espnId, name, teamAbbr) {
+    var articlesDiv = document.getElementById("nfln-modal-articles");
+    if (!articlesDiv) return;
+
+    fetch("./player-news.json?ts=" + Date.now())
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var player = findPlayerNews(data, name, espnId);
+        if (!player) {
+          articlesDiv.innerHTML = '<p class="nfln-modal-empty">No saved news was found for this player.</p>';
+          return;
+        }
+
+        console.log("[NFL Fantasy News] " + name + ":", (player.articles || []).length, "saved articles");
+        renderModalArticles(articlesDiv, player.articles || []);
+      })
+      .catch(function (err) {
+        console.error("[NFL Fantasy News] player-news.json failed:", err);
+        articlesDiv.innerHTML = '<p class="nfln-modal-empty">Unable to load player news right now.</p>';
+      });
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove("open");
+    modalBody.innerHTML = "";
+  }
+
+  modalClose.addEventListener("click", closeModal);
+  modalOverlay.addEventListener("click", function (e) {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  var NEWS_URL = "./news.json";
+
+  fetch(NEWS_URL)
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var container = document.getElementById("nfl-fantasy-news");
+      container.innerHTML = "";
+
+      if (!data.players || data.players.length === 0) {
+        container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;color:#888;">No news available right now.</p>';
+        return;
+      }
+
+      data.players.forEach(function (player) {
+        var card = document.createElement("div");
+        card.className = "nfln-card";
+
+        var name = document.createElement("p");
+        name.className = "nfln-name";
+        name.textContent = player.name;
+
+        var summary = document.createElement("p");
+        summary.className = "nfln-summary";
+        summary.textContent = player.summary;
+
+        card.appendChild(name);
+        card.appendChild(summary);
+
+        if (player.real_news_headline) {
+          var realNews = document.createElement("div");
+          realNews.className = "nfln-real-news";
+
+          var headline = document.createElement("p");
+          headline.className = "nfln-real-headline";
+          headline.textContent = player.real_news_headline;
+          realNews.appendChild(headline);
+
+          if (player.real_news_description) {
+            var desc = document.createElement("p");
+            desc.className = "nfln-real-desc";
+            desc.textContent = player.real_news_description;
+            realNews.appendChild(desc);
+          }
+
+          var source = document.createElement("div");
+          source.className = "nfln-real-source";
+          source.textContent = "Source: ESPN";
+          realNews.appendChild(source);
+
+          card.appendChild(realNews);
+        }
+
+        container.appendChild(card);
+      });
+
+      if (data.updated_at) {
+        var updated = document.createElement("div");
+        updated.className = "nfln-updated";
+        var d = new Date(data.updated_at);
+        updated.textContent = "Last updated: " + d.toLocaleString("en-US");
+        container.appendChild(updated);
+      }
+    })
+    .catch(function (err) {
+      var container = document.getElementById("nfl-fantasy-news");
+      container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;color:#c0392b;">Failed to load news.</p>';
+    });
+})();
+</script>
 
 </body>
 </html>

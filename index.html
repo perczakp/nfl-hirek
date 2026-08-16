@@ -88,6 +88,8 @@
     overflow-wrap: break-word;
     word-break: break-word;
   }
+  .nfln-card-clickable { cursor: pointer; transition: box-shadow 0.15s ease, transform 0.15s ease; }
+  .nfln-card-clickable:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-1px); }
   .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
   .nfln-summary { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 10px 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-real-news {
@@ -674,7 +676,18 @@
 
       data.players.forEach(function (player) {
         var card = document.createElement("div");
-        card.className = "nfln-card";
+        card.className = "nfln-card nfln-card-clickable";
+        card.addEventListener("click", function () {
+          var match = allSearchPlayers.filter(function (sp) {
+            return sp.name.toLowerCase() === player.name.toLowerCase();
+          })[0];
+
+          if (match) {
+            openPlayerModal(match);
+          } else if (player.real_news_link) {
+            window.open(player.real_news_link, "_blank", "noopener,noreferrer");
+          }
+        });
 
         var name = document.createElement("p");
         name.className = "nfln-name";

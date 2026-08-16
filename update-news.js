@@ -8,7 +8,7 @@
 import { writeFile } from "fs/promises";
 
 const GOOGLE_NEWS_BASE = "https://news.google.com/rss/search";
-const GOOGLE_FETCH_CONCURRENCY = 8;
+const GOOGLE_FETCH_CONCURRENCY = 10;
 const GOOGLE_STALE_HOURS = 72;
 const ARTICLES_PER_PLAYER = 6;
 
@@ -514,6 +514,7 @@ async function main() {
       injury_start_date: p.injury_start_date || null,
       practice_participation: p.practice_participation || null,
       espn_id: p.espn_id || null,
+      search_rank: typeof p.search_rank === "number" ? p.search_rank : null,
       adds_48h: trendingMap.get(id) || 0,
       isTrending: trendingMap.has(id),
     });
@@ -541,10 +542,19 @@ async function main() {
     });
   }
 
-  console.log(`Collecting detailed news for ${searchablePlayers.length} searchable players...`);
+  // Keep the workflow runtime bounded: process the trending list plus
+  // well-known players (low Sleeper search_rank). This still covers stars
+  // like Jahmyr Gibbs, while skipping thousands of deep-roster players who
+  // have no realistic news coverage anyway.
+  const NOTABLE_SEARCH_RANK = 600;
+  const detailedTargets = searchablePlayers.filter(
+    (p) => p.isTrending || (typeof p.search_rank === "number" && p.search_rank <= NOTABLE_SEARCH_RANK)
+  );
+
+  console.log(`Collecting detailed news for ${detailedTargets.length} of ${searchablePlayers.length} players (trending + notable, search_rank <= ${NOTABLE_SEARCH_RANK})...`);
 
   const playerNewsResults = await mapWithConcurrency(
-    searchablePlayers,
+    detailedTargets,
     GOOGLE_FETCH_CONCURRENCY,
     async (player, index) => {
       console.log(
@@ -611,7 +621,7 @@ async function main() {
       {
         updated_at: new Date().toISOString(),
         players: searchablePlayers.map(
-          ({ sleeper_id, adds_48h, isTrending, ...player }) => player
+          ({ sleeper_id, adds_48h, isTrending, search_rank, ...player }) => player
         ),
       },
       null,

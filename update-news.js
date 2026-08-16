@@ -8,7 +8,7 @@
 import { writeFile } from "fs/promises";
 
 const GOOGLE_NEWS_BASE = "https://news.google.com/rss/search";
-const GOOGLE_FETCH_CONCURRENCY = 6;
+const GOOGLE_FETCH_CONCURRENCY = 8;
 const GOOGLE_STALE_HOURS = 72;
 const ARTICLES_PER_PLAYER = 6;
 
@@ -385,16 +385,53 @@ function dedupeArticles(groups) {
   return combined.slice(0, ARTICLES_PER_PLAYER);
 }
 
+async function lookupEspnIdByName(name) {
+  try {
+    const res = await fetch(
+      "https://site.web.api.espn.com/apis/search/v2?limit=5&query=" + encodeURIComponent(name),
+      { headers: { "Accept": "application/json" } }
+    );
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    const groups = (data && data.results) || [];
+    for (const group of groups) {
+      const contents = group.contents || [];
+      for (const item of contents) {
+        if (item.uid) {
+          const m = item.uid.match(/a:(\d+)/);
+          if (m) return m[1];
+        }
+        if (item.id) return String(item.id);
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 async function collectPlayerNews(player) {
-  const espnArticles = await fetchEspnAthleteNews(player.espn_id);
+  let espnId = player.espn_id;
+
+  let espnArticles = await fetchEspnAthleteNews(espnId);
+
+  // Fallback: Sleeper didn't have a stored ESPN ID for this player.
+  // Try to resolve one by name before giving up on ESPN sources entirely.
+  if (!espnId && espnArticles.length === 0) {
+    espnId = await lookupEspnIdByName(player.name);
+    if (espnId) {
+      espnArticles = await fetchEspnAthleteNews(espnId);
+    }
+  }
 
   let googleArticles = [];
   if (shouldFetchGoogle(espnArticles)) {
     googleArticles = await fetchGoogleNews(player);
   }
 
-  const fantasyArticles = player.isTrending
-    ? await fetchEspnFantasyNews(player.espn_id)
+  const fantasyArticles = (player.isTrending || espnId)
+    ? await fetchEspnFantasyNews(espnId)
     : [];
 
   const articles = dedupeArticles([
@@ -507,7 +544,7 @@ async function main() {
   console.log(`Collecting detailed news for ${searchablePlayers.length} searchable players...`);
 
   const playerNewsResults = await mapWithConcurrency(
-    searchablePlayers.filter((p) => p.espn_id),
+    searchablePlayers,
     GOOGLE_FETCH_CONCURRENCY,
     async (player, index) => {
       console.log(

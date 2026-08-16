@@ -1,4 +1,15 @@
 {
-  "updated_at": "2026-08-16T10:36:48.751Z",
-  "predictors": []
+  "updated_at": "2026-08-16T11:37:57.228Z",
+  "predictors": [
+    {
+      "name": "Cheeseheads",
+      "picks": [
+        {
+          "team": "Carolina Panthers",
+          "prediction": "7-10",
+          "timestamp": "2026.08.16. 12:40:36"
+        }
+      ]
+    }
+  ]
 }

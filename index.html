@@ -54,6 +54,8 @@
   .nfln-search-row:last-child { border-bottom: none; }
   .nfln-search-row-name { font-weight: bold; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
   .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }
+  .nfln-search-row-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nfln-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
   .nfln-search-status {
     font-size: 12.5px;
     font-weight: bold;
@@ -192,6 +194,18 @@
 (function () {
   var STATUS_LABEL = function (status) { return status || "Healthy"; };
 
+  var ESPN_LOGO_ABBR = {
+    WAS: "wsh", JAX: "jax", LAR: "lar", LAC: "lac", LV: "lv", NO: "no",
+    NE: "ne", GB: "gb", SF: "sf", TB: "tb", KC: "kc"
+  };
+
+  function teamLogoUrl(teamAbbr) {
+    if (!teamAbbr) return "";
+    var upper = teamAbbr.toUpperCase();
+    var abbr = ESPN_LOGO_ABBR[upper] || upper.toLowerCase();
+    return "https://a.espn.com/i/teamlogos/nfl/500/" + abbr + ".png";
+  }
+
   var allSearchPlayers = [];
   var searchInput = document.getElementById("nfln-search");
   var searchResults = document.getElementById("nfln-search-results");
@@ -237,14 +251,27 @@
       row.addEventListener("click", function () { openPlayerModal(p); });
 
       var left = document.createElement("div");
+      left.className = "nfln-search-row-left";
+
+      var logo = document.createElement("img");
+      logo.className = "nfln-team-logo";
+      logo.src = teamLogoUrl(p.team);
+      logo.alt = p.team;
+      logo.loading = "lazy";
+      logo.onerror = function () { this.style.display = "none"; };
+
+      var textWrap = document.createElement("div");
       var nameSpan = document.createElement("span");
       nameSpan.className = "nfln-search-row-name";
       nameSpan.textContent = p.name;
       var metaSpan = document.createElement("span");
       metaSpan.className = "nfln-search-row-meta";
       metaSpan.textContent = p.position + " · " + p.team;
-      left.appendChild(nameSpan);
-      left.appendChild(metaSpan);
+      textWrap.appendChild(nameSpan);
+      textWrap.appendChild(metaSpan);
+
+      left.appendChild(logo);
+      left.appendChild(textWrap);
 
       var statusSpan = document.createElement("span");
       var healthy = !p.injury_status;

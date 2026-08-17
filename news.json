@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-08-17T07:39:08.661Z",
+  "updated_at": "2026-08-17T07:46:08.535Z",
   "players": [
     {
       "name": "Darren Waller",
-      "summary": "Darren Waller (TE, CAR) is healthy and has drawn significant fantasy attention: 107739 adds over the past 48 hours.",
-      "adds_48h": 107739,
+      "summary": "Darren Waller (TE, CAR) is healthy and has drawn significant fantasy attention: 106596 adds over the past 48 hours.",
+      "adds_48h": 106596,
       "injury_status": null,
       "real_news_headline": "Darren Waller Names His NFL Tight End MT Rushmore,talks Music Career & Overcoming Demons @rackkwall Flamingo Land (l2meUIjAEp) - mshale.com",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMiW0FVX3lxTE9sc1FhQURqY29kZW4xTWczMVR3WUZ6aXVweVBaZG5rOXhNU2xEdFg2ZVBPVHJWc0NOREp6UEpmR2QyTnhCVzZPWFVRcy1EaHlLTWNxX3doa2VGWms?oc=5\" target=\"_blank\">Darren Waller Names His NFL Tight End MT Rushmore,talks Music Career & Overcoming Demons @rackkwall Flamingo Land (l2meUIjAEp)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">mshale.com</font>",
@@ -14,8 +14,8 @@
     },
     {
       "name": "Robert Henry",
-      "summary": "Robert Henry (RB, WAS) is healthy and has drawn significant fantasy attention: 70427 adds over the past 48 hours.",
-      "adds_48h": 70427,
+      "summary": "Robert Henry (RB, WAS) is healthy and has drawn significant fantasy attention: 69258 adds over the past 48 hours.",
+      "adds_48h": 69258,
       "injury_status": null,
       "real_news_headline": "Robert Henry Jr. tops the list of 6 winners and 3 losers from the Washington Commanders’ preseason win over the Miami Dolphins - Yardbarker",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMijwJBVV95cUxOR0RNVnhTRGJWZ3JDTW9uX0NpRXdvTW5ONV9qY1JDZlFuTWV0MXdTVlFQNXhyVjBLUzlzdnY1WkVGVm9UZW92MnlPNzNXWV9oS3lpZ1E3Z1pEeXpPdjRlbE5ZMzNvMDUxbEkyZ1JNUWFtYTFRU0NDT2tZcm1EbWMxVkhIc0NYNkozRm1kMXFSLUx1WXpmbGdJSDEzSmNJS21ENnAtOGxKTUp1UDRlLW1wVTg0SEtIRE5HYW02NFNIRmdfZHphdkFHd1BYZlNQbnJ2LVJFbTJIZHZ2QU9hNDNQSVRPZ2QyTnJSUG56T2VQVWRDdWtGaUt4TWJXdmtNclVuY3E4SmYwM0pJZ2pfcnhv?oc=5\" target=\"_blank\">Robert Henry Jr. tops the list of 6 winners and 3 losers from the Washington Commanders’ preseason win over the Miami Dolphins</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yardbarker</font>",
@@ -24,20 +24,9 @@
       "real_news_link": "https://news.google.com/rss/articles/CBMijwJBVV95cUxOR0RNVnhTRGJWZ3JDTW9uX0NpRXdvTW5ONV9qY1JDZlFuTWV0MXdTVlFQNXhyVjBLUzlzdnY1WkVGVm9UZW92MnlPNzNXWV9oS3lpZ1E3Z1pEeXpPdjRlbE5ZMzNvMDUxbEkyZ1JNUWFtYTFRU0NDT2tZcm1EbWMxVkhIc0NYNkozRm1kMXFSLUx1WXpmbGdJSDEzSmNJS21ENnAtOGxKTUp1UDRlLW1wVTg0SEtIRE5HYW02NFNIRmdfZHphdkFHd1BYZlNQbnJ2LVJFbTJIZHZ2QU9hNDNQSVRPZ2QyTnJSUG56T2VQVWRDdWtGaUt4TWJXdmtNclVuY3E4SmYwM0pJZ2pfcnhv?oc=5"
     },
     {
-      "name": "Caleb Douglas",
-      "summary": "Caleb Douglas (WR, MIA) is healthy and has drawn significant fantasy attention: 64656 adds over the past 48 hours.",
-      "adds_48h": 64656,
-      "injury_status": null,
-      "real_news_headline": "Fantasy football buzz: Jaxson Dart's risk and reward both on display Saturday",
-      "real_news_description": "Tristan H. Cockcroft recaps the fantasy football risers and notes from Saturday's preseason NFL action.",
-      "real_news_published": "2026-08-16T15:36:46Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis"
-    },
-    {
       "name": "Camden Brown",
-      "summary": "Camden Brown (WR, DAL) is healthy and has drawn significant fantasy attention: 63435 adds over the past 48 hours.",
-      "adds_48h": 63435,
+      "summary": "Camden Brown (WR, DAL) is healthy and has drawn significant fantasy attention: 63483 adds over the past 48 hours.",
+      "adds_48h": 63483,
       "injury_status": null,
       "real_news_headline": "Brown caught all three of his targets for 62 yards and two touchdowns during Saturday night's preseason game against the Seahawks.",
       "real_news_description": "Brown caught all three of his targets for 62 yards and two touchdowns during Saturday night's preseason game against the Seahawks.",
@@ -46,9 +35,20 @@
       "real_news_link": "function link() { [native code] }"
     },
     {
+      "name": "Caleb Douglas",
+      "summary": "Caleb Douglas (WR, MIA) is healthy and has drawn significant fantasy attention: 63376 adds over the past 48 hours.",
+      "adds_48h": 63376,
+      "injury_status": null,
+      "real_news_headline": "Fantasy football buzz: Jaxson Dart's risk and reward both on display Saturday",
+      "real_news_description": "Tristan H. Cockcroft recaps the fantasy football risers and notes from Saturday's preseason NFL action.",
+      "real_news_published": "2026-08-16T15:36:46Z",
+      "real_news_source": "ESPN Fantasy",
+      "real_news_link": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis"
+    },
+    {
       "name": "Barion Brown",
-      "summary": "Barion Brown (WR, NO) is healthy and has drawn significant fantasy attention: 61011 adds over the past 48 hours.",
-      "adds_48h": 61011,
+      "summary": "Barion Brown (WR, NO) is healthy and has drawn significant fantasy attention: 60174 adds over the past 48 hours.",
+      "adds_48h": 60174,
       "injury_status": null,
       "real_news_headline": "Brown tallied four catches (on four targets) for 53 yards in a preseason loss to Jacksonville on Saturday.",
       "real_news_description": "Brown tallied four catches (on four targets) for 53 yards in a preseason loss to Jacksonville on Saturday.",
@@ -58,8 +58,8 @@
     },
     {
       "name": "Matt Hibner",
-      "summary": "Matt Hibner (TE, BAL) is healthy and has drawn significant fantasy attention: 39634 adds over the past 48 hours.",
-      "adds_48h": 39634,
+      "summary": "Matt Hibner (TE, BAL) is healthy and has drawn significant fantasy attention: 39620 adds over the past 48 hours.",
+      "adds_48h": 39620,
       "injury_status": null,
       "real_news_headline": "Matt Hibner Stats, News, Video, Bio, Highlights on TSN - TSN",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMiaEFVX3lxTE4xX1ZaUUJYLS1jQXhJT0ZfTC1sUEVzTTNJUkZpcEhhenF2bTJLeFlBNnVWWkp0eDNhZVQwSng5VG41REdEc01oVDFWaVEwMlpTZ1E5Tl80cHF0azNrSTNqOTd4ZHJsXzBp?oc=5\" target=\"_blank\">Matt Hibner Stats, News, Video, Bio, Highlights on TSN</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TSN</font>",
@@ -69,8 +69,8 @@
     },
     {
       "name": "Cyrus Allen",
-      "summary": "Cyrus Allen (WR, KC) is healthy and has drawn significant fantasy attention: 29466 adds over the past 48 hours.",
-      "adds_48h": 29466,
+      "summary": "Cyrus Allen (WR, KC) is healthy and has drawn significant fantasy attention: 29346 adds over the past 48 hours.",
+      "adds_48h": 29346,
       "injury_status": null,
       "real_news_headline": "Kansas City Chiefs' Cyrus Allen and Emmett Johnson are already saying the right things after facing first NFL adversity - A to Z Sports",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi5AFBVV95cUxQcFNyYi11dmVlQ2lxN3hCTXgyMTFmZGNvSklsek1sMDA1WHBfd2tsZXZrSE1fZW5RTDRNMFhFZFRDQkFxTUFWMnowNXBRNUNwRzNFSkpMVWFva3FuODg5N1E4U0dPN2RkdU1kUENCdEx2X0Z2Yjh3ZWlWTHpkelY4bnlSVHR6aDN0dmJQQWNaSWxVQXBuTUY4XzNscUx3SlltOHk4MF90LVdkRVFpQTZCdXRhT2k2UVpkZVYzTVMzNjYwMW9XVUVlVm1NeEVBUUs5MHpfVVVaX2pnTVQyQ2J5bGUyTDY?oc=5\" target=\"_blank\">Kansas City Chiefs' Cyrus Allen and Emmett Johnson are already saying the right things after facing first NFL adversity</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">A to Z Sports</font>",
@@ -80,8 +80,8 @@
     },
     {
       "name": "MarShawn Lloyd",
-      "summary": "MarShawn Lloyd (RB, GB) is healthy and has drawn significant fantasy attention: 27864 adds over the past 48 hours.",
-      "adds_48h": 27864,
+      "summary": "MarShawn Lloyd (RB, GB) is healthy and has drawn significant fantasy attention: 27702 adds over the past 48 hours.",
+      "adds_48h": 27702,
       "injury_status": null,
       "real_news_headline": "MarShawn Lloyd Fantasy Football Outlook (2026) - FantasyPros",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMiggFBVV95cUxNZi1RMFpKdExWOG40N3NZSE5XeWc3REVPV0RkMDBTSUFRYXA0ZmtpcjUwWTRKUkNNMnRlSXZnSGRQRTYwNVZfT2VvYmtWVnd5NjZiWGxWNUUta1ZsUE1sQ1A0eXB5ZGlVUkVaNWZJcjlwd0t4MVI1SjU1cEFjTm92QndB0gGHAUFVX3lxTE9XU3ItUk9oMnVyX01UUHl2X3ItNEROSDQzYjFnMDMzajNRNHF4ck95WkRjc09qVEdkTDNFU0JqYlkxMG5sRmJGYi04TTc3a3FLM09qYUVONHhCZDJSUGhhTlVtbVoza0RvRjcwNEI1dEVBUG12QnVybWZXdnk4STBvanBVWXdmcw?oc=5\" target=\"_blank\">MarShawn Lloyd Fantasy Football Outlook (2026)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FantasyPros</font>",
@@ -91,8 +91,8 @@
     },
     {
       "name": "Jalen Nailor",
-      "summary": "Jalen Nailor (WR, LV) is healthy and has drawn significant fantasy attention: 23625 adds over the past 48 hours.",
-      "adds_48h": 23625,
+      "summary": "Jalen Nailor (WR, LV) is healthy and has drawn significant fantasy attention: 23553 adds over the past 48 hours.",
+      "adds_48h": 23553,
       "injury_status": null,
       "real_news_headline": "Nailor played eight snaps on offense during Thursday's 27-14 preseason loss to the Cardinals. He did not show up in the box score otherwise.",
       "real_news_description": "Nailor played eight snaps on offense during Thursday's 27-14 preseason loss to the Cardinals. He did not show up in the box score otherwise.",
@@ -102,8 +102,8 @@
     },
     {
       "name": "Drew Allar",
-      "summary": "Drew Allar (QB, PIT) is healthy and has drawn significant fantasy attention: 22194 adds over the past 48 hours.",
-      "adds_48h": 22194,
+      "summary": "Drew Allar (QB, PIT) is healthy and has drawn significant fantasy attention: 21906 adds over the past 48 hours.",
+      "adds_48h": 21906,
       "injury_status": null,
       "real_news_headline": "2026 NFL preseason Week 1: Game takeaways, analysis",
       "real_news_description": "The NFL preseason is underway! How did rookies and players in new places perform in their debuts?",
@@ -113,8 +113,8 @@
     },
     {
       "name": "Dean Connors",
-      "summary": "Dean Connors (RB, LAR) is healthy and has drawn significant fantasy attention: 20272 adds over the past 48 hours.",
-      "adds_48h": 20272,
+      "summary": "Dean Connors (RB, LAR) is healthy and has drawn significant fantasy attention: 20300 adds over the past 48 hours.",
+      "adds_48h": 20300,
       "injury_status": null,
       "real_news_headline": "From the Podium: Sean McVay, Ty Simpson and Dean Connors detail Rams' win over Chiefs in first preseason game - Rams",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi8wFBVV95cUxNLVNhSWRhYm9ySFJtV21GNktXRGdseU9wTFNjQTF3RjBOcWFFVmpKNER3QmpHS2ZHWXZfUnJCYWpIU2dJZV9oT25Mdng0SUlXWFh0UjduVzllZTh2aWdDbjNkbkhEclU5Vk0tRTliN1dVcXhkb09FZXRLd1gycnZpSGxiY0wwUDg5d1hINzJhcVc0ZmEzSmEtSHNCM0UtUVV2dS1ZdnctOWowVzNITTVGLVNudW96MmtMSmlUd1dqQVdWVTZpSS1CMzJDYTNiWnZBTF9KQ01abW55NnB1WVUwUXRjclVkX2laOG5QNzJMOWJXQjg?oc=5\" target=\"_blank\">From the Podium: Sean McVay, Ty Simpson and Dean Connors detail Rams' win over Chiefs in first preseason game</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Rams</font>",
@@ -124,8 +124,8 @@
     },
     {
       "name": "Devaughn Vele",
-      "summary": "Devaughn Vele (WR, NO) is healthy and has drawn significant fantasy attention: 17878 adds over the past 48 hours.",
-      "adds_48h": 17878,
+      "summary": "Devaughn Vele (WR, NO) is healthy and has drawn significant fantasy attention: 17661 adds over the past 48 hours.",
+      "adds_48h": 17661,
       "injury_status": null,
       "real_news_headline": "Vele (shoulder) faces increased competition for playing time and targets after the Saints used three picks on wide receivers in the 2026 NFL Draft, Katherine Terrell of ESPN.com reports.",
       "real_news_description": "Vele (shoulder) faces increased competition for playing time and targets after the Saints used three picks on wide receivers in the 2026 NFL Draft, Katherine Terrell of ESPN.com reports.",
@@ -135,8 +135,8 @@
     },
     {
       "name": "Malik Willis",
-      "summary": "Malik Willis (QB, MIA) is healthy and has drawn significant fantasy attention: 17556 adds over the past 48 hours.",
-      "adds_48h": 17556,
+      "summary": "Malik Willis (QB, MIA) is healthy and has drawn significant fantasy attention: 17493 adds over the past 48 hours.",
+      "adds_48h": 17493,
       "injury_status": null,
       "real_news_headline": "Miami Dolphins overreaction Saturday: Malik Willis is QB of future? - The Palm Beach Post",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi2AFBVV95cUxPT2JJZmRrdmdjWUFoaHdMSUZ5Tm5DZnFUUmpVT0VFT0xnX0lLVUpFSUdCRUhKUEROcktYSmxsWlBYZFQ2Rkk3YTIzWXAta2FYOEV4bHRpUUw2Q0NUT09pbTFlTGQ3S1gyY0pZMEtxTVEzQkxweGwtMHRxVWlVaDN5N0hnRGZNSno5ZUVUbnZPVWJEdUJwRWRhUkd6bU5rMWZWcXpMdWJaMDlDRXdORkhTVHBGTFk2bGNLNlI0aTh4Y0JQYU5YRkQ1RDByX0tHR09HM3c3U3d1cnM?oc=5\" target=\"_blank\">Miami Dolphins overreaction Saturday: Malik Willis is QB of future?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Palm Beach Post</font>",
@@ -146,8 +146,8 @@
     },
     {
       "name": "Justice Hill",
-      "summary": "Justice Hill (RB, BAL) is healthy and has drawn significant fantasy attention: 17100 adds over the past 48 hours.",
-      "adds_48h": 17100,
+      "summary": "Justice Hill (RB, BAL) is healthy and has drawn significant fantasy attention: 17019 adds over the past 48 hours.",
+      "adds_48h": 17019,
       "injury_status": null,
       "real_news_headline": "Justice Hill Career Stats | NFL - theScore",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE41ckhDRzJDV1c0emhFZTdwNEdvSXB5a2pLbXhwbWJ5S0tPWExXeHdjcHBlQXRnbmFiT1JZX1BuX1VYYVlRNUhkNFN1SG83bVhSc01nYTVuRktiaTY1bXNHZVRtRWd4U0VXbW5kcjAydHc?oc=5\" target=\"_blank\">Justice Hill Career Stats | NFL</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">theScore</font>",
@@ -156,20 +156,9 @@
       "real_news_link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE41ckhDRzJDV1c0emhFZTdwNEdvSXB5a2pLbXhwbWJ5S0tPWExXeHdjcHBlQXRnbmFiT1JZX1BuX1VYYVlRNUhkNFN1SG83bVhSc01nYTVuRktiaTY1bXNHZVRtRWd4U0VXbW5kcjAydHc?oc=5"
     },
     {
-      "name": "Malik Benson",
-      "summary": "Malik Benson (WR, LV) is healthy and has drawn significant fantasy attention: 15684 adds over the past 48 hours.",
-      "adds_48h": 15684,
-      "injury_status": null,
-      "real_news_headline": "Malik Benson Earning Reps With First-Team Offense - NFL News | Fantasy Football - RotoBaller",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxNVTZTelBld05GZ2FwOXlKWExETW5fLXB2TzA4QVd5Tk1acWNwb2hmbjNjTTVmQlFhY3B1UVpYN3dYMUt6X1ZSdUFHdXJHN0FCY3Ayd0dlSHhzaVoxNWF0dXViME5fYlhFcndHVkswdFdYSUxWZmxQRzd1a2tLaWtneGxMSW5kXy00SlprUTIyU3lsQzUtNENSZWY0Nm8?oc=5\" target=\"_blank\">Malik Benson Earning Reps With First-Team Offense - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
-      "real_news_published": "Sun, 16 Aug 2026 18:11:09 GMT",
-      "real_news_source": "RotoBaller",
-      "real_news_link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNVTZTelBld05GZ2FwOXlKWExETW5fLXB2TzA4QVd5Tk1acWNwb2hmbjNjTTVmQlFhY3B1UVpYN3dYMUt6X1ZSdUFHdXJHN0FCY3Ayd0dlSHhzaVoxNWF0dXViME5fYlhFcndHVkswdFdYSUxWZmxQRzd1a2tLaWtneGxMSW5kXy00SlprUTIyU3lsQzUtNENSZWY0Nm8?oc=5"
-    },
-    {
       "name": "Deshaun Watson",
-      "summary": "Deshaun Watson (QB, CLE) is healthy and has drawn significant fantasy attention: 15504 adds over the past 48 hours.",
-      "adds_48h": 15504,
+      "summary": "Deshaun Watson (QB, CLE) is healthy and has drawn significant fantasy attention: 15488 adds over the past 48 hours.",
+      "adds_48h": 15488,
       "injury_status": null,
       "real_news_headline": "Deshaun Watson to Start Preseason Game vs. Bears Stream of National Football League - CBS Sports",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxPdXZpVnlxZXQ3dFNlckJhQlU5Nzc2aXRvY0JKU0hZUlBNR2EyeFZ6NG1WUlRNdDE2UnNTb1lGbVVqLXJEZ09lM1laSU9yRVdaaTRDZkJJTE4wcnZJUWNuYXozNlpXZE9aN29acUh5OGVuVFBqTW5LYk1LcXpqckpEWlZLOHVsT2huSFZVU3lRUHhQdGc?oc=5\" target=\"_blank\">Deshaun Watson to Start Preseason Game vs. Bears Stream of National Football League</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CBS Sports</font>",
@@ -178,9 +167,20 @@
       "real_news_link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPdXZpVnlxZXQ3dFNlckJhQlU5Nzc2aXRvY0JKU0hZUlBNR2EyeFZ6NG1WUlRNdDE2UnNTb1lGbVVqLXJEZ09lM1laSU9yRVdaaTRDZkJJTE4wcnZJUWNuYXozNlpXZE9aN29acUh5OGVuVFBqTW5LYk1LcXpqckpEWlZLOHVsT2huSFZVU3lRUHhQdGc?oc=5"
     },
     {
+      "name": "Malik Benson",
+      "summary": "Malik Benson (WR, LV) is healthy and has drawn significant fantasy attention: 15468 adds over the past 48 hours.",
+      "adds_48h": 15468,
+      "injury_status": null,
+      "real_news_headline": "Malik Benson Earning Reps With First-Team Offense - NFL News | Fantasy Football - RotoBaller",
+      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxNVTZTelBld05GZ2FwOXlKWExETW5fLXB2TzA4QVd5Tk1acWNwb2hmbjNjTTVmQlFhY3B1UVpYN3dYMUt6X1ZSdUFHdXJHN0FCY3Ayd0dlSHhzaVoxNWF0dXViME5fYlhFcndHVkswdFdYSUxWZmxQRzd1a2tLaWtneGxMSW5kXy00SlprUTIyU3lsQzUtNENSZWY0Nm8?oc=5\" target=\"_blank\">Malik Benson Earning Reps With First-Team Offense - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
+      "real_news_published": "Sun, 16 Aug 2026 18:11:09 GMT",
+      "real_news_source": "RotoBaller",
+      "real_news_link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNVTZTelBld05GZ2FwOXlKWExETW5fLXB2TzA4QVd5Tk1acWNwb2hmbjNjTTVmQlFhY3B1UVpYN3dYMUt6X1ZSdUFHdXJHN0FCY3Ayd0dlSHhzaVoxNWF0dXViME5fYlhFcndHVkswdFdYSUxWZmxQRzd1a2tLaWtneGxMSW5kXy00SlprUTIyU3lsQzUtNENSZWY0Nm8?oc=5"
+    },
+    {
       "name": "Ryan Flournoy",
-      "summary": "Ryan Flournoy (WR, DAL) is healthy and has drawn significant fantasy attention: 15128 adds over the past 48 hours.",
-      "adds_48h": 15128,
+      "summary": "Ryan Flournoy (WR, DAL) is healthy and has drawn significant fantasy attention: 15024 adds over the past 48 hours.",
+      "adds_48h": 15024,
       "injury_status": null,
       "real_news_headline": "Flournoy isn't suited up ahead of Saturday's preseason opener versus Seattle, Nick Harris of the Fort Worth Star-Telegram reports.",
       "real_news_description": "Flournoy isn't suited up ahead of Saturday's preseason opener versus Seattle, Nick Harris of the Fort Worth Star-Telegram reports.",
@@ -190,8 +190,8 @@
     },
     {
       "name": "Keaton Mitchell",
-      "summary": "Keaton Mitchell (RB, LAC) is healthy and has drawn significant fantasy attention: 14967 adds over the past 48 hours.",
-      "adds_48h": 14967,
+      "summary": "Keaton Mitchell (RB, LAC) is healthy and has drawn significant fantasy attention: 14922 adds over the past 48 hours.",
+      "adds_48h": 14922,
       "injury_status": null,
       "real_news_headline": "Keaton Mitchell Fantasy Outlook 2026: Chargers RB is Explosive, But Will Likely Never Be A Heavy Volume RB - Yahoo Sports",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMijgFBVV95cUxNWkpia1EwOXBOdTV4Mmh4WGU2dmVfOUlwRnZtWGhnN0dkWWZIUk1zcjQyQnZqdnpiRktjRzNKeXpiTFFfRC1faVY4eVVhM3N3MW1hWWlGTXZDSWFJalpRRFFlblZxbUZKYXg3ZndIT1JBX1dma1J6VDBaTTdyaTZlc1BFYmJFS29YQ3dTeGlR?oc=5\" target=\"_blank\">Keaton Mitchell Fantasy Outlook 2026: Chargers RB is Explosive, But Will Likely Never Be A Heavy Volume RB</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Sports</font>",
@@ -201,8 +201,8 @@
     },
     {
       "name": "Malik Washington",
-      "summary": "Malik Washington (WR, MIA) is healthy and has drawn significant fantasy attention: 14232 adds over the past 48 hours.",
-      "adds_48h": 14232,
+      "summary": "Malik Washington (WR, MIA) is healthy and has drawn significant fantasy attention: 14072 adds over the past 48 hours.",
+      "adds_48h": 14072,
       "injury_status": null,
       "real_news_headline": "Malik Washington is Maryland football’s No. 1. Who’s the Terps’ No. 2? - Yahoo Sports",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxQNUJ2akFWTWlsLTNuTG1tNVJvQjNOSXdTVlRnb3BYRHFHbmphREtQa3R1RXJITEVFV2dVa2c1MDU4bGZyRTE0Y19SYXR0OFdZVUF6bXd0c2FMWjItR2MwYUo5UDdFLURET1VTNTExZ2FZQ0w2eWtMUDJCMnVRSnU1bXpITHVjbmpnckhyX1NnOA?oc=5\" target=\"_blank\">Malik Washington is Maryland football’s No. 1. Who’s the Terps’ No. 2?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Sports</font>",
@@ -212,8 +212,8 @@
     },
     {
       "name": "Cade Klubnik",
-      "summary": "Cade Klubnik (QB, NYJ) is healthy and has drawn significant fantasy attention: 11979 adds over the past 48 hours.",
-      "adds_48h": 11979,
+      "summary": "Cade Klubnik (QB, NYJ) is healthy and has drawn significant fantasy attention: 11817 adds over the past 48 hours.",
+      "adds_48h": 11817,
       "injury_status": null,
       "real_news_headline": "Clemson's Cade Klubnik among NFL preseason Week 1 winners and losers - Clemson Wire",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi5gFBVV95cUxNODFteV9UeUEzN1h2a21YQWsyNEZFMG5naGM4ckoxUWx5YjFmRjh6SkhvX3poT1VIY0xCY0VkWHo4Y2tmX2F3TGFQUm5pXy1RYVYycnpqUlllTTdid2pUT0VMWXl6OVNNMi1kdVFXSl9Gdmtxd1c3MUcybEJveUYwbElBQjVIZHVqeDV0SW1QMzcxa3Q2bW12VWhXcHhyTV96cXZLVXlHRDRnb1RBVGc1dmo1WkN3VERuTlZTNVo2N3kwdnNEbUNrN01BaVpuQU53YWY1OFlnTDFJTjJ4NkxEN3BKN04wdw?oc=5\" target=\"_blank\">Clemson's Cade Klubnik among NFL preseason Week 1 winners and losers</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Clemson Wire</font>",
@@ -223,8 +223,8 @@
     },
     {
       "name": "Zavion Thomas",
-      "summary": "Zavion Thomas (WR, CHI) injury status: Questionable. Added by 11403 fantasy teams over the past 48 hours.",
-      "adds_48h": 11403,
+      "summary": "Zavion Thomas (WR, CHI) injury status: Questionable. Added by 11340 fantasy teams over the past 48 hours.",
+      "adds_48h": 11340,
       "injury_status": "Questionable",
       "real_news_headline": "Thomas is dealing with knee soreness but isn't expected to miss much time, Courtney Cronin of ESPN.com reports.",
       "real_news_description": "Thomas is dealing with knee soreness but isn't expected to miss much time, Courtney Cronin of ESPN.com reports.",
@@ -233,20 +233,9 @@
       "real_news_link": "function link() { [native code] }"
     },
     {
-      "name": "Marlin Klein",
-      "summary": "Marlin Klein (TE, HOU) is healthy and has drawn significant fantasy attention: 11060 adds over the past 48 hours.",
-      "adds_48h": 11060,
-      "injury_status": null,
-      "real_news_headline": "Klein caught his only target for 31 yards in Thursday's 27-7 preseason loss to the Chargers.",
-      "real_news_description": "Klein caught his only target for 31 yards in Thursday's 27-7 preseason loss to the Chargers.",
-      "real_news_published": "2026-08-14T04:04:21Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
-    },
-    {
       "name": "Chris Rodriguez",
-      "summary": "Chris Rodriguez (RB, JAX) is healthy and has drawn significant fantasy attention: 10998 adds over the past 48 hours.",
-      "adds_48h": 10998,
+      "summary": "Chris Rodriguez (RB, JAX) is healthy and has drawn significant fantasy attention: 10980 adds over the past 48 hours.",
+      "adds_48h": 10980,
       "injury_status": null,
       "real_news_headline": "Fantasy Football 'Do Draft' list: Derrick Henry, Patrick Mahomes among undervalued players to pick",
       "real_news_description": "You've read the \"Do Not Draft\" list. Now, Eric Karabell lists players being drafted later than they should be.",
@@ -255,9 +244,20 @@
       "real_news_link": "https://www.espn.com/fantasy/football/story/_/id/49556816/2026-fantasy-football-sleepers-value-picks-undervalued-karabell"
     },
     {
+      "name": "Marlin Klein",
+      "summary": "Marlin Klein (TE, HOU) is healthy and has drawn significant fantasy attention: 10835 adds over the past 48 hours.",
+      "adds_48h": 10835,
+      "injury_status": null,
+      "real_news_headline": "Klein caught his only target for 31 yards in Thursday's 27-7 preseason loss to the Chargers.",
+      "real_news_description": "Klein caught his only target for 31 yards in Thursday's 27-7 preseason loss to the Chargers.",
+      "real_news_published": "2026-08-14T04:04:21Z",
+      "real_news_source": "ESPN Fantasy",
+      "real_news_link": "function link() { [native code] }"
+    },
+    {
       "name": "Jake Bates",
-      "summary": "Jake Bates (K, DET) is healthy and has drawn significant fantasy attention: 10656 adds over the past 48 hours.",
-      "adds_48h": 10656,
+      "summary": "Jake Bates (K, DET) is healthy and has drawn significant fantasy attention: 10592 adds over the past 48 hours.",
+      "adds_48h": 10592,
       "injury_status": null,
       "real_news_headline": "Detroit Lions kicker Jake Bates drills football for 52-yard FG to end half - NFL.com",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxQdTNwZUFxUnl1SjdkVnNXWEoxQXpkNWJ0OHhTdmppVDlSemlMWmtabjJiVEYyNW9oM1RHaDlrLTJWLXNkZXRzbVQ4dERDa0NOUXNkelBadjF1b2U4Qm1hd0VjZl8zMXpRTW5SVkVYLVg1bnJQNlRva2IzY0RqbWhNTUUzZ2RmMHM?oc=5\" target=\"_blank\">Detroit Lions kicker Jake Bates drills football for 52-yard FG to end half</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NFL.com</font>",
@@ -278,8 +278,8 @@
     },
     {
       "name": "Michael Trigg",
-      "summary": "Michael Trigg (TE, DAL) is healthy and has drawn significant fantasy attention: 10143 adds over the past 48 hours.",
-      "adds_48h": 10143,
+      "summary": "Michael Trigg (TE, DAL) is healthy and has drawn significant fantasy attention: 10134 adds over the past 48 hours.",
+      "adds_48h": 10134,
       "injury_status": null,
       "real_news_headline": "Michael Trigg Peppered with Five Targets in NFL Preseason Debut - NFL News | Fantasy Football - RotoBaller",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxQS1JIRDZPU0xQUVRBdlRmODExR3Bzb3RJTDdIWE5qNmhPSGFST1BhLWVNemVybVdIYnNxUmFhb0c1LXVkVEN0eTAyVlRwcXRuNHNxaTVvd2x6M2lnRk9kdDdoSzlFZm02clktWEtkUWdja0pfMjhEd2gxa0c3ZmliTWlyVWNoa29PVHB0cnk0YnA5VDBOY2UxakxaWmJwUGdwZFliOWlJYlp6b2Fyd25R?oc=5\" target=\"_blank\">Michael Trigg Peppered with Five Targets in NFL Preseason Debut - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
@@ -289,8 +289,8 @@
     },
     {
       "name": "J'Mari Taylor",
-      "summary": "J'Mari Taylor (RB, JAX) is healthy and has drawn significant fantasy attention: 9558 adds over the past 48 hours.",
-      "adds_48h": 9558,
+      "summary": "J'Mari Taylor (RB, JAX) is healthy and has drawn significant fantasy attention: 9495 adds over the past 48 hours.",
+      "adds_48h": 9495,
       "injury_status": null,
       "real_news_headline": "Jaguars rookie RB J'Mari Taylor leads second-half comeback vs. Saints - The Florida Times-Union",
       "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi8AFBVV95cUxQVkxEdG9wcV9HVHdVaVZyZkY2bnBKdm5Ydk5tUFl5bUdzR2Y0VDdKRktGLWVaaW9zSEVocUgtNHFsR21BdktrZmNSZWE2bTFOLVJFU2xCeHpkc2YyNy0tUG9ZUjB6aDlrZk9NXzhJUDdQWFV5NFU3UGxjWGQ4WXFXQ1N6dmQ0cWVpbkZYQUFCaENjc2tvSGc3YUZOZ1JIM0RDUEZOYkdKOGFKT1BMeTNKYVA5NTlSWTEwOUJaaW91ZHlySVc5VTZiNTQ4S2d4dHhQXzRwWWFtX21tV29vLWxNS2FSbTJOZjN5NUJUZUpval8?oc=5\" target=\"_blank\">Jaguars rookie RB J'Mari Taylor leads second-half comeback vs. Saints</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Florida Times-Union</font>",
@@ -300,8 +300,8 @@
     },
     {
       "name": "Isaiah Williams",
-      "summary": "Isaiah Williams (WR, NYJ) is healthy and has drawn significant fantasy attention: 9486 adds over the past 48 hours.",
-      "adds_48h": 9486,
+      "summary": "Isaiah Williams (WR, NYJ) is healthy and has drawn significant fantasy attention: 9444 adds over the past 48 hours.",
+      "adds_48h": 9444,
       "injury_status": null,
       "real_news_headline": "Williams is making a case for a bigger role in the Jets offense with his performance in training camp, Rich Cimini of ESPN.com reports.",
       "real_news_description": "Williams is making a case for a bigger role in the Jets offense with his performance in training camp, Rich Cimini of ESPN.com reports.",

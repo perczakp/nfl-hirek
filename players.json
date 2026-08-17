@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-17T08:16:27.848Z",
+  "updated_at": "2026-08-17T14:11:26.790Z",
   "players": [
     {
       "name": "A.J. Bouye",
@@ -1602,6 +1602,16 @@
       "espn_id": null
     },
     {
+      "name": "Barika Kpeenu",
+      "team": "TB",
+      "position": "RB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Barion Brown",
       "team": "NO",
       "position": "WR",
@@ -1665,6 +1675,16 @@
       "name": "Bauer Sharp",
       "team": "TB",
       "position": "TE",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
+      "name": "Baylon Spector",
+      "team": "JAX",
+      "position": "LB",
       "injury_status": null,
       "injury_body_part": null,
       "injury_start_date": null,
@@ -2375,8 +2395,8 @@
       "name": "Breece Hall",
       "team": "NYJ",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Thigh",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -2385,8 +2405,8 @@
       "name": "Brenden Bates",
       "team": "CLE",
       "position": "TE",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -4145,8 +4165,8 @@
       "name": "Chris Bell",
       "team": "MIA",
       "position": "WR",
-      "injury_status": "PUP",
-      "injury_body_part": "Knee - ACL",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -10945,8 +10965,8 @@
       "name": "Jake Browning",
       "team": "TB",
       "position": "QB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3886812
@@ -12265,8 +12285,8 @@
       "name": "Jaylin Noel",
       "team": "HOU",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Hamstring",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -12675,8 +12695,8 @@
       "name": "Jessie Bates",
       "team": "ATL",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Back",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3919512
@@ -12785,8 +12805,8 @@
       "name": "JJ Roberts",
       "team": "TB",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Knee",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -14415,8 +14435,8 @@
       "name": "Kadarius Calloway",
       "team": "TB",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -17035,8 +17055,8 @@
       "name": "Mansoor Delane",
       "team": "KC",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Shoulder",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -17095,8 +17115,8 @@
       "name": "Marcus Banks",
       "team": "TB",
       "position": "DB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -19495,8 +19515,8 @@
       "name": "Parker Hughes",
       "team": "JAX",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "IR",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -20675,6 +20695,16 @@
       "name": "Robert Longerbeam",
       "team": "BAL",
       "position": "DB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
+      "name": "Robert McDaniel",
+      "team": "TB",
+      "position": "CB",
       "injury_status": null,
       "injury_body_part": null,
       "injury_start_date": null,
@@ -22085,8 +22115,8 @@
       "name": "T'Vondre Sweat",
       "team": "NYJ",
       "position": "DL",
-      "injury_status": "Questionable",
-      "injury_body_part": "Hamstring",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -24865,8 +24895,8 @@
       "name": "Xavier Watts",
       "team": "ATL",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null

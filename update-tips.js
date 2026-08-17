@@ -117,12 +117,16 @@ async function main() {
   const dataRows = rows.slice(1);
 
   // Keep only the latest submission per name (later rows overwrite earlier
-  // ones for the same person, since Sheet rows are chronological).
+  // ones for the same person, since Sheet rows are chronological). Name
+  // matching is normalized (trimmed, case-insensitive) so re-submissions
+  // with slightly different capitalization still overwrite correctly.
   const byName = {};
+  const displayNames = {};
 
   dataRows.forEach(function (r) {
-    const name = (r[nameIdx] || "").trim();
-    if (!name) return;
+    const rawName = (r[nameIdx] || "").trim();
+    if (!rawName) return;
+    const key = rawName.toLowerCase();
 
     const picks = [];
 
@@ -138,14 +142,15 @@ async function main() {
     });
 
     if (picks.length > 0) {
-      byName[name] = picks;
+      byName[key] = picks;
+      displayNames[key] = rawName;
     }
   });
 
   const predictors = Object.keys(byName)
-    .sort(function (a, b) { return a.localeCompare(b); })
-    .map(function (name) {
-      return { name: name, picks: byName[name] };
+    .sort(function (a, b) { return displayNames[a].localeCompare(displayNames[b]); })
+    .map(function (key) {
+      return { name: displayNames[key], picks: byName[key] };
     });
 
   const output = {

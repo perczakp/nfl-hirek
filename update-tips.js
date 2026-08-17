@@ -1,5 +1,12 @@
 // GitHub Actions script: NFL season predictions ("Tips") fetched from a
-// published Google Sheet (CSV export). No API key needed.
+// published Google Sheet (CSV export).
+//
+// Új Form-struktúra:
+//   A oszlop: Időbélyeg
+//   B oszlop: Neved
+//   C-tól kezdve: 32 oszlop, egy-egy csapat neve, értéke a tippelt
+//                 győzelmek száma (0-17). A vereséget a szkript számolja:
+//                 vereség = 17 - győzelem
 
 import { writeFile } from "fs/promises";
 
@@ -51,7 +58,19 @@ function parseCsv(text) {
     rows.push(row);
   }
 
-  return rows.filter(function (r) { return r.some(function (c) { return c.trim() !== ""; }); });
+  return rows.filter(function (r) {
+    return r.some(function (c) { return c.trim() !== ""; });
+  });
+}
+
+function isTimestampOrNameHeader(h) {
+  var lower = h.trim().toLowerCase();
+  return (
+    lower.indexOf("időbélyeg") !== -1 ||
+    lower.indexOf("timestamp") !== -1 ||
+    lower.indexOf("neved") !== -1 ||
+    lower.indexOf("name") !== -1
+  );
 }
 
 async function main() {
@@ -65,36 +84,68 @@ async function main() {
 
   if (rows.length === 0) {
     console.log("No rows found.");
-    await writeFile("tips.json", JSON.stringify({ updated_at: new Date().toISOString(), predictors: [] }, null, 2));
+    await writeFile(
+      "tips.json",
+      JSON.stringify({ updated_at: new Date().toISOString(), predictors: [] }, null, 2)
+    );
     return;
   }
 
-  const header = rows[0].map(function (h) { return h.trim().toLowerCase(); });
-  const nameIdx = header.findIndex(function (h) { return h.indexOf("neved") !== -1 || h.indexOf("name") !== -1; });
-  const teamIdx = header.findIndex(function (h) { return h.indexOf("csapat") !== -1 || h.indexOf("team") !== -1; });
-  const predictionIdx = header.findIndex(function (h) { return h.indexOf("eredm") !== -1 || h.indexOf("predict") !== -1; });
-  const timestampIdx = header.findIndex(function (h) { return h.indexOf("id\u0151b") !== -1 || h.indexOf("timestamp") !== -1; });
+  const header = rows[0];
+  const nameIdx = header.findIndex(function (h) {
+    var lower = h.trim().toLowerCase();
+    return lower.indexOf("neved") !== -1 || lower.indexOf("name") !== -1;
+  });
+
+  if (nameIdx === -1) {
+    throw new Error("Could not find the 'Neved' column in the header row.");
+  }
+
+  // Every column that isn't the timestamp or the name column is treated as
+  // a team column: header text = team name, cell value = predicted wins.
+  const teamColumns = [];
+  header.forEach(function (h, idx) {
+    if (idx === nameIdx) return;
+    if (isTimestampOrNameHeader(h)) return;
+    var teamName = h.trim();
+    if (!teamName) return;
+    teamColumns.push({ index: idx, team: teamName });
+  });
+
+  console.log("Detected " + teamColumns.length + " team columns.");
 
   const dataRows = rows.slice(1);
 
-  const grouped = {};
+  // Keep only the latest submission per name (later rows overwrite earlier
+  // ones for the same person, since Sheet rows are chronological).
+  const byName = {};
 
   dataRows.forEach(function (r) {
-    const name = (nameIdx !== -1 ? r[nameIdx] : "").trim();
-    const team = (teamIdx !== -1 ? r[teamIdx] : "").trim();
-    const prediction = (predictionIdx !== -1 ? r[predictionIdx] : "").trim();
-    const timestamp = (timestampIdx !== -1 ? r[timestampIdx] : "").trim();
+    const name = (r[nameIdx] || "").trim();
+    if (!name) return;
 
-    if (!name || !team || !prediction) return;
+    const picks = [];
 
-    if (!grouped[name]) grouped[name] = [];
-    grouped[name].push({ team: team, prediction: prediction, timestamp: timestamp || null });
+    teamColumns.forEach(function (col) {
+      const raw = (r[col.index] || "").trim();
+      if (raw === "") return;
+
+      const wins = parseInt(raw, 10);
+      if (isNaN(wins) || wins < 0 || wins > 17) return;
+
+      const losses = 17 - wins;
+      picks.push({ team: col.team, prediction: wins + "-" + losses });
+    });
+
+    if (picks.length > 0) {
+      byName[name] = picks;
+    }
   });
 
-  const predictors = Object.keys(grouped)
+  const predictors = Object.keys(byName)
     .sort(function (a, b) { return a.localeCompare(b); })
     .map(function (name) {
-      return { name: name, picks: grouped[name] };
+      return { name: name, picks: byName[name] };
     });
 
   const output = {

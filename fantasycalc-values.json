@@ -1,0 +1,12 @@
+{
+  "fetchedAt": null,
+  "source": "https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=2&numTeams=12&ppr=1",
+  "settings": {
+    "dynasty": true,
+    "teams": 12,
+    "ppr": 1,
+    "qbs": 2,
+    "format": "2QB / Superflex"
+  },
+  "values": []
+}

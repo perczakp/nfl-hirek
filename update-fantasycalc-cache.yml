@@ -1,0 +1,39 @@
+name: Update FantasyCalc Cache
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-fantasycalc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch FantasyCalc values
+        run: node scripts/update-fantasycalc.js
+
+      - name: Commit updated cache
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add fantasycalc-values.json
+
+          if git diff --cached --quiet; then
+            echo "FantasyCalc cache has not changed."
+          else
+            git commit -m "Update FantasyCalc cache"
+            git push
+          fi

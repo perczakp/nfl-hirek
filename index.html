@@ -3,219 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NFL Fantasy News</title>
+<title>Players Trending</title>
 <style>
-  :root {
-    --page-bg: #d5d8da;
-    --page-bg-dark: #c4c8cc;
-    --patriots-blue: #0b2a4a;
-    --patriots-blue-hover: #123b63;
-    --patriots-red: #c8102e;
-    --silver: #b5b9bd;
-    --silver-light: #eef0f1;
-    --silver-dark: #8f959a;
-    --text: #1a1a1a;
-    --muted: #666c72;
-    --card-text: #ffffff;
-    --card-soft: #d5dfe8;
-    --border: #c5c9cc;
-  }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
   body {
     margin: 0;
     padding: 24px 16px 60px;
     font-family: Arial, Helvetica, sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-    background:
-      linear-gradient(rgba(213,216,218,0.94), rgba(196,200,204,0.94)),
-      repeating-linear-gradient(
-        90deg,
-        transparent 0,
-        transparent calc(12.5% - 1px),
-        rgba(255,255,255,0.24) calc(12.5% - 1px),
-        rgba(255,255,255,0.24) 12.5%
-      ),
-      repeating-linear-gradient(
-        0deg,
-        transparent 0,
-        transparent 92px,
-        rgba(255,255,255,0.18) 92px,
-        rgba(255,255,255,0.18) 94px
-      );
-    background-attachment: fixed;
+    background: #f5f5f5;
+    color: #1a1a1a;
   }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    background:
-      linear-gradient(
-        90deg,
-        transparent 0 49.7%,
-        rgba(255,255,255,0.30) 49.7% 50.3%,
-        transparent 50.3% 100%
-      );
-    opacity: 0.75;
-  }
-
-  .nfln-header {
-    max-width: 1000px;
-    margin: 0 auto 16px;
-    text-align: center;
-  }
-
-  .nfln-header h1 {
-    font-size: 28px;
-    margin: 0 0 5px;
-    color: var(--patriots-blue);
-    letter-spacing: -0.5px;
-  }
-
-  .nfln-header p {
-    color: var(--muted);
-    font-size: 14px;
-    margin: 0;
-  }
-
-  .nfln-nav {
-    max-width: 1000px;
-    margin: 0 auto 24px;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .nfln-nav a {
-    padding: 9px 17px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background .18s ease, border-color .18s ease, transform .18s ease;
-  }
-
-  .nfln-nav a.active {
-    background: var(--patriots-red);
-    color: #fff;
-    border: 1px solid var(--patriots-red);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.14);
-  }
-
-  .nfln-nav a.inactive {
-    background: rgba(255,255,255,0.94);
-    color: var(--patriots-blue);
-    border: 1px solid var(--silver-dark);
-  }
-
-  .nfln-nav a.inactive:hover {
-    background: var(--patriots-blue);
-    color: #fff;
-    border-color: var(--patriots-blue);
-    transform: translateY(-1px);
-  }
-
-  .nfln-back {
-    display: block;
-    max-width: 700px;
-    margin: 0 auto 16px;
-    font-size: 14px;
-  }
-
-  .nfln-back a {
-    color: #50565b;
-    text-decoration: none;
-  }
-
-  .nfln-back a:hover {
-    color: var(--patriots-blue);
-  }
-
-  .nfln-search-wrap {
-    max-width: 1000px;
-    margin: 0 auto 28px;
-    position: relative;
-  }
-
+  .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }
+  .nfln-header h1 { font-size: 24px; margin-bottom: 4px; }
+  .nfln-header p { color: #777; font-size: 14px; }
+  .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .nfln-nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: bold; }
+  .nfln-nav a.active { background: #1a1a1a; color: #ffffff; }
+  .nfln-nav a.inactive { background: #ffffff; color: #1a1a1a; border: 1px solid #ddd; }
+  .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }
+  .nfln-back a { color: #555; text-decoration: none; }
+  .nfln-search-wrap { max-width: 1000px; margin: 0 auto 28px; position: relative; }
   .nfln-search-input {
     width: 100%;
     box-sizing: border-box;
-    padding: 13px 16px;
+    padding: 12px 16px;
     font-size: 15px;
-    color: var(--text);
-    background: rgba(255,255,255,0.97);
-    border: 1px solid var(--silver-dark);
+    border: 1px solid #ddd;
     border-radius: 10px;
     outline: none;
-    box-shadow: 0 5px 16px rgba(0,0,0,0.10);
   }
-
-  .nfln-search-input::placeholder { color: #858b90; }
-
-  .nfln-search-input:focus {
-    border-color: var(--patriots-blue);
-    box-shadow: 0 0 0 3px rgba(11,42,74,0.12), 0 5px 16px rgba(0,0,0,0.10);
-  }
-
+  .nfln-search-input:focus { border-color: #1a1a1a; }
   .nfln-search-results {
     margin-top: 8px;
-    background: #fff;
-    border: 1px solid var(--border);
+    background: #ffffff;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     display: none;
   }
-
   .nfln-search-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    border-bottom: 1px solid #eceeef;
+    border-bottom: 1px solid #f0f0f0;
     font-size: 14px;
     cursor: pointer;
     gap: 10px;
   }
-
-  .nfln-search-row:hover { background: #f1f3f4; }
+  .nfln-search-row:hover { background: #f7f7f7; }
   .nfln-search-row:last-child { border-bottom: none; }
-
-  .nfln-search-row-name {
-    font-weight: bold;
-    color: var(--patriots-blue);
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-search-row-meta {
-    color: #777d83;
-    font-size: 12.5px;
-    margin-left: 6px;
-  }
-
-  .nfln-search-row-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-  }
-
-  .nfln-team-logo {
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-
+  .nfln-search-row-name { font-weight: bold; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }
+  .nfln-search-row-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .nfln-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
   .nfln-search-status {
     font-size: 12.5px;
     font-weight: bold;
@@ -223,10 +63,9 @@
     border-radius: 999px;
     white-space: nowrap;
   }
-
   .nfln-status-healthy { background: #e6f4ea; color: #1e7e34; }
   .nfln-status-injured { background: #fdecea; color: #c0392b; }
-  .nfln-search-empty { padding: 12px 16px; font-size: 14px; color: #777d83; }
+  .nfln-search-empty { padding: 12px 16px; font-size: 14px; color: #888; }
 
   #nfl-fantasy-news {
     max-width: 1000px;
@@ -236,97 +75,38 @@
     gap: 14px;
     align-items: start;
   }
-
   @media (max-width: 700px) {
     #nfl-fantasy-news { grid-template-columns: 1fr; }
   }
-
   .nfln-card {
-    border: 1px solid #173c60;
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
-    padding: 17px 20px;
-    background: var(--patriots-blue);
-    color: var(--card-text);
-    box-shadow: 0 7px 18px rgba(0,0,0,0.18);
+    padding: 16px 20px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     min-width: 0;
     overflow-wrap: break-word;
     word-break: break-word;
   }
-
-  .nfln-card-clickable {
-    cursor: pointer;
-    transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease, background .18s ease;
-  }
-
-  .nfln-card-clickable:hover {
-    background: var(--patriots-blue-hover);
-    box-shadow: 0 12px 26px rgba(0,0,0,0.24);
-    transform: translateY(-2px);
-    border-color: var(--patriots-red);
-  }
-
-  .nfln-name {
-    font-weight: bold;
-    font-size: 17px;
-    margin: 0 0 6px 0;
-    color: #fff;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-summary {
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--card-soft);
-    margin: 0 0 10px 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
+  .nfln-card-clickable { cursor: pointer; transition: box-shadow 0.15s ease, transform 0.15s ease; }
+  .nfln-card-clickable:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-1px); }
+  .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #1a1a1a; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-summary { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 10px 0; overflow-wrap: break-word; word-break: break-word; }
   .nfln-real-news {
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 1px solid #eee;
     padding-top: 10px;
     margin-top: 4px;
   }
-
-  .nfln-real-headline {
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    margin: 0 0 4px 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-real-desc {
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: #c4d0db;
-    margin: 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-real-source {
-    font-size: 11px;
-    color: #9eacb9;
-    margin-top: 6px;
-  }
-
-  .nfln-updated {
-    grid-column: 1 / -1;
-    text-align: right;
-    font-size: 12px;
-    color: #666c72;
-    margin-top: 4px;
-  }
-
+  .nfln-real-headline { font-size: 14px; font-weight: bold; color: #1a1a1a; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: #555; margin: 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-real-source { font-size: 11px; color: #aaa; margin-top: 6px; }
+  .nfln-updated { grid-column: 1 / -1; text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
   .nfln-fullwidth { grid-column: 1 / -1; }
 
   .nfln-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(10,18,28,0.50);
+    background: rgba(0,0,0,0.45);
     display: none;
     align-items: flex-start;
     justify-content: center;
@@ -334,20 +114,15 @@
     overflow-y: auto;
     z-index: 100;
   }
-
   .nfln-modal-overlay.open { display: flex; }
-
   .nfln-modal {
-    background: #fff;
-    border: 1px solid #c5c9cc;
+    background: #ffffff;
     border-radius: 14px;
     max-width: 600px;
     width: 100%;
     padding: 24px 26px;
     position: relative;
-    box-shadow: 0 20px 55px rgba(0,0,0,0.26);
   }
-
   .nfln-modal-close {
     position: absolute;
     top: 14px;
@@ -359,26 +134,8 @@
     color: #888;
     line-height: 1;
   }
-
-  .nfln-modal-close:hover { color: var(--patriots-red); }
-
-  .nfln-modal-name {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0 0 4px 0;
-    color: var(--patriots-blue);
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-modal-meta {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 6px;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
+  .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; overflow-wrap: break-word; word-break: break-word; }
   .nfln-modal-status {
     display: inline-block;
     font-size: 12.5px;
@@ -387,64 +144,18 @@
     border-radius: 999px;
     margin-bottom: 16px;
   }
-
   .nfln-modal-article {
-    border-top: 1px solid #e5e6e8;
+    border-top: 1px solid #eee;
     padding-top: 12px;
     margin-top: 12px;
   }
-
-  .nfln-modal-headline {
-    font-size: 15px;
-    font-weight: bold;
-    margin: 0 0 4px 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-modal-headline a {
-    color: var(--patriots-blue);
-    text-decoration: none;
-  }
-
-  .nfln-modal-headline a:hover {
-    color: var(--patriots-red);
-    text-decoration: underline;
-  }
-
-  .nfln-modal-desc {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #444;
-    margin: 0 0 4px 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  .nfln-modal-date {
-    font-size: 11.5px;
-    color: #999;
-  }
-
-  .nfln-modal-source {
-    font-size: 11px;
-    color: #999;
-    margin-top: 14px;
-  }
-
-  .nfln-modal-loading,
-  .nfln-modal-empty {
-    font-size: 14px;
-    color: #777;
-    padding: 10px 0;
-  }
-
-  @media (max-width: 700px) {
-    body { padding: 18px 12px 40px; }
-    .nfln-header h1 { font-size: 24px; }
-    .nfln-nav a { font-size: 13px; padding: 8px 12px; }
-    .nfln-modal { padding: 22px 20px; }
-  }
+  .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-modal-headline a { color: #1a1a1a; text-decoration: none; }
+  .nfln-modal-headline a:hover { text-decoration: underline; }
+  .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }
+  .nfln-modal-date { font-size: 11.5px; color: #aaa; }
+  .nfln-modal-source { font-size: 11px; color: #aaa; margin-top: 14px; }
+  .nfln-modal-loading, .nfln-modal-empty { font-size: 14px; color: #888; padding: 10px 0; }
 </style>
 </head>
 <body>
@@ -454,12 +165,12 @@
 </div>
 
 <div class="nfln-header">
-  <h1>NFL Fantasy News</h1>
+  <h1>Players Trending</h1>
   <p>Weekly updates on the most talked-about players</p>
 </div>
 
 <div class="nfln-nav">
-  <a href="index.html" class="active">News</a>
+  <a href="index.html" class="active">Players Trending</a>
   <a href="trade-chart.html" class="inactive">Dynasty Trade Value Chart</a>
   <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
   <a href="tips.html" class="inactive">Tips</a>

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-17T07:50:23.302Z",
+  "updated_at": "2026-08-17T08:16:28.469Z",
   "predictors": [
     {
       "name": "Cheeseheads",
@@ -14,7 +14,7 @@
       "name": "RBlaine",
       "picks": [
         {
-          "team": "Buffalo Bills",
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
           "prediction": "12-5"
         },
         {

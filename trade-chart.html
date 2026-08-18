@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynasty Trade Value Chart</title>
+<title>Dynasty Trade Calculator</title>
 <style>
   :root {
     --page-bg: #d5d8da;
@@ -139,32 +139,136 @@
     color: var(--patriots-blue);
   }
 
-  .trade-card {
-    max-width: 700px;
-    margin: 0 auto;
+  .calc-attr {
+    max-width: 1000px;
+    margin: 0 auto 20px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .calc-attr a { color: var(--patriots-blue); font-weight: bold; text-decoration: none; }
+  .calc-attr a:hover { text-decoration: underline; }
+
+  .calc-grid {
+    max-width: 1000px;
+    margin: 0 auto 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  .calc-side {
     background: var(--patriots-blue);
     color: var(--card-text);
     border: 1px solid #173c60;
     border-radius: 14px;
-    padding: 32px 28px;
-    text-align: center;
+    padding: 20px 22px;
     box-shadow: 0 7px 18px rgba(0,0,0,0.18);
+    min-width: 0;
   }
-  .trade-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
-  .trade-card p { font-size: 15px; color: var(--card-soft); line-height: 1.6; margin-bottom: 22px; }
-  .trade-btn {
-    display: inline-block;
-    background: var(--patriots-red);
-    color: #ffffff;
-    text-decoration: none;
-    padding: 12px 28px;
-    border-radius: 999px;
-    font-weight: bold;
+  .calc-side h2 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    color: #fff;
+  }
+
+  .calc-search-wrap { position: relative; margin-bottom: 12px; }
+  .calc-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-size: 14.5px;
+    border: 1px solid var(--silver-dark);
+    border-radius: 8px;
+    outline: none;
+  }
+  .calc-search-input:focus { border-color: var(--patriots-red); }
+  .calc-search-results {
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(100% + 4px);
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    z-index: 5;
+    display: none;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .calc-search-results.open { display: block; }
+  .calc-search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13.5px;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .calc-search-row:last-child { border-bottom: none; }
+  .calc-search-row:hover { background: #f4f6f8; }
+  .calc-search-row-name { font-weight: bold; }
+  .calc-search-row-meta { color: #888; font-size: 12px; margin-left: 6px; }
+  .calc-search-row-value { font-weight: bold; color: var(--patriots-blue); white-space: nowrap; }
+  .calc-search-empty { padding: 10px 12px; font-size: 13.5px; color: #888; }
+
+  .calc-pick-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 14px;
+  }
+  .calc-pick-row:first-child { border-top: none; }
+  .calc-pick-left { min-width: 0; overflow-wrap: break-word; }
+  .calc-pick-name { font-weight: bold; }
+  .calc-pick-meta { font-size: 12px; color: var(--card-soft); margin-left: 6px; }
+  .calc-pick-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .calc-pick-value { font-weight: bold; color: #fff; }
+  .calc-pick-remove {
+    background: rgba(255,255,255,0.14);
+    border: none;
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .calc-pick-remove:hover { background: var(--patriots-red); }
+  .calc-empty-side { font-size: 13.5px; color: var(--card-soft); padding: 4px 0; }
+
+  .calc-side-total {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    display: flex;
+    justify-content: space-between;
     font-size: 15px;
-    transition: background .18s ease, transform .18s ease;
+    font-weight: bold;
   }
-  .trade-btn:hover { background: #a80d26; transform: translateY(-1px); }
-  .trade-source { margin-top: 18px; font-size: 12px; color: var(--card-soft); opacity: 0.8; }
+  .calc-side-total-value { color: #fff; }
+
+  .calc-balance {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 24px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    font-size: 15px;
+  }
+  .calc-balance strong { color: var(--patriots-blue); }
+  .calc-balance.balance-left strong { color: var(--patriots-red); }
 </style>
 </head>
 <body>
@@ -174,8 +278,8 @@
 </div>
 
 <div class="nfln-header">
-  <h1>Dynasty Trade Value Chart</h1>
-  <p>Current trade values for fantasy players</p>
+  <h1>Dynasty Trade Calculator</h1>
+  <p>Dynasty · 12 Teams · 1 PPR · 2 QB / Superflex</p>
 </div>
 
 <div class="nfln-nav">
@@ -185,14 +289,202 @@
   <a href="tips.html" class="inactive">Tips</a>
 </div>
 
-<div class="trade-card">
-  <h2>Up-to-date values, always fresh</h2>
-  <p>The Dynasty Trade Value Chart is compiled and regularly updated by FantasyPros analysts, based on consensus rankings. Click the button below to always see the latest, live chart.</p>
-  <a class="trade-btn" href="https://www.fantasypros.com/content/nfl/dynasty-nfl/nfl-trade-value-chart/" target="_blank" rel="noopener noreferrer">
-    Open Dynasty Trade Value Chart →
-  </a>
-  <div class="trade-source">Source: FantasyPros</div>
+<div class="calc-attr">
+  Trade values powered by <a href="https://www.fantasycalc.com" target="_blank" rel="noopener noreferrer">FantasyCalc.com</a>
 </div>
+
+<div class="calc-grid">
+  <div class="calc-side" id="side-1">
+    <h2>Team 1</h2>
+    <div class="calc-search-wrap">
+      <input type="text" class="calc-search-input" data-side="1" placeholder="Search a player to add...">
+      <div class="calc-search-results" data-side="1"></div>
+    </div>
+    <div class="calc-picks" data-side="1"></div>
+    <div class="calc-side-total">
+      <span>Total</span>
+      <span class="calc-side-total-value" data-side="1">0</span>
+    </div>
+  </div>
+
+  <div class="calc-side" id="side-2">
+    <h2>Team 2</h2>
+    <div class="calc-search-wrap">
+      <input type="text" class="calc-search-input" data-side="2" placeholder="Search a player to add...">
+      <div class="calc-search-results" data-side="2"></div>
+    </div>
+    <div class="calc-picks" data-side="2"></div>
+    <div class="calc-side-total">
+      <span>Total</span>
+      <span class="calc-side-total-value" data-side="2">0</span>
+    </div>
+  </div>
+</div>
+
+<div style="height:16px;"></div>
+
+<div class="calc-balance" id="calc-balance">Add players to both sides to see the trade balance.</div>
+
+<script>
+(function () {
+  var allPlayers = [];
+  var picks = { "1": [], "2": [] };
+
+  fetch("./fantasycalc-values.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) { allPlayers = data.values || []; })
+    .catch(function () { allPlayers = []; });
+
+  function fmt(n) { return n.toLocaleString("en-US"); }
+
+  function renderResults(side, query) {
+    var resultsEl = document.querySelector('.calc-search-results[data-side="' + side + '"]');
+    resultsEl.innerHTML = "";
+
+    if (!query) { resultsEl.classList.remove("open"); return; }
+
+    var q = query.toLowerCase();
+    var already = picks[side].map(function (p) { return p.sleeperId || p.name; });
+
+    var matches = allPlayers
+      .filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; })
+      .filter(function (p) { return already.indexOf(p.sleeperId || p.name) === -1; })
+      .slice(0, 8);
+
+    resultsEl.classList.add("open");
+
+    if (matches.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "calc-search-empty";
+      empty.textContent = "No matches found.";
+      resultsEl.appendChild(empty);
+      return;
+    }
+
+    matches.forEach(function (p) {
+      var row = document.createElement("div");
+      row.className = "calc-search-row";
+
+      var left = document.createElement("span");
+      var name = document.createElement("span");
+      name.className = "calc-search-row-name";
+      name.textContent = p.name;
+      var meta = document.createElement("span");
+      meta.className = "calc-search-row-meta";
+      meta.textContent = (p.position || "") + (p.team ? " · " + p.team : "");
+      left.appendChild(name);
+      left.appendChild(meta);
+
+      var value = document.createElement("span");
+      value.className = "calc-search-row-value";
+      value.textContent = fmt(p.value);
+
+      row.appendChild(left);
+      row.appendChild(value);
+
+      row.addEventListener("click", function () {
+        picks[side].push(p);
+        renderSide(side);
+        var input = document.querySelector('.calc-search-input[data-side="' + side + '"]');
+        input.value = "";
+        resultsEl.classList.remove("open");
+      });
+
+      resultsEl.appendChild(row);
+    });
+  }
+
+  function renderSide(side) {
+    var container = document.querySelector('.calc-picks[data-side="' + side + '"]');
+    container.innerHTML = "";
+
+    if (picks[side].length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "calc-empty-side";
+      empty.textContent = "No players added yet.";
+      container.appendChild(empty);
+    } else {
+      picks[side].forEach(function (p, idx) {
+        var row = document.createElement("div");
+        row.className = "calc-pick-row";
+
+        var left = document.createElement("div");
+        left.className = "calc-pick-left";
+        var name = document.createElement("span");
+        name.className = "calc-pick-name";
+        name.textContent = p.name;
+        var meta = document.createElement("span");
+        meta.className = "calc-pick-meta";
+        meta.textContent = (p.position || "") + (p.team ? " · " + p.team : "");
+        left.appendChild(name);
+        left.appendChild(meta);
+
+        var right = document.createElement("div");
+        right.className = "calc-pick-right";
+        var value = document.createElement("span");
+        value.className = "calc-pick-value";
+        value.textContent = fmt(p.value);
+        var removeBtn = document.createElement("button");
+        removeBtn.className = "calc-pick-remove";
+        removeBtn.textContent = "×";
+        removeBtn.addEventListener("click", function () {
+          picks[side].splice(idx, 1);
+          renderSide(side);
+        });
+        right.appendChild(value);
+        right.appendChild(removeBtn);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        container.appendChild(row);
+      });
+    }
+
+    var total = picks[side].reduce(function (sum, p) { return sum + p.value; }, 0);
+    document.querySelector('.calc-side-total-value[data-side="' + side + '"]').textContent = fmt(total);
+
+    updateBalance();
+  }
+
+  function updateBalance() {
+    var t1 = picks["1"].reduce(function (sum, p) { return sum + p.value; }, 0);
+    var t2 = picks["2"].reduce(function (sum, p) { return sum + p.value; }, 0);
+    var balanceEl = document.getElementById("calc-balance");
+
+    if (picks["1"].length === 0 && picks["2"].length === 0) {
+      balanceEl.className = "calc-balance";
+      balanceEl.textContent = "Add players to both sides to see the trade balance.";
+      return;
+    }
+
+    var diff = t1 - t2;
+
+    if (diff === 0) {
+      balanceEl.className = "calc-balance";
+      balanceEl.innerHTML = "Even trade — <strong>0</strong> difference.";
+    } else if (diff > 0) {
+      balanceEl.className = "calc-balance";
+      balanceEl.innerHTML = "<strong>Team 1</strong> is ahead by <strong>" + fmt(diff) + "</strong> points.";
+    } else {
+      balanceEl.className = "calc-balance balance-left";
+      balanceEl.innerHTML = "<strong>Team 2</strong> is ahead by <strong>" + fmt(-diff) + "</strong> points.";
+    }
+  }
+
+  ["1", "2"].forEach(function (side) {
+    var input = document.querySelector('.calc-search-input[data-side="' + side + '"]');
+    input.addEventListener("input", function () {
+      renderResults(side, input.value.trim());
+    });
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest('.calc-search-wrap')) {
+        document.querySelector('.calc-search-results[data-side="' + side + '"]').classList.remove("open");
+      }
+    });
+    renderSide(side);
+  });
+})();
+</script>
 
 </body>
 </html>

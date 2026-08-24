@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-23T05:26:45.149Z",
+  "updated_at": "2026-08-24T05:59:24.666Z",
   "players": [
     {
       "name": "A.J. Bouye",
@@ -585,8 +585,8 @@
       "name": "Alex Wright",
       "team": "CLE",
       "position": "DL",
-      "injury_status": "Questionable",
-      "injury_body_part": "Lower Leg",
+      "injury_status": "IR",
+      "injury_body_part": "Achilles",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -1032,6 +1032,16 @@
       "espn_id": null
     },
     {
+      "name": "Anthony Dunn",
+      "team": "NYJ",
+      "position": "DE",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Anthony Goodlow",
       "team": "PIT",
       "position": "DE",
@@ -1345,8 +1355,8 @@
       "name": "Ashton Jeanty",
       "team": "LV",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Knee",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -2875,8 +2885,8 @@
       "name": "Bud Clark",
       "team": "SEA",
       "position": "DB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Leg",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -3675,8 +3685,8 @@
       "name": "Carnell Tate",
       "team": "TEN",
       "position": "WR",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -3835,8 +3845,8 @@
       "name": "Caullin Lacy",
       "team": "NYJ",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -5932,6 +5942,16 @@
       "espn_id": 15074
     },
     {
+      "name": "Dante Barnett",
+      "team": "CLE",
+      "position": "DL",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Dante Fowler",
       "team": "SEA",
       "position": "LB",
@@ -6905,8 +6925,8 @@
       "name": "Deommodore Lenoir",
       "team": "SF",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Shoulder",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -6940,6 +6960,16 @@
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
+    },
+    {
+      "name": "Derek Barnett",
+      "team": "CLE",
+      "position": "DE",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": 3115336
     },
     {
       "name": "Derek Stingley",
@@ -7615,6 +7645,16 @@
       "name": "Dominic Lovett",
       "team": "DET",
       "position": "WR",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
+      "name": "Dominic Richardson",
+      "team": "NYJ",
+      "position": "RB",
       "injury_status": null,
       "injury_body_part": null,
       "injury_start_date": null,
@@ -9362,6 +9402,16 @@
       "espn_id": null
     },
     {
+      "name": "Gary Jennings",
+      "team": "LAC",
+      "position": "WR",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": 3916071
+    },
+    {
       "name": "Gary Smith",
       "team": "LV",
       "position": "DT",
@@ -9445,11 +9495,21 @@
       "name": "George Kittle",
       "team": "SF",
       "position": "TE",
-      "injury_status": "PUP",
+      "injury_status": "Questionable",
       "injury_body_part": "Achilles",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3040151
+    },
+    {
+      "name": "George Odum",
+      "team": "HOU",
+      "position": "DB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": 3050199
     },
     {
       "name": "George Pickens",
@@ -17372,16 +17432,6 @@
       "espn_id": null
     },
     {
-      "name": "Mario Williams",
-      "team": "LAR",
-      "position": "WR",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
       "name": "Marist Liufau",
       "team": "DAL",
       "position": "LB",
@@ -17657,16 +17707,6 @@
       "position": "TE",
       "injury_status": null,
       "injury_body_part": null,
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
-      "name": "Mason Reiger",
-      "team": "MIA",
-      "position": "DE",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -21085,8 +21125,8 @@
       "name": "Romello Height",
       "team": "SF",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -21125,8 +21165,8 @@
       "name": "Ronnie Harrison",
       "team": "MIA",
       "position": "DB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Hamstring",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3859006
@@ -21425,8 +21465,8 @@
       "name": "Sam Scott",
       "team": "NYJ",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -22482,6 +22522,16 @@
       "espn_id": null
     },
     {
+      "name": "Tanner Wall",
+      "team": "NYJ",
+      "position": "DB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Tanoh Kpassagnon",
       "team": "TEN",
       "position": "DE",
@@ -23102,6 +23152,16 @@
       "espn_id": 3126997
     },
     {
+      "name": "Tommy Akingbesote",
+      "team": "JAX",
+      "position": "DT",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Tommy DeVito",
       "team": "NE",
       "position": "QB",
@@ -23685,8 +23745,8 @@
       "name": "Trey Moore",
       "team": "MIA",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Ankle",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -25067,16 +25127,6 @@
       "position": "WR",
       "injury_status": null,
       "injury_body_part": null,
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
-      "name": "Xavier Thomas",
-      "team": "SF",
-      "position": "DE",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null

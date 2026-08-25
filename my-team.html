@@ -381,20 +381,173 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return req;
   }
 
-  function strengthScore(pos, buckets, starters, pools){
-    var roster = buckets[pos] || [];
-    if(!roster.length) return 0;
+  function idpPlayerQuality(p, pools){
+    var base = basePosition(playerPosition(p));
+    var value = marketValue(p);
+    if(value <= 0) return 35;
+    var pool = pools[base] || pools.IDP || [];
+    return Math.max(0, Math.min(100,
+      valuePercentile(value, pool) - injuryPenalty(p)
+    ));
+  }
+
+  function idpSlotType(slot){
+    slot = String(slot || "").toUpperCase();
+    if(["DL","DE","DT","NT","EDGE"].indexOf(slot) >= 0) return "DL";
+    if(slot === "LB") return "LB";
+    if(slot === "DB") return "DB";
+    if(["IDP","IDP_FLEX","IDP FLEX"].indexOf(slot) >= 0) return "IDP_FLEX";
+    return null;
+  }
+
+  function idpStartRequirements(){
+    var req = {DL:0,LB:0,DB:0,IDP_FLEX:0};
+    (state.league.roster_positions || []).forEach(function(slot){
+      var type = idpSlotType(slot);
+      if(type) req[type]++;
+    });
+    return req;
+  }
+
+  function idpStarterPlan(roster, players, pools){
+    var slots = (state.league.roster_positions || []).map(function(x){
+      return String(x).toUpperCase();
+    });
+    var starters = (roster && roster.starters) || [];
+    var fixed = {DL:[],LB:[],DB:[]};
+    var flexCount = 0;
+    var used = {};
+
+    slots.forEach(function(slot,index){
+      var type = idpSlotType(slot);
+      if(!type) return;
+
+      var id = starters[index];
+      var p = players.filter(function(x){
+        return String(x.id) === String(id);
+      })[0];
+      if(!p) return;
+
+      used[String(p.id)] = true;
+
+      if(type === "IDP_FLEX") flexCount++;
+      else fixed[type].push(p);
+    });
+
+    var remaining = players.filter(function(p){
+      return ["DL","LB","DB"].indexOf(basePosition(playerPosition(p))) >= 0 &&
+             !used[String(p.id)];
+    }).sort(function(a,b){
+      return idpPlayerQuality(b,pools) - idpPlayerQuality(a,pools);
+    });
+
+    var flex = [];
+    for(var i=0;i<flexCount;i++){
+      if(remaining[i]) flex.push(remaining[i]);
+    }
+
+    return {fixed:fixed, flex:flex};
+  }
+
+  function idpStrengthScore(roster, players, pools){
+    var req = idpStartRequirements();
+    var plan = idpStarterPlan(roster, players, pools);
+    var values = [];
+    var missing = 0;
+    var injured = 0;
+
+    ["DL","LB","DB"].forEach(function(pos){
+      for(var i=0;i<(req[pos] || 0);i++){
+        var p = plan.fixed[pos][i];
+        if(!p){ missing++; continue; }
+        values.push(idpPlayerQuality(p,pools));
+        if(injuryPenalty(p) >= 15) injured++;
+      }
+    });
+
+    plan.flex.forEach(function(p){
+      values.push(idpPlayerQuality(p,pools) * 0.85);
+      if(injuryPenalty(p) >= 15) injured++;
+    });
+
+    var starterQuality = values.length
+      ? values.reduce(function(a,b){return a+b;},0) / values.length
+      : 0;
+
+    var depthScores = [];
+    ["DL","LB","DB"].forEach(function(pos){
+      var playersAtPos = players.filter(function(p){
+        return basePosition(playerPosition(p)) === pos;
+      }).sort(function(a,b){
+        return idpPlayerQuality(b,pools) - idpPlayerQuality(a,pools);
+      });
+
+      var depth = playersAtPos.slice(req[pos] || 0, (req[pos] || 0) + 2);
+      if(depth.length){
+        depthScores.push(
+          depth.reduce(function(sum,p){return sum+idpPlayerQuality(p,pools);},0) /
+          depth.length
+        );
+      }
+    });
+
+    var depthQuality = depthScores.length
+      ? depthScores.reduce(function(a,b){return a+b;},0) / depthScores.length
+      : 0;
+
+    return Math.round(Math.max(0, Math.min(100,
+      starterQuality * 0.82 +
+      depthQuality * 0.18 -
+      missing * 18 -
+      injured * 10
+    )));
+  }
+
+  function idpNeedScore(roster, players, pools){
+    var req = idpStartRequirements();
+    var plan = idpStarterPlan(roster, players, pools);
+    var values = [];
+    var missing = 0;
+    var injured = 0;
+
+    ["DL","LB","DB"].forEach(function(pos){
+      for(var i=0;i<(req[pos] || 0);i++){
+        var p = plan.fixed[pos][i];
+        if(!p){ missing++; continue; }
+        values.push(idpPlayerQuality(p,pools));
+        if(injuryPenalty(p) >= 15) injured++;
+      }
+    });
+
+    plan.flex.forEach(function(p){
+      values.push(idpPlayerQuality(p,pools) * 0.85);
+      if(injuryPenalty(p) >= 15) injured++;
+    });
+
+    var avg = values.length
+      ? values.reduce(function(a,b){return a+b;},0) / values.length
+      : 0;
+
+    var weak = values.filter(function(v){ return v < 55; }).length;
+
+    return Math.round(Math.max(0, Math.min(100,
+      (100-avg) * 0.78 +
+      weak * 6 +
+      missing * 20 +
+      injured * 10
+    )));
+  }
+
+  function strengthScore(pos, buckets, starters, pools, roster, players){
+    if(pos === "IDP") return idpStrengthScore(roster, players, pools);
+
+    var rosterPlayers = buckets[pos] || [];
+    if(!rosterPlayers.length) return 0;
 
     var req = requiredStarts();
-    var target = req[pos] || 0;
+    var target = Math.max(req[pos] || 0, (starters[pos] || []).length, 1);
 
-    // If the league uses FLEX/SUPER_FLEX and no fixed starter is defined for
-    // a position, use the actual starter count as a floor, not as the whole
-    // strength model.
-    var actualStarters = (starters[pos] || []).length;
-    target = Math.max(target, actualStarters, 1);
-
-    var ranked = roster.slice().sort(function(a,b){
+    var ranked = rosterPlayers.slice().sort(function(a,b){
       return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
     });
 
@@ -406,17 +559,16 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
       : 0;
 
-    // Depth matters, but cannot overpower starter quality.
-    var usableDepth = roster.slice(target).map(function(p){
+    var usableDepth = rosterPlayers.slice(target).map(function(p){
       return playerQuality(p,pos,pools);
     }).filter(function(v){ return v >= 45; }).length;
 
     var depthScore = Math.min(100, 45 + usableDepth * 12);
-    var shortagePenalty = roster.length < target
-      ? (target - roster.length) * 18
+    var shortagePenalty = rosterPlayers.length < target
+      ? (target - rosterPlayers.length) * 18
       : 0;
 
-    var injuredStarters = roster.slice(0,target).filter(function(p){
+    var injuredStarters = ranked.slice(0,target).filter(function(p){
       return injuryPenalty(p) >= 15;
     }).length;
 
@@ -428,14 +580,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     )));
   }
 
-  function needScore(pos, buckets, starters, pools){
+  function needScore(pos, buckets, starters, pools, roster, players){
+    if(pos === "IDP") return idpNeedScore(roster, players, pools);
+
     var req = requiredStarts();
-    var roster = buckets[pos] || [];
+    var rosterPlayers = buckets[pos] || [];
     var target = Math.max(req[pos] || 0, (starters[pos] || []).length, 1);
+    if(!rosterPlayers.length) return 90;
 
-    if(!roster.length) return 90;
-
-    var ranked = roster.slice().sort(function(a,b){
+    var ranked = rosterPlayers.slice().sort(function(a,b){
       return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
     });
 
@@ -447,20 +600,18 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
       : 0;
 
-    var shortage = Math.max(0, target - roster.length);
+    var shortage = Math.max(0, target - rosterPlayers.length);
     var weakStarters = starterQuality.filter(function(v){ return v < 55; }).length;
-    var injured = roster.slice(0,target).filter(function(p){
+    var injured = ranked.slice(0,target).filter(function(p){
       return injuryPenalty(p) >= 15;
     }).length;
 
-    // Higher = more urgent need.
-    var score = (100 - avg) * 0.72 +
+    var score = (100-avg) * 0.72 +
       weakStarters * 7 +
       shortage * 20 +
       injured * 10;
 
-    // Extra depth is a mild positive, not a reason to call a position weak.
-    if(roster.length > target + 1 && avg >= 65) score -= 10;
+    if(rosterPlayers.length > target + 1 && avg >= 65) score -= 10;
 
     return Math.round(Math.max(0, Math.min(100, score)));
   }
@@ -557,13 +708,16 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     positions.forEach(function(pos){
       pools[pos] = marketValuePool(pos);
     });
+    pools.DL = marketValuePool("DL");
+    pools.LB = marketValuePool("LB");
+    pools.DB = marketValuePool("DB");
 
     var results = positions.map(function(pos){
       var rank = leagueRank(pos,pools);
       return {
         pos:pos,
-        need:needScore(pos,buckets,starters,pools),
-        strength:strengthScore(pos,buckets,starters,pools),
+        need:needScore(pos,buckets,starters,pools,roster,players),
+        strength:strengthScore(pos,buckets,starters,pools,roster,players),
         count:buckets[pos].length,
         starters:(starters[pos] || []).length,
         rank:rank.rank,
@@ -612,7 +766,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     var top = results[0];
     $("need-summary").innerHTML =
       "<strong>Legnagyobb erősítési igény: " + top.pos + "</strong><br>" +
-      '<span class="nfln-small">A Roster Strength a kezdők piaci értékét, a depth-et és a sérülési kockázatot kombinálja. A #1/12 a legerősebb, a #12/12 a leggyengébb roster az adott pozíción a ligádban. A Need 0–100, ahol a magasabb érték nagyobb erősítési igényt jelent.</span>';
+      '<span class="nfln-small">A Roster Strength a kezdőhelyek minőségét, a DL/LB/DB bontású IDP-eloszlást, a depth-et és a sérülési kockázatot kombinálja. A #1/12 a legerősebb, a #12/12 a leggyengébb roster az adott pozíción a ligádban. A Need 0–100, ahol a magasabb érték nagyobb erősítési igényt jelent.</span>';
   }
 
   function teamName(user){

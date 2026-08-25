@@ -3,180 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Players Trending</title>
-<style>   :root {     --page-bg: #d5d8da;     --page-bg-dark: #c4c8cc;     --patriots-blue: #0b2a4a;     --patriots-blue-hover: #123b63;     --patriots-red: #c8102e;     --silver: #b5b9bd;     --silver-light: #eef0f1;     --silver-dark: #8f959a;     --text: #1a1a1a;     --muted: #666c72;     --card-text: #ffffff;     --card-soft: #d5dfe8;     --border: #c5c9cc;   }    * { box-sizing: border-box; }   html { scroll-behavior: smooth; }    body {     margin: 0;     padding: 24px 16px 60px;     font-family: Arial, Helvetica, sans-serif;     color: var(--text);     min-height: 100vh;     background:       linear-gradient(rgba(213,216,218,0.94), rgba(196,200,204,0.94)),       repeating-linear-gradient(         90deg,         transparent 0,         transparent calc(12.5% - 1px),         rgba(255,255,255,0.24) calc(12.5% - 1px),         rgba(255,255,255,0.24) 12.5%       ),       repeating-linear-gradient(         0deg,         transparent 0,         transparent 92px,         rgba(255,255,255,0.18) 92px,         rgba(255,255,255,0.18) 94px       );     background-attachment: fixed;   }    body::before {     content: "";     position: fixed;     inset: 0;     pointer-events: none;     z-index: -1;     background:       linear-gradient(         90deg,         transparent 0 49.7%,         rgba(255,255,255,0.30) 49.7% 50.3%,         transparent 50.3% 100%       );     opacity: 0.75;   }    .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }   .nfln-header h1 { font-size: 28px; margin: 0 0 5px; color: var(--patriots-blue); letter-spacing: -0.5px; }   .nfln-header p { color: var(--muted); font-size: 14px; margin: 0; }    .nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }   .nfln-nav a {     padding: 9px 17px;     border-radius: 8px;     text-decoration: none;     font-size: 14px;     font-weight: bold;     transition: background .18s ease, border-color .18s ease, transform .18s ease;   }   .nfln-nav a.active { background: var(--patriots-red); color: #fff; border: 1px solid var(--patriots-red); box-shadow: 0 3px 10px rgba(0,0,0,0.14); }   .nfln-nav a.inactive { background: rgba(255,255,255,0.94); color: var(--patriots-blue); border: 1px solid var(--silver-dark); }   .nfln-nav a.inactive:hover { background: var(--patriots-blue); color: #fff; border-color: var(--patriots-blue); transform: translateY(-1px); }    .nfln-back { display: block; max-width: 700px; margin: 0 auto 16px; font-size: 14px; }   .nfln-back a { color: #50565b; text-decoration: none; }   .nfln-back a:hover { color: var(--patriots-blue); }    .nfln-search-wrap { max-width: 1000px; margin: 0 auto 28px; position: relative; }   .nfln-search-input {     width: 100%;     box-sizing: border-box;     padding: 12px 16px;     font-size: 15px;     border: 1px solid var(--silver-dark);     border-radius: 10px;     outline: none;   }   .nfln-search-input:focus { border-color: var(--patriots-red); }   .nfln-search-results {     margin-top: 8px;     background: #ffffff;     border-radius: 10px;     overflow: hidden;     box-shadow: 0 6px 16px rgba(0,0,0,0.18);     display: none;   }   .nfln-search-row {     display: flex;     justify-content: space-between;     align-items: center;     padding: 12px 16px;     border-bottom: 1px solid #f0f0f0;     font-size: 14px;     cursor: pointer;     gap: 10px;   }   .nfln-search-row:hover { background: #f4f6f8; }   .nfln-search-row:last-child { border-bottom: none; }   .nfln-search-row-name { font-weight: bold; color: var(--text); overflow-wrap: break-word; word-break: break-word; }   .nfln-search-row-meta { color: #888; font-size: 12.5px; margin-left: 6px; }   .nfln-search-row-left { display: flex; align-items: center; gap: 10px; min-width: 0; }   .nfln-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }   .nfln-search-status {     font-size: 12.5px;     font-weight: bold;     padding: 3px 10px;     border-radius: 999px;     white-space: nowrap;   }   .nfln-status-healthy { background: #e6f4ea; color: #1e7e34; }   .nfln-status-injured { background: #fdecea; color: #c0392b; }   .nfln-search-empty { padding: 12px 16px; font-size: 14px; color: #888; }    #nfl-fantasy-news {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    align-items: start;
-  }
-  .nfln-column {
-    min-width: 0;
-  }
-  .nfln-column-title {
-    margin: 0 0 10px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 5px 14px rgba(0,0,0,0.12);
-  }
-  .nfln-column-title.added {
-    background: #1e7e34;
-  }
-  .nfln-column-title.dropped {
-    background: var(--patriots-red);
-  }
-  .nfln-list {
-    display: grid;
-    gap: 10px;
-  }
-  .nfln-card {
-    padding: 13px 16px;
-  }
-  .nfln-card-meta {
-    font-size: 12px;
-    color: var(--card-soft);
-    margin: 0 0 5px;
-  }
-  .nfln-activity {
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 8px;
-    color: #fff;
-  }
-  @media (max-width: 700px) {
-    #nfl-fantasy-news {
-      grid-template-columns: 1fr;
-    }
-  }   .nfln-card {     border: 1px solid #173c60;     border-radius: 10px;     padding: 16px 20px;     background: var(--patriots-blue);     color: var(--card-text);     box-shadow: 0 7px 18px rgba(0,0,0,0.18);     min-width: 0;     overflow-wrap: break-word;     word-break: break-word;   }   .nfln-card-clickable { cursor: pointer; transition: box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease; }   .nfln-card-clickable:hover { box-shadow: 0 10px 22px rgba(0,0,0,0.24); transform: translateY(-1px); background: var(--patriots-blue-hover); }   .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #fff; overflow-wrap: break-word; word-break: break-word; }   .nfln-summary { font-size: 15px; line-height: 1.5; color: var(--card-soft); margin: 0 0 10px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-news {     border-top: 1px solid rgba(255,255,255,0.14);     padding-top: 10px;     margin-top: 4px;   }   .nfln-real-headline { font-size: 14px; font-weight: bold; color: #fff; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: var(--card-soft); margin: 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-source { font-size: 11px; color: var(--card-soft); opacity: 0.75; margin-top: 6px; }   .nfln-updated { grid-column: 1 / -1; text-align: right; font-size: 12px; color: var(--muted); margin-top: 4px; }   .nfln-fullwidth { grid-column: 1 / -1; }    .nfln-modal-overlay {     position: fixed;     inset: 0;     background: rgba(10,18,28,0.50);     display: none;     align-items: flex-start;     justify-content: center;     padding: 40px 16px;     overflow-y: auto;     z-index: 100;   }   .nfln-modal-overlay.open { display: flex; }   .nfln-modal {     background: #fff;     border-radius: 14px;     max-width: 600px;     width: 100%;     padding: 24px 26px;     position: relative;     box-shadow: 0 12px 32px rgba(0,0,0,0.3);   }   .nfln-modal-close {     position: absolute;     top: 14px;     right: 16px;     border: none;     background: none;     font-size: 22px;     cursor: pointer;     color: #888;     line-height: 1;   }   .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; color: var(--patriots-blue); overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-status {     display: inline-block;     font-size: 12.5px;     font-weight: bold;     padding: 3px 10px;     border-radius: 999px;     margin-bottom: 16px;   }   .nfln-modal-article {     border-top: 1px solid #eee;     padding-top: 12px;     margin-top: 12px;   }   .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-headline a { color: var(--patriots-blue); text-decoration: none; }   .nfln-modal-headline a:hover { text-decoration: underline; }   .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-date { font-size: 11.5px; color: #aaa; }   .nfln-modal-source { font-size: 11px; color: #aaa; margin-top: 14px; }   .nfln-modal-loading, .nfln-modal-empty { font-size: 14px; color: #888; padding: 10px 0; } </style>
+<title>My Fantasy Team</title>
+<style>
+:root{
+  --patriots-blue:#002244;
+  --patriots-red:#c60c30;
+  --card:#0b2b49;
+  --card-soft:#a9bfd3;
+  --text:#fff;
+  --bg:#f4f6f8;
+  --green:#1e7e34;
+  --yellow:#d39e00;
+  --orange:#e67e22;
+  --red:#c0392b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17212b}
+.nfln-wrap{max-width:1100px;margin:0 auto;padding:22px 16px 50px}
+.nfln-header{background:var(--patriots-blue);color:#fff;border-radius:12px;padding:22px 20px;margin-bottom:14px}
+.nfln-header h1{margin:0 0 5px;font-size:28px}
+.nfln-header p{margin:0;color:#c7d7e6}
+.nfln-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.nfln-nav a{display:inline-block;padding:10px 13px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}
+.nfln-nav .active{background:var(--patriots-red);color:#fff}
+.nfln-nav .inactive{background:#fff;color:var(--patriots-blue);border:1px solid #d5dce2}
+.nfln-panel{background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.nfln-panel h2{margin:0 0 12px;font-size:20px}
+.nfln-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.nfln-form label{display:block;font-size:12px;font-weight:700;margin:0 0 5px}
+.nfln-input{width:100%;padding:11px 12px;border:1px solid #bcc8d2;border-radius:8px;font-size:15px}
+.nfln-button{padding:11px 16px;border:0;border-radius:8px;background:var(--patriots-red);color:#fff;font-weight:700;cursor:pointer}
+.nfln-button.secondary{background:var(--patriots-blue)}
+.nfln-button:disabled{opacity:.55;cursor:wait}
+.nfln-status{margin-top:12px;padding:10px 12px;border-radius:8px;background:#eef3f7;font-size:14px}
+.nfln-status.error{background:#fdecec;color:#9c2b2b}
+.nfln-status.ok{background:#eaf6ed;color:#1f6b31}
+.nfln-hidden{display:none!important}
+.nfln-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.nfln-card{background:var(--patriots-blue);color:#fff;border-radius:10px;padding:15px}
+.nfln-card h3{margin:0 0 8px;font-size:17px}
+.nfln-meta{color:#c7d7e6;font-size:13px}
+.nfln-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.nfln-player{background:var(--card);color:#fff;border-radius:9px;padding:11px}
+.nfln-player strong{display:block}
+.nfln-player small{color:var(--card-soft)}
+.nfln-bye-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nfln-bye-week{border:1px solid #d8e0e7;border-radius:9px;padding:11px;background:#fafcfd}
+.nfln-bye-week strong{display:block;margin-bottom:6px}
+.nfln-bye-player{font-size:13px;margin:3px 0}
+.nfln-strength{display:grid;gap:9px}
+.nfln-strength-row{display:grid;grid-template-columns:70px 1fr 48px;gap:10px;align-items:center}
+.nfln-bar{height:10px;background:#e3e8ed;border-radius:99px;overflow:hidden}
+.nfln-fill{height:100%;border-radius:99px}
+.nfln-fill.good{background:var(--green)}
+.nfln-fill.mid{background:var(--yellow)}
+.nfln-fill.warn{background:var(--orange)}
+.nfln-fill.bad{background:var(--red)}
+.nfln-need{margin-top:14px;padding:13px;border-radius:9px;background:#f5f7f9}
+.nfln-table{width:100%;border-collapse:collapse;font-size:14px}
+.nfln-table th,.nfln-table td{padding:9px 7px;border-bottom:1px solid #e2e7eb;text-align:left}
+.nfln-table th{font-size:12px;text-transform:uppercase;color:#5c6b77}
+.nfln-badge{display:inline-block;padding:4px 7px;border-radius:99px;font-size:11px;font-weight:700}
+.nfln-badge.high{background:#fde7e7;color:#9c2b2b}
+.nfln-badge.medium{background:#fff4d7;color:#805e00}
+.nfln-badge.low{background:#e5f4e9;color:#216b31}
+.nfln-small{font-size:12px;color:#657582}
+.nfln-attribution{font-size:12px;color:#657582;margin-top:10px}
+@media(max-width:760px){
+  .nfln-form,.nfln-grid{grid-template-columns:1fr}
+  .nfln-roster{grid-template-columns:1fr}
+  .nfln-bye-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){.nfln-bye-list{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<div class="nfln-back">
-<a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a>
-</div>
-<div class="nfln-header">
-<h1>Players Trending</h1>
-<p>Weekly updates on the most talked-about players</p>
-</div>
-<div class="nfln-nav">
-<a href="index.html" class="active">Players Trending</a>
-<a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-<a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-<a href="tips.html" class="inactive">Tips</a>
-<a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-</div>
-<div class="nfln-search-wrap">
-<input type="text" id="nfln-search" class="nfln-search-input" placeholder="Search for a player (e.g. Ja'Marr Chase)..." autocomplete="off">
-<div id="nfln-search-results" class="nfln-search-results">
-</div>
-</div>
-<div id="nfl-fantasy-news">
-    <section class="nfln-column">
-      <h2 class="nfln-column-title added">Most Added</h2>
-      <div id="nfln-added-list" class="nfln-list">
-        <p style="text-align:center;color:#888;">Loading...</p>
-      </div>
-    </section>
-    <section class="nfln-column">
-      <h2 class="nfln-column-title dropped">Most Dropped</h2>
-      <div id="nfln-dropped-list" class="nfln-list">
-        <p style="text-align:center;color:#888;">Loading...</p>
-      </div>
-    </section>
+<div class="nfln-wrap">
+  <div class="nfln-header">
+    <h1>My Fantasy Team</h1>
+    <p>Szinkronizáld a saját Sleeper ligádat, és nézd meg a rosteredet, a bye week problémákat és a pozíciós hiányokat.</p>
   </div>
 
-  <div id="nfln-modal-overlay" class="nfln-modal-overlay">
-<div class="nfln-modal">
-<button id="nfln-modal-close" class="nfln-modal-close">&times;</button>
-<div id="nfln-modal-body">
-</div>
-</div>
-</div>
-<script> (function () {   var STATUS_LABEL = function (status) { return status || "Healthy"; };    var ESPN_LOGO_ABBR = {     WAS: "wsh", JAX: "jax", LAR: "lar", LAC: "lac", LV: "lv", NO: "no",     NE: "ne", GB: "gb", SF: "sf", TB: "tb", KC: "kc"   };    function teamLogoUrl(teamAbbr) {     if (!teamAbbr) return "";     var upper = teamAbbr.toUpperCase();     var abbr = ESPN_LOGO_ABBR[upper] || upper.toLowerCase();     return "https://a.espncdn.com/i/teamlogos/nfl/500/" + abbr + ".png";   }    var allSearchPlayers = [];   var searchInput = document.getElementById("nfln-search");   var searchResults = document.getElementById("nfln-search-results");   var modalOverlay = document.getElementById("nfln-modal-overlay");   var modalBody = document.getElementById("nfln-modal-body");   var modalClose = document.getElementById("nfln-modal-close");    fetch("./players.json")     .then(function (res) { return res.json(); })     .then(function (data) {       allSearchPlayers = data.players || [];     })     .catch(function () {       allSearchPlayers = [];     });    function renderSearchResults(query) {     searchResults.innerHTML = "";      if (!query) {       searchResults.style.display = "none";       return;     }      var q = query.toLowerCase();     var matches = allSearchPlayers       .filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; })       .slice(0, 8);      searchResults.style.display = "block";      if (matches.length === 0) {       var empty = document.createElement("div");       empty.className = "nfln-search-empty";       empty.textContent = "No matches found.";       searchResults.appendChild(empty);       return;     }      matches.forEach(function (p) {       var row = document.createElement("div");       row.className = "nfln-search-row";       row.addEventListener("click", function () { openPlayerModal(p); });        var left = document.createElement("div");       left.className = "nfln-search-row-left";        var logo = document.createElement("img");       logo.className = "nfln-team-logo";       logo.src = teamLogoUrl(p.team);       logo.alt = p.team;       logo.loading = "lazy";       logo.onerror = function () { this.style.display = "none"; };        var textWrap = document.createElement("div");       var nameSpan = document.createElement("span");       nameSpan.className = "nfln-search-row-name";       nameSpan.textContent = p.name;       var metaSpan = document.createElement("span");       metaSpan.className = "nfln-search-row-meta";       metaSpan.textContent = p.position + " · " + p.team;       textWrap.appendChild(nameSpan);       textWrap.appendChild(metaSpan);        left.appendChild(logo);       left.appendChild(textWrap);        var statusSpan = document.createElement("span");       var healthy = !p.injury_status;       statusSpan.className = "nfln-search-status " + (healthy ? "nfln-status-healthy" : "nfln-status-injured");       statusSpan.textContent = STATUS_LABEL(p.injury_status);        row.appendChild(left);       row.appendChild(statusSpan);       searchResults.appendChild(row);     });   }    searchInput.addEventListener("input", function () {     renderSearchResults(searchInput.value.trim());   });    function openPlayerModal(p) {     var healthy = !p.injury_status;      var html = "";     html += '<p class="nfln-modal-name">' + escapeHtml(p.name) + "</p>";     html += '<p class="nfln-modal-meta">' + escapeHtml(p.position) + " · " + escapeHtml(p.team) + "</p>";     html += '<span class="nfln-modal-status ' + (healthy ? "nfln-status-healthy" : "nfln-status-injured") + '">' + escapeHtml(STATUS_LABEL(p.injury_status)) + "</span>";     if (p.injury_body_part) {       html += '<p class="nfln-modal-meta">Injury: ' + escapeHtml(p.injury_body_part) + "</p>";     }     if (p.injury_start_date) {       html += '<p class="nfln-modal-meta">Injury reported: ' + escapeHtml(p.injury_start_date) + "</p>";     }     if (p.practice_participation) {       html += '<p class="nfln-modal-meta">Practice status: ' + escapeHtml(p.practice_participation) + "</p>";     }     html += '<div id="nfln-modal-articles"><p class="nfln-modal-loading">Loading full story...</p></div>';      modalBody.innerHTML = html;     modalOverlay.classList.add("open");      loadCombinedNews(p.espn_id || null, p.name, p.team);   }    function htmlToText(value) {     if (!value) return "";     var div = document.createElement("div");     div.innerHTML = String(value);     return (div.textContent || div.innerText || "")       .replace(/\s+/g, " ")       .trim();   }    function findPlayerNews(data, playerName, espnId) {     var players = (data && data.players) || [];     var targetId = espnId ? String(espnId) : null;     var targetName = (playerName || "").toLowerCase().trim();      for (var i = 0; i < players.length; i++) {       var p = players[i] || {};       if (targetId && p.espn_id != null && String(p.espn_id) === targetId) return p;       if (targetName && String(p.name || "").toLowerCase().trim() === targetName) return p;     }     return null;   }    function renderModalArticles(articlesDiv, articles) {     if (!articlesDiv) return;      articles = (articles || []).slice().sort(function (a, b) {       return new Date(b.published || 0).getTime() - new Date(a.published || 0).getTime();     }).slice(0, 6);      if (articles.length === 0) {       articlesDiv.innerHTML = '<p class="nfln-modal-empty">No detailed news available for this player right now.</p>';       return;     }      var html2 = "";     articles.forEach(function (item) {       var description = htmlToText(item.description);       var headline = htmlToText(item.headline) || item.headline || "";       var source = htmlToText(item.source) || item.source || "ESPN";        html2 += '<div class="nfln-modal-article">';       if (headline) {         if (item.link) {           html2 += '<p class="nfln-modal-headline"><a href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(headline) + '</a></p>';         } else {           html2 += '<p class="nfln-modal-headline">' + escapeHtml(headline) + '</p>';         }       }       if (description) {         html2 += '<p class="nfln-modal-desc">' + escapeHtml(description) + '</p>';       }       if (item.published) {         var parsedDate = new Date(item.published);         var dateText = !isNaN(parsedDate.getTime()) ? parsedDate.toLocaleString("en-US") : String(item.published);         html2 += '<p class="nfln-modal-date">' + escapeHtml(dateText) + ' · ' + escapeHtml(source) + '</p>';       } else {         html2 += '<p class="nfln-modal-date">' + escapeHtml(source) + '</p>';       }       html2 += '</div>';     });      html2 += '<div class="nfln-modal-source">Sources: ESPN + Google News</div>';     articlesDiv.innerHTML = html2;   }    function loadCombinedNews(espnId, name, teamAbbr) {     var articlesDiv = document.getElementById("nfln-modal-articles");     if (!articlesDiv) return;      fetch("./player-news.json?ts=" + Date.now())       .then(function (res) {         if (!res.ok) throw new Error("HTTP " + res.status);         return res.json();       })       .then(function (data) {         var player = findPlayerNews(data, name, espnId);         if (!player) {           articlesDiv.innerHTML = '<p class="nfln-modal-empty">No saved news was found for this player.</p>';           return;         }          renderModalArticles(articlesDiv, player.articles || []);       })       .catch(function (err) {         console.error("[NFL Fantasy News] player-news.json failed:", err);         articlesDiv.innerHTML = '<p class="nfln-modal-empty">Unable to load player news right now.</p>';       });   }    function closeModal() {     modalOverlay.classList.remove("open");     modalBody.innerHTML = "";   }    modalClose.addEventListener("click", closeModal);   modalOverlay.addEventListener("click", function (e) {     if (e.target === modalOverlay) closeModal();   });    function escapeHtml(str) {     var div = document.createElement("div");     div.textContent = str;     return div.innerHTML;   }    var NEWS_URL = "./news.json";
+  <div class="nfln-nav">
+    <a href="index.html" class="inactive">Players Trending</a>
+    <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
+    <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+    <a href="tips.html" class="inactive">Tips</a>
+    <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+    <a href="my-team.html" class="active">My Fantasy Team</a>
+  </div>
 
-  function renderActivityList(container, players, type) {
-    container.innerHTML = "";
+  <section class="nfln-panel">
+    <h2>League Sync</h2>
+    <p class="nfln-small">Sleeper ligához nincs szükség jelszóra vagy account-hozzáférésre. Add meg a League ID-t és a Sleeper felhasználónevedet, hogy az oldal beazonosítsa a saját rosteredet.</p>
+    <div class="nfln-form">
+      <div>
+        <label for="league-id">Sleeper League ID</label>
+        <input id="league-id" class="nfln-input" placeholder="pl. 123456789012345678" autocomplete="off">
+      </div>
+      <div>
+        <label for="username">Sleeper username</label>
+        <input id="username" class="nfln-input" placeholder="pl. perczakp" autocomplete="off">
+      </div>
+      <button id="sync-btn" class="nfln-button">Sync League</button>
+    </div>
+    <div id="sync-status" class="nfln-status">Még nincs szinkronizálva.</div>
+    <div class="nfln-attribution">Adatforrás: Sleeper API. Az API olvasási célú, token nélkül használható.</div>
+  </section>
 
-    if (!players || players.length === 0) {
-      container.innerHTML = '<p style="text-align:center;color:#888;">No data available right now.</p>';
+  <div id="dashboard" class="nfln-hidden">
+    <section class="nfln-panel">
+      <h2 id="league-title">My Roster</h2>
+      <div id="league-meta" class="nfln-small"></div>
+      <div id="roster-grid" class="nfln-roster"></div>
+    </section>
+
+    <div class="nfln-grid">
+      <section class="nfln-panel">
+        <h2>Roster Strength</h2>
+        <div id="strength" class="nfln-strength"></div>
+        <div id="need-summary" class="nfln-need"></div>
+      </section>
+
+      <section class="nfln-panel">
+        <h2>Position Needs</h2>
+        <div id="needs"></div>
+      </section>
+    </div>
+
+    <section class="nfln-panel">
+      <h2>Weekly Availability</h2>
+      <p class="nfln-small">A következő hetekben jelzem, melyik rosteredben lévő játékos esik bye weekre. A bye-k az NFL heti menetrendből kerülnek meghatározásra.</p>
+      <div id="bye-status" class="nfln-status">Bye week adatok betöltése...</div>
+      <div id="bye-list" class="nfln-bye-list"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var state = {
+    league: null,
+    users: [],
+    rosters: [],
+    me: null,
+    roster: null,
+    players: {},
+    rosterPlayers: [],
+    byeWeeks: {}
+  };
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  function setStatus(text, type){
+    var el = $("sync-status");
+    el.textContent = text;
+    el.className = "nfln-status" + (type ? " " + type : "");
+  }
+
+  function api(path){
+    return fetch("https://api.sleeper.app/v1" + path).then(function(res){
+      if(!res.ok) throw new Error("Sleeper API HTTP " + res.status);
+      return res.json();
+    });
+  }
+
+  function escapeText(value){
+    return value == null ? "" : String(value);
+  }
+
+  function playerPosition(p){
+    if(!p) return "N/A";
+    if(p.position === "DEF" || p.fantasy_positions && p.fantasy_positions.indexOf("DEF") >= 0) return "DEF";
+    return p.position || (p.fantasy_positions && p.fantasy_positions[0]) || "N/A";
+  }
+
+  function basePosition(pos){
+    if(["DL","DE","DT","NT","EDGE"].indexOf(pos) >= 0) return "DL";
+    if(["LB","OLB","ILB","MLB"].indexOf(pos) >= 0) return "LB";
+    if(["DB","CB","S","FS","SS"].indexOf(pos) >= 0) return "DB";
+    return pos;
+  }
+
+  function displayPosition(pos){
+    var b = basePosition(pos);
+    return b === "DEF" ? "DST" : b;
+  }
+
+  function unique(arr){
+    return arr.filter(function(v,i){ return arr.indexOf(v) === i; });
+  }
+
+  function renderRoster(){
+    var box = $("roster-grid");
+    box.innerHTML = "";
+    state.rosterPlayers.forEach(function(item){
+      var card = document.createElement("div");
+      card.className = "nfln-player";
+      var starter = state.roster.starters && state.roster.starters.indexOf(item.id) >= 0;
+      card.innerHTML =
+        "<strong>" + escapeText(item.name) + (starter ? " ★" : "") + "</strong>" +
+        "<small>" + escapeText(displayPosition(playerPosition(item))) +
+        " · " + escapeText(item.team || "FA") +
+        (item.injury_status ? " · " + escapeText(item.injury_status) : "") +
+        "</small>";
+      box.appendChild(card);
+    });
+  }
+
+  function rosterRequirements(){
+    var slots = (state.league.roster_positions || []).map(function(x){ return String(x).toUpperCase(); });
+    var req = {QB:0,RB:0,WR:0,TE:0,IDP:0,DEF:0};
+    slots.forEach(function(slot){
+      if(slot === "QB") req.QB++;
+      else if(slot === "RB") req.RB++;
+      else if(slot === "WR") req.WR++;
+      else if(slot === "TE") req.TE++;
+      else if(slot === "DEF" || slot === "DST") req.DEF++;
+      else if(slot.indexOf("IDP") >= 0) req.IDP++;
+    });
+    return req;
+  }
+
+  function positionBuckets(){
+    var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
+    state.rosterPlayers.forEach(function(p){
+      var pos = playerPosition(p);
+      var base = basePosition(pos);
+      if(base === "QB") buckets.QB.push(p);
+      else if(base === "RB") buckets.RB.push(p);
+      else if(base === "WR") buckets.WR.push(p);
+      else if(base === "TE") buckets.TE.push(p);
+      else if(["DL","LB","DB"].indexOf(base) >= 0) buckets.IDP.push(p);
+      else if(base === "DEF") buckets.DEF.push(p);
+    });
+    return buckets;
+  }
+
+  function needScore(pos, buckets, req){
+    var count = buckets[pos].length;
+    var starters = req[pos] || 0;
+    if(pos === "IDP") starters = req.IDP || 0;
+    if(pos === "DEF") starters = req.DEF || 0;
+
+    var score = 35;
+    if(starters > 0){
+      var depthTarget = starters + 1;
+      score += Math.max(0, depthTarget - count) * 18;
+      if(count < starters) score += 25;
+    } else {
+      score += Math.max(0, 2 - count) * 8;
+    }
+
+    var injured = buckets[pos].filter(function(p){
+      return p.injury_status && /out|ir|doubtful/i.test(p.injury_status);
+    }).length;
+    score += injured * 7;
+
+    return Math.max(0, Math.min(100, Math.round(score)));
+  }
+
+  function strengthScore(pos, buckets, req){
+    var count = buckets[pos].length;
+    var starters = req[pos] || 0;
+    if(pos === "IDP") starters = req.IDP || 0;
+    if(pos === "DEF") starters = req.DEF || 0;
+
+    if(!starters) starters = 1;
+    var coverage = Math.min(1.4, count / starters);
+    var injured = buckets[pos].filter(function(p){
+      return p.injury_status && /out|ir|doubtful/i.test(p.injury_status);
+    }).length;
+    var score = Math.round(Math.min(100, coverage * 62 + Math.max(0, count - starters) * 8 - injured * 10 + 18));
+    return Math.max(0, Math.min(100, score));
+  }
+
+  function strengthClass(score){
+    if(score >= 75) return "good";
+    if(score >= 55) return "mid";
+    if(score >= 40) return "warn";
+    return "bad";
+  }
+
+  function strengthLabel(score){
+    if(score >= 75) return "ERŐS";
+    if(score >= 55) return "KÖZEPES";
+    if(score >= 40) return "GYENGE";
+    return "NAGYON GYENGE";
+  }
+
+  function renderAnalysis(){
+    var buckets = positionBuckets();
+    var req = rosterRequirements();
+    var positions = ["QB","RB","WR","TE","IDP"];
+    var strength = $("strength");
+    var needs = $("needs");
+    strength.innerHTML = "";
+    needs.innerHTML = "";
+
+    var results = positions.map(function(pos){
+      var need = needScore(pos,buckets,req);
+      var strong = strengthScore(pos,buckets,req);
+      return {pos:pos,need:need,strength:strong,count:buckets[pos].length};
+    }).sort(function(a,b){ return b.need-a.need; });
+
+    results.forEach(function(r){
+      var row = document.createElement("div");
+      row.className = "nfln-strength-row";
+      row.innerHTML =
+        "<strong>" + r.pos + "</strong>" +
+        '<div class="nfln-bar"><div class="nfln-fill ' + strengthClass(r.strength) +
+        '" style="width:' + r.strength + '%"></div></div>' +
+        "<strong>" + r.strength + "</strong>";
+      strength.appendChild(row);
+    });
+
+    var table = document.createElement("table");
+    table.className = "nfln-table";
+    table.innerHTML = "<thead><tr><th>Pos</th><th>Roster</th><th>Need</th><th>Priority</th></tr></thead>";
+    var tbody = document.createElement("tbody");
+
+    results.forEach(function(r){
+      var priority = r.need >= 70 ? "HIGH" : r.need >= 45 ? "MEDIUM" : "LOW";
+      var cls = priority.toLowerCase();
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td><strong>" + r.pos + "</strong></td>" +
+        "<td>" + r.count + "</td>" +
+        "<td>" + r.need + "/100</td>" +
+        '<td><span class="nfln-badge ' + cls + '">' + priority + "</span></td>";
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    needs.appendChild(table);
+
+    var top = results[0];
+    $("need-summary").innerHTML =
+      "<strong>Legnagyobb erősítési igény: " + top.pos + "</strong><br>" +
+      '<span class="nfln-small">A számítás a kezdőhelyek számát, roster-mélységet és a sérült játékosokat veszi figyelembe. Ez egy roster-heurisztika, nem fantasy pont-előrejelzés.</span>';
+  }
+
+  function teamName(user){
+    return (user.metadata && user.metadata.team_name) || user.display_name || user.username;
+  }
+
+  function renderLeague(){
+    $("dashboard").classList.remove("nfln-hidden");
+    $("league-title").textContent = teamName(state.me) + " — My Roster";
+    $("league-meta").textContent =
+      state.league.name + " · " + state.league.total_rosters + " teams · " +
+      (state.league.scoring_settings ? "League scoring loaded" : "Scoring settings unavailable");
+    renderRoster();
+    renderAnalysis();
+  }
+
+  function findMyRoster(){
+    state.roster = state.rosters.filter(function(r){
+      return String(r.owner_id) === String(state.me.user_id);
+    })[0] || null;
+    if(!state.roster) throw new Error("Nem találtam a felhasználóhoz tartozó rostert ebben a ligában.");
+  }
+
+  function buildRosterPlayers(){
+    state.rosterPlayers = (state.roster.players || []).map(function(id){
+      var p = state.players[id];
+      if(!p) return null;
+      return Object.assign({id:id}, p);
+    }).filter(Boolean);
+  }
+
+  function currentSeason(){
+    return api("/state/nfl").then(function(s){ return s.season || new Date().getFullYear(); });
+  }
+
+  function fetchByeWeeks(season){
+    var weeks = [];
+    for(var week=1; week<=18; week++){
+      weeks.push(
+        fetch("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?seasontype=2&week=" + week + "&limit=100")
+          .then(function(res){ return res.ok ? res.json() : {events:[]}; })
+          .catch(function(){ return {events:[]}; })
+      );
+    }
+
+    return Promise.all(weeks).then(function(results){
+      var playedByWeek = {};
+      results.forEach(function(data,index){
+        var set = {};
+        (data.events || []).forEach(function(event){
+          (event.competitions || []).forEach(function(comp){
+            (comp.competitors || []).forEach(function(c){
+              var abbr = c.team && c.team.abbreviation;
+              if(abbr) set[abbr] = true;
+            });
+          });
+        });
+        playedByWeek[index+1] = set;
+      });
+
+      var teams = unique(state.rosterPlayers.map(function(p){ return p.team; }).filter(Boolean));
+      var bye = {};
+      teams.forEach(function(team){
+        bye[team] = [];
+        for(var w=1; w<=18; w++){
+          if(playedByWeek[w] && !playedByWeek[w][team]) bye[team].push(w);
+        }
+      });
+      return bye;
+    });
+  }
+
+  function renderByes(){
+    var box = $("bye-list");
+    box.innerHTML = "";
+    var grouped = {};
+
+    state.rosterPlayers.forEach(function(p){
+      var weeks = state.byeWeeks[p.team] || [];
+      weeks.forEach(function(w){
+        if(!grouped[w]) grouped[w] = [];
+        grouped[w].push(p);
+      });
+    });
+
+    var keys = Object.keys(grouped).sort(function(a,b){ return Number(a)-Number(b); });
+    if(!keys.length){
+      box.innerHTML = '<div class="nfln-bye-week">Nem találtam bye weeket a rosteredhez.</div>';
+      $("bye-status").textContent = "Bye week adatok betöltve.";
+      $("bye-status").className = "nfln-status ok";
       return;
     }
 
-    players.forEach(function (player) {
+    keys.forEach(function(w){
       var card = document.createElement("div");
-      card.className = "nfln-card nfln-card-clickable";
-
-      card.addEventListener("click", function () {
-        var match = allSearchPlayers.filter(function (sp) {
-          return sp.name.toLowerCase() === player.name.toLowerCase();
-        })[0];
-
-        if (match) {
-          openPlayerModal(match);
-        }
+      card.className = "nfln-bye-week";
+      card.innerHTML = "<strong>Week " + w + "</strong>";
+      grouped[w].forEach(function(p){
+        var line = document.createElement("div");
+        line.className = "nfln-bye-player";
+        line.textContent = p.name + " · " + displayPosition(playerPosition(p));
+        card.appendChild(line);
       });
+      box.appendChild(card);
+    });
+    $("bye-status").textContent = "Bye week adatok betöltve.";
+    $("bye-status").className = "nfln-status ok";
+  }
 
-      var name = document.createElement("p");
-      name.className = "nfln-name";
-      name.textContent = player.name;
+  function sync(){
+    var leagueId = $("league-id").value.trim();
+    var username = $("username").value.trim();
 
-      var meta = document.createElement("p");
-      meta.className = "nfln-card-meta";
-      meta.textContent = player.position + " · " + player.team;
+    if(!leagueId || !username){
+      setStatus("Add meg a League ID-t és a Sleeper felhasználónevedet.","error");
+      return;
+    }
 
-      var activity = document.createElement("div");
-      activity.className = "nfln-activity";
+    $("sync-btn").disabled = true;
+    setStatus("Liga, roster és játékosadatok betöltése...");
 
-      if (type === "added") {
-        activity.textContent =
-          "+" + (player.adds_48h || 0).toLocaleString("en-US") +
-          " fantasy adds (48h)";
-      } else {
-        activity.textContent =
-          "-" + (player.drops_48h || 0).toLocaleString("en-US") +
-          " fantasy drops (48h)";
-      }
+    Promise.all([
+      api("/league/" + encodeURIComponent(leagueId)),
+      api("/league/" + encodeURIComponent(leagueId) + "/users"),
+      api("/league/" + encodeURIComponent(leagueId) + "/rosters"),
+      api("/players/nfl")
+    ]).then(function(data){
+      state.league = data[0];
+      state.users = data[1];
+      state.rosters = data[2];
+      state.players = data[3];
 
-      card.appendChild(name);
-      card.appendChild(meta);
-      card.appendChild(activity);
-      container.appendChild(card);
+      var target = username.toLowerCase();
+      state.me = state.users.filter(function(u){
+        return String(u.username || "").toLowerCase() === target ||
+               String(u.display_name || "").toLowerCase() === target;
+      })[0];
+
+      if(!state.me) throw new Error("A megadott Sleeper felhasználó nem található ebben a ligában.");
+
+      findMyRoster();
+      buildRosterPlayers();
+      renderLeague();
+
+      setStatus("Liga sikeresen szinkronizálva: " + state.league.name,"ok");
+      return currentSeason();
+    }).then(function(season){
+      $("bye-status").textContent = "Bye weekek betöltése (" + season + ")...";
+      return fetchByeWeeks(season);
+    }).then(function(bye){
+      state.byeWeeks = bye;
+      renderByes();
+    }).catch(function(err){
+      console.error(err);
+      setStatus(err.message || "Nem sikerült a szinkronizálás.","error");
+      $("bye-status").textContent = "A bye week adatok nem tölthetők be.";
+      $("bye-status").className = "nfln-status error";
+    }).finally(function(){
+      $("sync-btn").disabled = false;
     });
   }
 
-  fetch(NEWS_URL + "?ts=" + Date.now())
-    .then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.json();
-    })
-    .then(function (data) {
-      renderActivityList(
-        document.getElementById("nfln-added-list"),
-        data.added || [],
-        "added"
-      );
-
-      renderActivityList(
-        document.getElementById("nfln-dropped-list"),
-        data.dropped || [],
-        "dropped"
-      );
-    })
-    .catch(function (err) {
-      console.error("[NFL Fantasy News] news.json failed:", err);
-
-      document.getElementById("nfln-added-list").innerHTML =
-        '<p style="text-align:center;color:#c0392b;">Failed to load added players.</p>';
-
-      document.getElementById("nfln-dropped-list").innerHTML =
-        '<p style="text-align:center;color:#c0392b;">Failed to load dropped players.</p>';
-    });
-
-  })(); </script>
+  $("sync-btn").addEventListener("click",sync);
+  $("username").addEventListener("keydown",function(e){ if(e.key==="Enter") sync(); });
+  $("league-id").addEventListener("keydown",function(e){ if(e.key==="Enter") sync(); });
+})();
+</script>
 </body>
 </html>

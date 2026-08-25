@@ -716,8 +716,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       var rank = leagueRank(pos,pools);
       return {
         pos:pos,
-        need:needScore(pos,buckets,starters,pools,roster,players),
-        strength:strengthScore(pos,buckets,starters,pools,roster,players),
+        need:needScore(pos,buckets,starters,pools,state.roster,state.rosterPlayers),
+        strength:strengthScore(pos,buckets,starters,pools,state.roster,state.rosterPlayers),
         count:buckets[pos].length,
         starters:(starters[pos] || []).length,
         rank:rank.rank,
@@ -813,6 +813,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     }
 
     return Promise.all(weeks).then(function(results){
+      var validWeeks = results.filter(function(data){
+        return data && Array.isArray(data.events);
+      }).length;
+
+      if(validWeeks === 0){
+        throw new Error("Az ESPN menetrend adatai jelenleg nem érhetők el.");
+      }
+
       var playedByWeek = {};
       results.forEach(function(data,index){
         var set = {};
@@ -984,10 +992,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       return currentSeason();
     }).then(function(season){
       $("bye-status").textContent = "Bye weekek betöltése (" + season + ")...";
-      return fetchByeWeeks(season);
-    }).then(function(bye){
-      state.byeWeeks = bye;
-      renderByes();
+      return fetchByeWeeks(season).then(function(bye){
+        state.byeWeeks = bye;
+        renderByes();
+      }).catch(function(err){
+        console.warn("Bye week betöltési hiba:", err);
+        $("bye-status").textContent = "A roster szinkronizálása sikeres, de a bye week adatok jelenleg nem érhetők el.";
+        $("bye-status").className = "nfln-status error";
+      });
     }).catch(function(err){
       console.error(err);
       setStatus(err.message || "Nem sikerült a szinkronizálás.","error");

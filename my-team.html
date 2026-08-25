@@ -151,6 +151,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     me: null,
     roster: null,
     players: {},
+    marketValues: [],
     rosterPlayers: [],
     byeWeeks: {}
   };
@@ -174,9 +175,13 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return value == null ? "" : String(value);
   }
 
+  function playerName(p){
+    return p ? (p.name || p.full_name || p.display_name || p.player_name || "") : "";
+  }
+
   function playerPosition(p){
     if(!p) return "N/A";
-    if(p.position === "DEF" || p.fantasy_positions && p.fantasy_positions.indexOf("DEF") >= 0) return "DEF";
+    if(p.position === "DEF" || (p.fantasy_positions && p.fantasy_positions.indexOf("DEF") >= 0)) return "DEF";
     return p.position || (p.fantasy_positions && p.fantasy_positions[0]) || "N/A";
   }
 
@@ -203,8 +208,9 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       var card = document.createElement("div");
       card.className = "nfln-player";
       var starter = state.roster.starters && state.roster.starters.indexOf(item.id) >= 0;
+      var name = playerName(item) || "Ismeretlen játékos";
       card.innerHTML =
-        "<strong>" + escapeText(item.name) + (starter ? " ★" : "") + "</strong>" +
+        "<strong>" + escapeText(name) + (starter ? " ★" : "") + "</strong>" +
         "<small>" + escapeText(displayPosition(playerPosition(item))) +
         " · " + escapeText(item.team || "FA") +
         (item.injury_status ? " · " + escapeText(item.injury_status) : "") +
@@ -214,24 +220,25 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
   }
 
   function rosterRequirements(){
-    var slots = (state.league.roster_positions || []).map(function(x){ return String(x).toUpperCase(); });
     var req = {QB:0,RB:0,WR:0,TE:0,IDP:0,DEF:0};
+    var slots = (state.league.roster_positions || []).map(function(x){ return String(x).toUpperCase(); });
+
     slots.forEach(function(slot){
       if(slot === "QB") req.QB++;
       else if(slot === "RB") req.RB++;
       else if(slot === "WR") req.WR++;
       else if(slot === "TE") req.TE++;
       else if(slot === "DEF" || slot === "DST") req.DEF++;
-      else if(slot.indexOf("IDP") >= 0) req.IDP++;
+      else if(["DL","LB","DB","IDP","IDP_FLEX"].indexOf(slot) >= 0) req.IDP++;
     });
+
     return req;
   }
 
   function positionBuckets(){
     var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
     state.rosterPlayers.forEach(function(p){
-      var pos = playerPosition(p);
-      var base = basePosition(pos);
+      var base = basePosition(playerPosition(p));
       if(base === "QB") buckets.QB.push(p);
       else if(base === "RB") buckets.RB.push(p);
       else if(base === "WR") buckets.WR.push(p);
@@ -242,42 +249,97 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return buckets;
   }
 
-  function needScore(pos, buckets, req){
-    var count = buckets[pos].length;
-    var starters = req[pos] || 0;
-    if(pos === "IDP") starters = req.IDP || 0;
-    if(pos === "DEF") starters = req.DEF || 0;
+  function starterBuckets(){
+    var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
+    var starters = state.roster && state.roster.starters || [];
 
-    var score = 35;
-    if(starters > 0){
-      var depthTarget = starters + 1;
-      score += Math.max(0, depthTarget - count) * 18;
-      if(count < starters) score += 25;
-    } else {
-      score += Math.max(0, 2 - count) * 8;
-    }
-
-    var injured = buckets[pos].filter(function(p){
-      return p.injury_status && /out|ir|doubtful/i.test(p.injury_status);
-    }).length;
-    score += injured * 7;
-
-    return Math.max(0, Math.min(100, Math.round(score)));
+    starters.forEach(function(id){
+      var p = state.rosterPlayers.filter(function(x){ return String(x.id) === String(id); })[0];
+      if(!p) return;
+      var base = basePosition(playerPosition(p));
+      if(base === "QB") buckets.QB.push(p);
+      else if(base === "RB") buckets.RB.push(p);
+      else if(base === "WR") buckets.WR.push(p);
+      else if(base === "TE") buckets.TE.push(p);
+      else if(["DL","LB","DB"].indexOf(base) >= 0) buckets.IDP.push(p);
+      else if(base === "DEF") buckets.DEF.push(p);
+    });
+    return buckets;
   }
 
-  function strengthScore(pos, buckets, req){
-    var count = buckets[pos].length;
-    var starters = req[pos] || 0;
-    if(pos === "IDP") starters = req.IDP || 0;
-    if(pos === "DEF") starters = req.DEF || 0;
+  function marketValue(p){
+    var id = String(p.id || "");
+    var name = playerName(p).toLowerCase();
 
-    if(!starters) starters = 1;
-    var coverage = Math.min(1.4, count / starters);
-    var injured = buckets[pos].filter(function(p){
-      return p.injury_status && /out|ir|doubtful/i.test(p.injury_status);
-    }).length;
-    var score = Math.round(Math.min(100, coverage * 62 + Math.max(0, count - starters) * 8 - injured * 10 + 18));
-    return Math.max(0, Math.min(100, score));
+    var match = state.marketValues.filter(function(v){
+      return String(v.sleeperId || v.sleeper_id || "") === id ||
+             String(v.name || "").toLowerCase() === name;
+    })[0];
+
+    if(match && Number.isFinite(Number(match.value))) return Number(match.value);
+
+    var rank = Number(p.search_rank);
+    if(Number.isFinite(rank) && rank > 0){
+      return Math.max(1, 10000 / Math.sqrt(rank));
+    }
+
+    return 1;
+  }
+
+  function qualityPercentile(p, bucket){
+    if(!bucket.length) return 0;
+    var values = bucket.map(marketValue).sort(function(a,b){ return b-a; });
+    var value = marketValue(p);
+    var better = values.filter(function(v){ return v > value; }).length;
+    return Math.round(100 * (1 - better / Math.max(1, values.length - 1)));
+  }
+
+  function injuryPenalty(p){
+    var s = String(p.injury_status || "").toUpperCase();
+    if(/IR|OUT/.test(s)) return 20;
+    if(/DOUBTFUL/.test(s)) return 12;
+    if(/QUESTIONABLE|Q/.test(s)) return 6;
+    return 0;
+  }
+
+  function strengthScore(pos, buckets, starters){
+    var roster = buckets[pos] || [];
+    if(!roster.length) return 0;
+
+    var starterList = starters[pos] || [];
+    var ranked = roster.slice().sort(function(a,b){ return marketValue(b)-marketValue(a); });
+    var starterTarget = Math.max(1, starterList.length);
+
+    var top = ranked.slice(0, starterTarget);
+    var quality = top.reduce(function(sum,p,bucketIndex){
+      return sum + Math.max(0, qualityPercentile(p, roster) - injuryPenalty(p));
+    },0) / top.length;
+
+    var depth = Math.min(100, Math.max(0, (roster.length - starterTarget) * 12 + 40));
+    var injured = roster.filter(function(p){ return injuryPenalty(p) >= 12; }).length;
+
+    return Math.round(Math.max(0, Math.min(100, quality * 0.70 + depth * 0.30 - injured * 4)));
+  }
+
+  function needScore(pos, buckets, starters){
+    var roster = buckets[pos] || [];
+    var starterList = starters[pos] || [];
+    var starterTarget = Math.max(1, starterList.length);
+    var ranked = roster.slice().sort(function(a,b){ return marketValue(b)-marketValue(a); });
+
+    var top = ranked.slice(0, starterTarget);
+    var avgQuality = top.length
+      ? top.reduce(function(sum,p){ return sum + Math.max(0, qualityPercentile(p, roster) - injuryPenalty(p)); },0) / top.length
+      : 0;
+
+    var depthGap = Math.max(0, starterTarget + 1 - roster.length);
+    var weakStarter = Math.max(0, 65 - avgQuality);
+    var injuryCount = roster.filter(function(p){ return injuryPenalty(p) >= 12; }).length;
+
+    var score = 20 + weakStarter * 0.65 + depthGap * 18 + injuryCount * 8;
+    if(!starterList.length && !roster.length) score = 35;
+
+    return Math.round(Math.max(0, Math.min(100, score)));
   }
 
   function strengthClass(score){
@@ -287,16 +349,9 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return "bad";
   }
 
-  function strengthLabel(score){
-    if(score >= 75) return "ERŐS";
-    if(score >= 55) return "KÖZEPES";
-    if(score >= 40) return "GYENGE";
-    return "NAGYON GYENGE";
-  }
-
   function renderAnalysis(){
     var buckets = positionBuckets();
-    var req = rosterRequirements();
+    var starters = starterBuckets();
     var positions = ["QB","RB","WR","TE","IDP"];
     var strength = $("strength");
     var needs = $("needs");
@@ -304,9 +359,13 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     needs.innerHTML = "";
 
     var results = positions.map(function(pos){
-      var need = needScore(pos,buckets,req);
-      var strong = strengthScore(pos,buckets,req);
-      return {pos:pos,need:need,strength:strong,count:buckets[pos].length};
+      return {
+        pos:pos,
+        need:needScore(pos,buckets,starters),
+        strength:strengthScore(pos,buckets,starters),
+        count:buckets[pos].length,
+        starters:(starters[pos] || []).length
+      };
     }).sort(function(a,b){ return b.need-a.need; });
 
     results.forEach(function(r){
@@ -327,22 +386,22 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 
     results.forEach(function(r){
       var priority = r.need >= 70 ? "HIGH" : r.need >= 45 ? "MEDIUM" : "LOW";
-      var cls = priority.toLowerCase();
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td><strong>" + r.pos + "</strong></td>" +
-        "<td>" + r.count + "</td>" +
+        "<td>" + r.count + " (" + r.starters + " start)</td>" +
         "<td>" + r.need + "/100</td>" +
-        '<td><span class="nfln-badge ' + cls + '">' + priority + "</span></td>";
+        '<td><span class="nfln-badge ' + priority.toLowerCase() + '">' + priority + "</span></td>";
       tbody.appendChild(tr);
     });
+
     table.appendChild(tbody);
     needs.appendChild(table);
 
     var top = results[0];
     $("need-summary").innerHTML =
       "<strong>Legnagyobb erősítési igény: " + top.pos + "</strong><br>" +
-      '<span class="nfln-small">A számítás a kezdőhelyek számát, roster-mélységet és a sérült játékosokat veszi figyelembe. Ez egy roster-heurisztika, nem fantasy pont-előrejelzés.</span>';
+      '<span class="nfln-small">A pontszám a kezdő játékosok piaci értékét, a roster mélységét és a sérülési kockázatot veszi figyelembe. A FantasyCalc értékek elsődlegesek, ha elérhetők.</span>';
   }
 
   function teamName(user){
@@ -354,7 +413,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     $("league-title").textContent = teamName(state.me) + " — My Roster";
     $("league-meta").textContent =
       state.league.name + " · " + state.league.total_rosters + " teams · " +
-      (state.league.scoring_settings ? "League scoring loaded" : "Scoring settings unavailable");
+      ((state.league.roster_positions || []).join(", ") || "Roster settings unavailable");
     renderRoster();
     renderAnalysis();
   }
@@ -370,8 +429,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     state.rosterPlayers = (state.roster.players || []).map(function(id){
       var p = state.players[id];
       if(!p) return null;
-      return Object.assign({id:id}, p);
-    }).filter(Boolean);
+      return Object.assign({id:id, name:playerName(p)}, p);
+    }).filter(function(p){ return p && p.name; });
   }
 
   function currentSeason(){
@@ -443,7 +502,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       grouped[w].forEach(function(p){
         var line = document.createElement("div");
         line.className = "nfln-bye-player";
-        line.textContent = p.name + " · " + displayPosition(playerPosition(p));
+        line.textContent = playerName(p) + " · " + displayPosition(playerPosition(p));
         card.appendChild(line);
       });
       box.appendChild(card);
@@ -468,12 +527,16 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       api("/league/" + encodeURIComponent(leagueId)),
       api("/league/" + encodeURIComponent(leagueId) + "/users"),
       api("/league/" + encodeURIComponent(leagueId) + "/rosters"),
-      api("/players/nfl")
+      api("/players/nfl"),
+      fetch("./fantasycalc-values.json?ts=" + Date.now()).then(function(r){
+        return r.ok ? r.json() : {values:[]};
+      }).catch(function(){ return {values:[]}; })
     ]).then(function(data){
       state.league = data[0];
       state.users = data[1];
       state.rosters = data[2];
       state.players = data[3];
+      state.marketValues = (data[4] && Array.isArray(data[4].values)) ? data[4].values : [];
 
       var target = username.toLowerCase();
       state.me = state.users.filter(function(u){

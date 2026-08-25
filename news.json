@@ -1,313 +1,529 @@
 {
-  "updated_at": "2026-08-25T05:50:50.312Z",
-  "players": [
+  "updated_at": "2026-08-25T10:12:17.623Z",
+  "added": [
     {
       "name": "Jack Strand",
-      "summary": "Jack Strand (QB, ATL) is healthy and has drawn significant fantasy attention: 216700 adds over the past 48 hours.",
-      "adds_48h": 216700,
+      "position": "QB",
+      "team": "ATL",
+      "adds_48h": 208675,
       "injury_status": null,
-      "real_news_headline": "Does Jack Strand Make Atlanta Falcons 53-Man Roster? - Yahoo Sports",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMihgFBVV95cUxOMGU1VU52cDdjTHJTQXBHSkRQRnpHeUd1QXpleklfUEJZdHdRVFMxLWNrSFpZbHFsZ2M5dy0zdnMwUlRfbDdxZlpvV3ZoU3poMVZ3ZHl1dEpMWkVvdnNodW1JWlYxN0p6MUhCWWdTS2hkd2JkS1BFV1RiekFiNi12THQ3RXpLQQ?oc=5\" target=\"_blank\">Does Jack Strand Make Atlanta Falcons 53-Man Roster?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Sports</font>",
-      "real_news_published": "Sun, 23 Aug 2026 12:20:52 GMT",
-      "real_news_source": "Yahoo Sports",
-      "real_news_link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOMGU1VU52cDdjTHJTQXBHSkRQRnpHeUd1QXpleklfUEJZdHdRVFMxLWNrSFpZbHFsZ2M5dy0zdnMwUlRfbDdxZlpvV3ZoU3poMVZ3ZHl1dEpMWkVvdnNodW1JWlYxN0p6MUhCWWdTS2hkd2JkS1BFV1RiekFiNi12THQ3RXpLQQ?oc=5"
+      "sleeper_id": "13602",
+      "espn_id": null
     },
     {
       "name": "Malik Davis",
-      "summary": "Malik Davis (RB, DAL) is healthy and has drawn significant fantasy attention: 190494 adds over the past 48 hours.",
-      "adds_48h": 190494,
+      "position": "RB",
+      "team": "DAL",
+      "adds_48h": 194625,
       "injury_status": null,
-      "real_news_headline": "Malik Davis Emerging as the RB2 Favorite in Dallas - NFL News | Fantasy Football - RotoBaller",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMingFBVV95cUxNV2hRRmVqMV9ZUnctZmVHb1JTTU5iUGZSSm9NNXV0Y3BqUmkxLWM2NlFSTl80cEJRdWRoM2tJYXM2MERxQ2d2Mi04Ulg5c3RfZEpuNHJ1ZHNIU040RFhfLTJwdVFQaTBYSkJ5UF9zTGdOMTRLQVZ5eFk0SGFWbzBkalJtUUZWQjBxR1kwcTVlbXlid3AxSzNfenNUaF81QQ?oc=5\" target=\"_blank\">Malik Davis Emerging as the RB2 Favorite in Dallas - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
-      "real_news_published": "Sun, 23 Aug 2026 22:58:13 GMT",
-      "real_news_source": "RotoBaller",
-      "real_news_link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNV2hRRmVqMV9ZUnctZmVHb1JTTU5iUGZSSm9NNXV0Y3BqUmkxLWM2NlFSTl80cEJRdWRoM2tJYXM2MERxQ2d2Mi04Ulg5c3RfZEpuNHJ1ZHNIU040RFhfLTJwdVFQaTBYSkJ5UF9zTGdOMTRLQVZ5eFk0SGFWbzBkalJtUUZWQjBxR1kwcTVlbXlid3AxSzNfenNUaF81QQ?oc=5"
+      "sleeper_id": "8800",
+      "espn_id": null
     },
     {
       "name": "Xavier Hutchinson",
-      "summary": "Xavier Hutchinson (WR, HOU) is healthy and has drawn significant fantasy attention: 78456 adds over the past 48 hours.",
-      "adds_48h": 78456,
+      "position": "WR",
+      "team": "HOU",
+      "adds_48h": 76699,
       "injury_status": null,
-      "real_news_headline": "Hutchinson caught one of two targets for minus-1 yard in Thursday's 22-20 preseason loss to the Raiders.",
-      "real_news_description": "Hutchinson caught one of two targets for minus-1 yard in Thursday's 22-20 preseason loss to the Raiders.",
-      "real_news_published": "2026-08-21T04:11:47Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "10218",
+      "espn_id": null
     },
     {
       "name": "Barion Brown",
-      "summary": "Barion Brown (WR, NO) is healthy and has drawn significant fantasy attention: 65322 adds over the past 48 hours.",
-      "adds_48h": 65322,
+      "position": "WR",
+      "team": "NO",
+      "adds_48h": 64071,
       "injury_status": null,
-      "real_news_headline": "Brown tallied four catches (on four targets) for 53 yards in a preseason loss to Jacksonville on Saturday.",
-      "real_news_description": "Brown tallied four catches (on four targets) for 53 yards in a preseason loss to Jacksonville on Saturday.",
-      "real_news_published": "2026-08-16T02:59:51Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "13533",
+      "espn_id": null
     },
     {
       "name": "MarShawn Lloyd",
-      "summary": "MarShawn Lloyd (RB, GB) is healthy and has drawn significant fantasy attention: 54918 adds over the past 48 hours.",
-      "adds_48h": 54918,
+      "position": "RB",
+      "team": "GB",
+      "adds_48h": 54306,
       "injury_status": null,
-      "real_news_headline": "Lloyd rushed six times for 17 yards and secured his only target for an 11-yard touchdown in the Packers' 33-13 preseason win over the Broncos on Friday.",
-      "real_news_description": "Lloyd rushed six times for 17 yards and secured his only target for an 11-yard touchdown in the Packers' 33-13 preseason win over the Broncos on Friday.",
-      "real_news_published": "2026-08-22T05:08:33Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "11581",
+      "espn_id": null
     },
     {
       "name": "Darren Waller",
-      "summary": "Darren Waller (TE, CAR) is healthy and has drawn significant fantasy attention: 52875 adds over the past 48 hours.",
-      "adds_48h": 52875,
+      "position": "TE",
+      "team": "CAR",
+      "adds_48h": 52587,
       "injury_status": null,
-      "real_news_headline": "Darren Waller Not Expected to Play in Preseason Finale - NFL News | Fantasy Football - RotoBaller",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxQYjVGQ1RYdkY4TmRNZ05pbXNhRlRsNnB4djdLR3BPU3F2R2p3N2JhV1lBT3ZwNTMzcnV3azF3SkFMQURQLVJsOWRwQzFUSDZ3ZGhwVmpjNFllcU5NUk0ycGJ1cl9FZDk2bFFVVm1TOFJGY3YtZXFyOW8tUlJGSW5TWFdycjc1THNuNE8zNkpJbV9qQ1VRQUR4V21QWUgwMHVJR1Fv?oc=5\" target=\"_blank\">Darren Waller Not Expected to Play in Preseason Finale - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
-      "real_news_published": "Tue, 25 Aug 2026 01:47:09 GMT",
-      "real_news_source": "RotoBaller",
-      "real_news_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQYjVGQ1RYdkY4TmRNZ05pbXNhRlRsNnB4djdLR3BPU3F2R2p3N2JhV1lBT3ZwNTMzcnV3azF3SkFMQURQLVJsOWRwQzFUSDZ3ZGhwVmpjNFllcU5NUk0ycGJ1cl9FZDk2bFFVVm1TOFJGY3YtZXFyOW8tUlJGSW5TWFdycjc1THNuNE8zNkpJbV9qQ1VRQUR4V21QWUgwMHVJR1Fv?oc=5"
-    },
-    {
-      "name": "Mike Washington",
-      "summary": "Mike Washington (RB, LV) is healthy and has drawn significant fantasy attention: 47981 adds over the past 48 hours.",
-      "adds_48h": 47981,
-      "injury_status": null,
-      "real_news_headline": "Should fantasy managers bet on Mike Washington Jr with Jeanty out?",
-      "real_news_description": "Should fantasy managers bet on Mike Washington Jr. if Jeanty misses time? ",
-      "real_news_published": "2026-08-24T17:09:39Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "https://www.espn.com/video/clip/_/id/49711789/should-fantasy-managers-bet-mike-washington-jr-jeanty-misses"
+      "sleeper_id": "2505",
+      "espn_id": 2576925
     },
     {
       "name": "Dylan Laube",
-      "summary": "Dylan Laube (RB, LV) is healthy and has drawn significant fantasy attention: 47873 adds over the past 48 hours.",
-      "adds_48h": 47873,
+      "position": "RB",
+      "team": "LV",
+      "adds_48h": 48132,
       "injury_status": null,
-      "real_news_headline": "Dylan Laube's 4-yard TD run trims Texans' lead to 20-9 in third quarter - NFL.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMingFBVV95cUxPc0FCXzBueVVZQWVoMGlDZHFiVy1TNzZUZUd1aXVtMGVxbjY2TlM3M0VwNkFVVDNYSjhVNlBHMWhEM1FpTWV2N1NkbzV4LXgwaE9BSHVSS3NlZ0tyVV9EZjE5d3pITGlLZjJtVXcyNVR1WUpKa3NZU0dBV2hLOUtpZzFoZVVNU3FOQ2tzQ1dyRklnMWZxN1ZZZ0l1R2Z3UQ?oc=5\" target=\"_blank\">Dylan Laube's 4-yard TD run trims Texans' lead to 20-9 in third quarter</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NFL.com</font>",
-      "real_news_published": "Fri, 21 Aug 2026 02:28:09 GMT",
-      "real_news_source": "NFL.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPc0FCXzBueVVZQWVoMGlDZHFiVy1TNzZUZUd1aXVtMGVxbjY2TlM3M0VwNkFVVDNYSjhVNlBHMWhEM1FpTWV2N1NkbzV4LXgwaE9BSHVSS3NlZ0tyVV9EZjE5d3pITGlLZjJtVXcyNVR1WUpKa3NZU0dBV2hLOUtpZzFoZVVNU3FOQ2tzQ1dyRklnMWZxN1ZZZ0l1R2Z3UQ?oc=5"
+      "sleeper_id": "11574",
+      "espn_id": null
+    },
+    {
+      "name": "Mike Washington",
+      "position": "RB",
+      "team": "LV",
+      "adds_48h": 48058,
+      "injury_status": null,
+      "sleeper_id": "13305",
+      "espn_id": null
     },
     {
       "name": "Caleb Douglas",
-      "summary": "Caleb Douglas (WR, MIA) is healthy and has drawn significant fantasy attention: 47344 adds over the past 48 hours.",
-      "adds_48h": 47344,
+      "position": "WR",
+      "team": "MIA",
+      "adds_48h": 46984,
       "injury_status": null,
-      "real_news_headline": "Grading Caleb Douglas and the Miami Dolphins' rookies for NFL debuts - AOL.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxOX3VSSXpROHFlV2FBY3A2Y0FPQmpCdHZua2JQVlA3WExBa1Y2Vk9yODdXMjlvM1k1NkVmTkN6MloxRGFHMUhWZ0JYWC1SR2xGY1pNZHU1MVJ4dVo5YzBZTGVBVjVuSkZKaGotQWZTVDNQak1OeDZHSHdWRENkUVNTcFZ2dUMwNEE?oc=5\" target=\"_blank\">Grading Caleb Douglas and the Miami Dolphins' rookies for NFL debuts</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">AOL.com</font>",
-      "real_news_published": "Fri, 21 Aug 2026 07:00:00 GMT",
-      "real_news_source": "AOL.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOX3VSSXpROHFlV2FBY3A2Y0FPQmpCdHZua2JQVlA3WExBa1Y2Vk9yODdXMjlvM1k1NkVmTkN6MloxRGFHMUhWZ0JYWC1SR2xGY1pNZHU1MVJ4dVo5YzBZTGVBVjVuSkZKaGotQWZTVDNQak1OeDZHSHdWRENkUVNTcFZ2dUMwNEE?oc=5"
+      "sleeper_id": "13296",
+      "espn_id": null
     },
     {
       "name": "Malik Washington",
-      "summary": "Malik Washington (WR, MIA) is healthy and has drawn significant fantasy attention: 39664 adds over the past 48 hours.",
-      "adds_48h": 39664,
+      "position": "WR",
+      "team": "MIA",
+      "adds_48h": 39592,
       "injury_status": null,
-      "real_news_headline": "RACE: College Football's Transfer Portal Quarterback CHASE, Malik Washington Leads Pack - fox61.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMingJBVV95cUxQS3NTanY0bHl0bVItaWE5QTl6ZHA3RWtPZEhvZTBodHJNWDRGenN4MXZEYUUyeVhpMEM0LUtuSVhkaVdZM19mai15SUNaOE5BZW4xOW8zdERXVHp6N1l2bG44M1FES3RSanpjQ2F2ak1YSEtIRDlxTGJGbk5naUNKcGthUk5PYWlFdGVQbDk3Y3Yxai1jV2dNODZBRTF1ZG52dW9HaVVwLThkQmcwQlJsX0MyYW1jVldoTExRYVRrbEVJUE50a0ctYjRrM0lmX3Y1REhNS2NVVEhFb2Z2T0xET2hBcW1mWGdxbVpZWFY4LThtMWVTbGNvTndvZUtZWU12ODd5T2FVQi1TV1psWEh2Tk9hWGZtaVZZSVpzWFBR?oc=5\" target=\"_blank\">RACE: College Football's Transfer Portal Quarterback CHASE, Malik Washington Leads Pack</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">fox61.com</font>",
-      "real_news_published": "Mon, 24 Aug 2026 01:34:00 GMT",
-      "real_news_source": "fox61.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMingJBVV95cUxQS3NTanY0bHl0bVItaWE5QTl6ZHA3RWtPZEhvZTBodHJNWDRGenN4MXZEYUUyeVhpMEM0LUtuSVhkaVdZM19mai15SUNaOE5BZW4xOW8zdERXVHp6N1l2bG44M1FES3RSanpjQ2F2ak1YSEtIRDlxTGJGbk5naUNKcGthUk5PYWlFdGVQbDk3Y3Yxai1jV2dNODZBRTF1ZG52dW9HaVVwLThkQmcwQlJsX0MyYW1jVldoTExRYVRrbEVJUE50a0ctYjRrM0lmX3Y1REhNS2NVVEhFb2Z2T0xET2hBcW1mWGdxbVpZWFY4LThtMWVTbGNvTndvZUtZWU12ODd5T2FVQi1TV1psWEh2Tk9hWGZtaVZZSVpzWFBR?oc=5"
+      "sleeper_id": "11610",
+      "espn_id": null
     },
     {
       "name": "Deshaun Watson",
-      "summary": "Deshaun Watson (QB, CLE) is healthy and has drawn significant fantasy attention: 38120 adds over the past 48 hours.",
-      "adds_48h": 38120,
+      "position": "QB",
+      "team": "CLE",
+      "adds_48h": 38648,
       "injury_status": null,
-      "real_news_headline": "Why did Mina Kimes rip the Cleveland Browns over Deshaun Watson? Here’s what sparked her strong reaction - The Times of India",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMijAJBVV95cUxOeC13ZmktMy1BV2pfNUdJZ0Y2NWRRZ0tJU1l0Q05QRHZqTThGeFhFUG9kV3FwaXBrN010Tlk2NjNVYXNtaGtfNEtKQ1RwTVg0V2VOMlkxLWRrc19vZk9oUXNXckZjbG1qTVlvbUx3eHptQjBTVjZmUDFkaUJfdWhvSjd0RDdfQmpkbUg1ZGdQcnpTRzBpRFNIWC1IQnR0bDNWTE11T3ZTdDlQUUxMN2dqblVUemhkYTV4eHk4QXdmUnBiYnVEbTBRZTNwVGUxVTFISHVYU1l0bmtRUlVuVFg3dXprUGR4TDBselhTaDRmYWFoOXRYMHNpSDAzX0ZLYUU0UXlKaWEtTDRkc2JX0gGSAkFVX3lxTE9PUGJNR0U1dE9RUDFNNmRIU0sxOWRyR2V2amE5S2I1dy0xdU5YQW41ZktsUWRabEVPYmpaSWtvLVNkaXhpSy1PZWNOaUZMSlJ0TjBFNDU2NW5BSGFfejVGTTVsMDFudXpsY0FTOGN6WDFTemxxSFVnYV9JeDVsV2RoNjZiaG50NFpOSFlBTl8zQksybUtyT2kwUDJHMUlvRXltZmFqRExwNTlmRzhQbU5vNUZMRWdPRW5UUkhZaG1fOUtQTTg5eGxhQUJnbWZaY1pCdEVqM29HX1RSQ2lod2dTZ3VoV2JTeHpoc090X3lyOHdiN2MyWXBJRjBkSTVDb1E3TDVQR056bTBIMmFEWDhhVkE?oc=5\" target=\"_blank\">Why did Mina Kimes rip the Cleveland Browns over Deshaun Watson? Here’s what sparked her strong reaction</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Times of India</font>",
-      "real_news_published": "Tue, 25 Aug 2026 02:53:00 GMT",
-      "real_news_source": "The Times of India",
-      "real_news_link": "https://news.google.com/rss/articles/CBMijAJBVV95cUxOeC13ZmktMy1BV2pfNUdJZ0Y2NWRRZ0tJU1l0Q05QRHZqTThGeFhFUG9kV3FwaXBrN010Tlk2NjNVYXNtaGtfNEtKQ1RwTVg0V2VOMlkxLWRrc19vZk9oUXNXckZjbG1qTVlvbUx3eHptQjBTVjZmUDFkaUJfdWhvSjd0RDdfQmpkbUg1ZGdQcnpTRzBpRFNIWC1IQnR0bDNWTE11T3ZTdDlQUUxMN2dqblVUemhkYTV4eHk4QXdmUnBiYnVEbTBRZTNwVGUxVTFISHVYU1l0bmtRUlVuVFg3dXprUGR4TDBselhTaDRmYWFoOXRYMHNpSDAzX0ZLYUU0UXlKaWEtTDRkc2JX0gGSAkFVX3lxTE9PUGJNR0U1dE9RUDFNNmRIU0sxOWRyR2V2amE5S2I1dy0xdU5YQW41ZktsUWRabEVPYmpaSWtvLVNkaXhpSy1PZWNOaUZMSlJ0TjBFNDU2NW5BSGFfejVGTTVsMDFudXpsY0FTOGN6WDFTemxxSFVnYV9JeDVsV2RoNjZiaG50NFpOSFlBTl8zQksybUtyT2kwUDJHMUlvRXltZmFqRExwNTlmRzhQbU5vNUZMRWdPRW5UUkhZaG1fOUtQTTg5eGxhQUJnbWZaY1pCdEVqM29HX1RSQ2lod2dTZ3VoV2JTeHpoc090X3lyOHdiN2MyWXBJRjBkSTVDb1E3TDVQR056bTBIMmFEWDhhVkE?oc=5"
+      "sleeper_id": "4017",
+      "espn_id": 3122840
     },
     {
       "name": "Jalen Nailor",
-      "summary": "Jalen Nailor (WR, LV) is healthy and has drawn significant fantasy attention: 37071 adds over the past 48 hours.",
-      "adds_48h": 37071,
+      "position": "WR",
+      "team": "LV",
+      "adds_48h": 36972,
       "injury_status": null,
-      "real_news_headline": "Nailor caught one of three targets for 22 yards in Thursday's 22-20 preseason win over the Texans.",
-      "real_news_description": "Nailor caught one of three targets for 22 yards in Thursday's 22-20 preseason win over the Texans.",
-      "real_news_published": "2026-08-21T03:56:43Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "8180",
+      "espn_id": null
     },
     {
       "name": "Seth McGowan",
-      "summary": "Seth McGowan (RB, IND) is healthy and has drawn significant fantasy attention: 36568 adds over the past 48 hours.",
-      "adds_48h": 36568,
+      "position": "RB",
+      "team": "IND",
+      "adds_48h": 36792,
       "injury_status": null,
-      "real_news_headline": "McGowan rushed eight times for 27 yards in Saturday's 34-6 preseason loss to the Falcons.",
-      "real_news_description": "McGowan rushed eight times for 27 yards in Saturday's 34-6 preseason loss to the Falcons.",
-      "real_news_published": "2026-08-22T20:52:01Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "13424",
+      "espn_id": null
     },
     {
       "name": "Devaughn Vele",
-      "summary": "Devaughn Vele (WR, NO) is healthy and has drawn significant fantasy attention: 33761 adds over the past 48 hours.",
-      "adds_48h": 33761,
+      "position": "WR",
+      "team": "NO",
+      "adds_48h": 33474,
       "injury_status": null,
-      "real_news_headline": "Vele missed Tuesday's practice due to a planned rest day, Matthew Paras of The New Orleans Times-Picayune reports.",
-      "real_news_description": "Vele missed Tuesday's practice due to a planned rest day, Matthew Paras of The New Orleans Times-Picayune reports.",
-      "real_news_published": "2026-08-18T23:27:54Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "11834",
+      "espn_id": null
     },
     {
       "name": "Malik Willis",
-      "summary": "Malik Willis (QB, MIA) is healthy and has drawn significant fantasy attention: 25284 adds over the past 48 hours.",
-      "adds_48h": 25284,
+      "position": "QB",
+      "team": "MIA",
+      "adds_48h": 25396,
       "injury_status": null,
-      "real_news_headline": "Willis is not in uniform for Saturday's preseason game against the Giants, David Furones of the South Florida Sun Sentinel reports.",
-      "real_news_description": "Willis is not in uniform for Saturday's preseason game against the Giants, David Furones of the South Florida Sun Sentinel reports.",
-      "real_news_published": "2026-08-22T19:32:16Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "8161",
+      "espn_id": null
     },
     {
       "name": "Kaelon Black",
-      "summary": "Kaelon Black (RB, SF) is healthy and has drawn significant fantasy attention: 25004 adds over the past 48 hours.",
-      "adds_48h": 25004,
+      "position": "RB",
+      "team": "SF",
+      "adds_48h": 24815,
       "injury_status": null,
-      "real_news_headline": "Kaelon Black Fantasy Football Outlook (2026) - FantasyPros",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMif0FVX3lxTFB4WUZfMURXYmFnaXlRNWV3eTh6OVVUVlhYT1ZfSXJHU1FTRjZzNW84Uld5ZEI1S3FLYXdUa1V1LUJUY3pLQXFtVXZlREx0bVRsdnE3cWkyamdvUko3bnBsZkVsNHFWcllsdmNnNXhfbkdlY2pvVnM0VTR5d2tGUzTSAYQBQVVfeXFMT1VBWmladG91VXZZc1psclpybVNOaFU5TmwzZW9XY0hyREtTNkhQY3FCMzRTVjB0YUtBTS1wMVNLSnU3NkNvSHI2czc3RV9zN09jQ0FuNjV0cXdVVVhCdmhNek9SeHY4TFA5WUdORDNoVDNtbW1XVmFvbmZCRjJzY3lSQnZ2?oc=5\" target=\"_blank\">Kaelon Black Fantasy Football Outlook (2026)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FantasyPros</font>",
-      "real_news_published": "Sun, 23 Aug 2026 22:56:00 GMT",
-      "real_news_source": "FantasyPros",
-      "real_news_link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFB4WUZfMURXYmFnaXlRNWV3eTh6OVVUVlhYT1ZfSXJHU1FTRjZzNW84Uld5ZEI1S3FLYXdUa1V1LUJUY3pLQXFtVXZlREx0bVRsdnE3cWkyamdvUko3bnBsZkVsNHFWcllsdmNnNXhfbkdlY2pvVnM0VTR5d2tGUzTSAYQBQVVfeXFMT1VBWmladG91VXZZc1psclpybVNOaFU5TmwzZW9XY0hyREtTNkhQY3FCMzRTVjB0YUtBTS1wMVNLSnU3NkNvSHI2czc3RV9zN09jQ0FuNjV0cXdVVVhCdmhNek9SeHY4TFA5WUdORDNoVDNtbW1XVmFvbmZCRjJzY3lSQnZ2?oc=5"
+      "sleeper_id": "13414",
+      "espn_id": null
     },
     {
       "name": "Odell Beckham",
-      "summary": "Odell Beckham (WR, NYG) is healthy and has drawn significant fantasy attention: 24920 adds over the past 48 hours.",
-      "adds_48h": 24920,
+      "position": "WR",
+      "team": "NYG",
+      "adds_48h": 24346,
       "injury_status": null,
-      "real_news_headline": "Odell Beckham Jr. left off NY Giants’ leaders circle with roster cuts looming - bolavip.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMipAFBVV95cUxQUFd0UkJaZXI3cE9wY3pHYV9nUlotOElkM0lHTDhfVGhRN3BySi1UTkJ6akhnWHNfeHJsUWFuWUhVblFOUnNIQXVDb2RPU3BzUUk4UGN1SDVwSzBKS2wyVG9oSndScnZEdmhMQjh5TDVVdWtNZlZXeFpfZDJFS3Y4VUdzdmoyMGU0MS1MaUdUT2hnUy1FY3ZHcGtVUHdUTDRqZ1hWSdIBqgFBVV95cUxPQ05UenR6dHFlQ09VZmIxZWtJVnAtM2ZSWTZrQ0xYdDcyYlpleXlWRHgyTEl2a2tTQXdMeHhBWXJrci1GNUd0dS1DWEduam1QMW9PRGhCMnY0T2JkM2pSZTEwSnlVcHF4YjFNZXV3NlNXWGNERm9PVkVHMC1MWjN0c1lwS1pXZ0hHR1lVb3ZyVWgzOGZVeHVzQ3h4MlpJUU9rWGRJLW1IOV94UQ?oc=5\" target=\"_blank\">Odell Beckham Jr. left off NY Giants’ leaders circle with roster cuts looming</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">bolavip.com</font>",
-      "real_news_published": "Mon, 24 Aug 2026 21:39:40 GMT",
-      "real_news_source": "bolavip.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQUFd0UkJaZXI3cE9wY3pHYV9nUlotOElkM0lHTDhfVGhRN3BySi1UTkJ6akhnWHNfeHJsUWFuWUhVblFOUnNIQXVDb2RPU3BzUUk4UGN1SDVwSzBKS2wyVG9oSndScnZEdmhMQjh5TDVVdWtNZlZXeFpfZDJFS3Y4VUdzdmoyMGU0MS1MaUdUT2hnUy1FY3ZHcGtVUHdUTDRqZ1hWSdIBqgFBVV95cUxPQ05UenR6dHFlQ09VZmIxZWtJVnAtM2ZSWTZrQ0xYdDcyYlpleXlWRHgyTEl2a2tTQXdMeHhBWXJrci1GNUd0dS1DWEduam1QMW9PRGhCMnY0T2JkM2pSZTEwSnlVcHF4YjFNZXV3NlNXWGNERm9PVkVHMC1MWjN0c1lwS1pXZ0hHR1lVb3ZyVWgzOGZVeHVzQ3h4MlpJUU9rWGRJLW1IOV94UQ?oc=5"
-    },
-    {
-      "name": "Joe Milton",
-      "summary": "Joe Milton (QB, DAL) is healthy and has drawn significant fantasy attention: 24468 adds over the past 48 hours.",
-      "adds_48h": 24468,
-      "injury_status": null,
-      "real_news_headline": "Dallas Cowboys Should Trade QB Joe Milton III Before It's Too Late - Sports Illustrated",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMingFBVV95cUxNOXJyQlhid2xUdkt0S1dhb1hCZC1LU2VTcFdIRlBjSGw3blZmUl9VREFjUnF2a1cyUVB6MVByQ1lMOWlvOUNjejJRaDg2bHdWR2tiYks5T3hjTHk3SEQ4d0RaNy1Ta2lhbkNoVWJESG1pSnlpZUh6bkFLVmJYVEtJSUoxWVdsc2Vqd05YcmpkM2VaMEZQQk9LQUoxTVlPUQ?oc=5\" target=\"_blank\">Dallas Cowboys Should Trade QB Joe Milton III Before It's Too Late</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Sports Illustrated</font>",
-      "real_news_published": "Tue, 25 Aug 2026 00:45:00 GMT",
-      "real_news_source": "Sports Illustrated",
-      "real_news_link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNOXJyQlhid2xUdkt0S1dhb1hCZC1LU2VTcFdIRlBjSGw3blZmUl9VREFjUnF2a1cyUVB6MVByQ1lMOWlvOUNjejJRaDg2bHdWR2tiYks5T3hjTHk3SEQ4d0RaNy1Ta2lhbkNoVWJESG1pSnlpZUh6bkFLVmJYVEtJSUoxWVdsc2Vqd05YcmpkM2VaMEZQQk9LQUoxTVlPUQ?oc=5"
+      "sleeper_id": "2078",
+      "espn_id": 16733
     },
     {
       "name": "Roman Hemby",
-      "summary": "Roman Hemby (RB, LV) is healthy and has drawn significant fantasy attention: 24048 adds over the past 48 hours.",
-      "adds_48h": 24048,
+      "position": "RB",
+      "team": "LV",
+      "adds_48h": 24192,
       "injury_status": null,
-      "real_news_headline": "Indiana football RB Roman Hemby signs as UDFA with Las Vegas Raiders - AOL.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxNZGs0R2tjWnVERWNBX1JaWHhaOEc5Tnc0dklCNVMyRTdHS3Nlb2ZENDJROWVVN0IzQ2JNZDZUbDRqTzM0Y2g1MGN6S0ZqWVBHeWEzX1lUd2lhaXRZOWxyZUQ1cUN6ZFVYaVR5ekM3cDFRWmxKbTUxWDgwSEd0MGo0Xw?oc=5\" target=\"_blank\">Indiana football RB Roman Hemby signs as UDFA with Las Vegas Raiders</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">AOL.com</font>",
-      "real_news_published": "Tue, 04 Aug 2026 14:43:03 GMT",
-      "real_news_source": "AOL.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNZGs0R2tjWnVERWNBX1JaWHhaOEc5Tnc0dklCNVMyRTdHS3Nlb2ZENDJROWVVN0IzQ2JNZDZUbDRqTzM0Y2g1MGN6S0ZqWVBHeWEzX1lUd2lhaXRZOWxyZUQ1cUN6ZFVYaVR5ekM3cDFRWmxKbTUxWDgwSEd0MGo0Xw?oc=5"
+      "sleeper_id": "13416",
+      "espn_id": null
     },
     {
       "name": "Colbie Young",
-      "summary": "Colbie Young (WR, CIN) is healthy and has drawn significant fantasy attention: 24030 adds over the past 48 hours.",
-      "adds_48h": 24030,
+      "position": "WR",
+      "team": "CIN",
+      "adds_48h": 23814,
       "injury_status": null,
-      "real_news_headline": "Young brought in three of eight targets for 48 yards and a touchdown in the Bengals' 27-9 preseason win over the Bears on Saturday.",
-      "real_news_description": "Young brought in three of eight targets for 48 yards and a touchdown in the Bengals' 27-9 preseason win over the Bears on Saturday.",
-      "real_news_published": "2026-08-23T04:19:42Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "13477",
+      "espn_id": null
+    },
+    {
+      "name": "Joe Milton",
+      "position": "QB",
+      "team": "DAL",
+      "adds_48h": 23668,
+      "injury_status": null,
+      "sleeper_id": "11557",
+      "espn_id": null
     },
     {
       "name": "Keaton Mitchell",
-      "summary": "Keaton Mitchell (RB, LAC) is healthy and has drawn significant fantasy attention: 23535 adds over the past 48 hours.",
-      "adds_48h": 23535,
+      "position": "RB",
+      "team": "LAC",
+      "adds_48h": 23571,
       "injury_status": null,
-      "real_news_headline": "Mitchell rushed three times for minus-1 yard and brought in his only target for 11 yards in the Chargers' 41-17 preseason loss to the 49ers on Thursday night.",
-      "real_news_description": "Mitchell rushed three times for minus-1 yard and brought in his only target for 11 yards in the Chargers' 41-17 preseason loss to the 49ers on Thursday night.",
-      "real_news_published": "2026-08-21T05:39:26Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "9511",
+      "espn_id": null
     },
     {
       "name": "Tyler Loop",
-      "summary": "Tyler Loop (K, BAL) is healthy and has drawn significant fantasy attention: 23088 adds over the past 48 hours.",
-      "adds_48h": 23088,
+      "position": "K",
+      "team": "BAL",
+      "adds_48h": 23184,
       "injury_status": null,
-      "real_news_headline": "Loop is 3-for-4 on field goal tries and 4-for-4 on extra points thus far in preseason.",
-      "real_news_description": "Loop is 3-for-4 on field goal tries and 4-for-4 on extra points thus far in preseason.",
-      "real_news_published": "2026-08-24T15:42:34Z",
-      "real_news_source": "ESPN Fantasy",
-      "real_news_link": "function link() { [native code] }"
+      "sleeper_id": "12711",
+      "espn_id": null
     },
     {
       "name": "Terrance Ferguson",
-      "summary": "Terrance Ferguson (TE, LAR) is healthy and has drawn significant fantasy attention: 22360 adds over the past 48 hours.",
-      "adds_48h": 22360,
+      "position": "TE",
+      "team": "LAR",
+      "adds_48h": 22648,
       "injury_status": null,
-      "real_news_headline": "Terrance Ferguson Highlights 3 2026 Fantasy Football Deep Sleepers - Sports Illustrated",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxOYTUzYVZZSEpaWGhkZFl5QzJBYXFQN2dFSlVfc2JsZUx2cWMwa2F6WmZTeUlsamFLZU45akVBYUlySGJlMWFGSjU1MWc4OHNVVnJ1WDdmTFFMdVhzbjU5RE5hSEpqUUF3Qzg3eXhHeGRBZHN5OHVMRG1yWXFsUlp2aWNyVVQyNlJRMG8zRnJhclhmRnc?oc=5\" target=\"_blank\">Terrance Ferguson Highlights 3 2026 Fantasy Football Deep Sleepers</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Sports Illustrated</font>",
-      "real_news_published": "Mon, 24 Aug 2026 14:10:44 GMT",
-      "real_news_source": "Sports Illustrated",
-      "real_news_link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOYTUzYVZZSEpaWGhkZFl5QzJBYXFQN2dFSlVfc2JsZUx2cWMwa2F6WmZTeUlsamFLZU45akVBYUlySGJlMWFGSjU1MWc4OHNVVnJ1WDdmTFFMdVhzbjU5RE5hSEpqUUF3Qzg3eXhHeGRBZHN5OHVMRG1yWXFsUlp2aWNyVVQyNlJRMG8zRnJhclhmRnc?oc=5"
+      "sleeper_id": "12487",
+      "espn_id": null
     },
     {
       "name": "Cyrus Allen",
-      "summary": "Cyrus Allen (WR, KC) is healthy and has drawn significant fantasy attention: 21318 adds over the past 48 hours.",
-      "adds_48h": 21318,
+      "position": "WR",
+      "team": "KC",
+      "adds_48h": 21276,
       "injury_status": null,
-      "real_news_headline": "Kansas City Chiefs Day 17 Training Camp Takeaways: Cyrus Allen, Mansoor Delane battle during last padded practice - A to Z Sports",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxOTzdLbElCV2F4WjN2NlhEaGc3SHY4MkV4QzN3U3NLbVh1WlhfZDRfbUZSR1dDOHZqWk14T2V6Q09pbGhIRzRGSkNKaklzVWVFZWJ6ZXNwQWZXSXdMQU1meXI1dmZmR0tiUzdWRFFCSTN6UGR4bmd6elFuM2x3aHZpejlMbXVhQjNxT2oyV1NBRGNwbWR5aEZwWjUtMjl3TmZZTVBidW5rSWpwYjZoLTgwdm95VFJvdUZMd2V4S25ZMXM5VEVGbHA1WFRvUlR2RkhoU0x1eTI2Yw?oc=5\" target=\"_blank\">Kansas City Chiefs Day 17 Training Camp Takeaways: Cyrus Allen, Mansoor Delane battle during last padded practice</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">A to Z Sports</font>",
-      "real_news_published": "Wed, 19 Aug 2026 17:21:55 GMT",
-      "real_news_source": "A to Z Sports",
-      "real_news_link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOTzdLbElCV2F4WjN2NlhEaGc3SHY4MkV4QzN3U3NLbVh1WlhfZDRfbUZSR1dDOHZqWk14T2V6Q09pbGhIRzRGSkNKaklzVWVFZWJ6ZXNwQWZXSXdMQU1meXI1dmZmR0tiUzdWRFFCSTN6UGR4bmd6elFuM2x3aHZpejlMbXVhQjNxT2oyV1NBRGNwbWR5aEZwWjUtMjl3TmZZTVBidW5rSWpwYjZoLTgwdm95VFJvdUZMd2V4S25ZMXM5VEVGbHA1WFRvUlR2RkhoU0x1eTI2Yw?oc=5"
-    },
-    {
-      "name": "Keenan Allen",
-      "summary": "Keenan Allen (WR, IND) is healthy and has drawn significant fantasy attention: 19924 adds over the past 48 hours.",
-      "adds_48h": 19924,
-      "injury_status": null,
-      "real_news_headline": "Fantasy Football ADP Risers & Fallers: Keenan Allen Surges After Signing With Colts - FantasyLife",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxQUFZHR0hOcXlvN3JPRDQ4eXFpNUFBMl9LQS1JOVhBRzN5aWVtRW1WMjBYajl0WDU2UWZocXVkVmt4STl3bW11YW9GMmptaUdiNnlFWW41Mm1CVy1oV1FBM3F2OUN6bjhldlFvdDN0NlBZYmYxOUtKWG5kXzNzT1V1dkN3UVU0RmFnMDNrc1ZWS0c1ZGJjX25CMW95dlFWMHNPWm9nZ1h1MWNKZE1QSHc?oc=5\" target=\"_blank\">Fantasy Football ADP Risers & Fallers: Keenan Allen Surges After Signing With Colts</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FantasyLife</font>",
-      "real_news_published": "Mon, 24 Aug 2026 08:00:00 GMT",
-      "real_news_source": "FantasyLife",
-      "real_news_link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQUFZHR0hOcXlvN3JPRDQ4eXFpNUFBMl9LQS1JOVhBRzN5aWVtRW1WMjBYajl0WDU2UWZocXVkVmt4STl3bW11YW9GMmptaUdiNnlFWW41Mm1CVy1oV1FBM3F2OUN6bjhldlFvdDN0NlBZYmYxOUtKWG5kXzNzT1V1dkN3UVU0RmFnMDNrc1ZWS0c1ZGJjX25CMW95dlFWMHNPWm9nZ1h1MWNKZE1QSHc?oc=5"
+      "sleeper_id": "13413",
+      "espn_id": null
     },
     {
       "name": "Tank Dell",
-      "summary": "Tank Dell (WR, HOU) injury status: Questionable. Added by 19880 fantasy teams over the past 48 hours.",
-      "adds_48h": 19880,
+      "position": "WR",
+      "team": "HOU",
+      "adds_48h": 19776,
       "injury_status": "Questionable",
-      "real_news_headline": "Tank Dell 2026 Fantasy Football Outlook: Working His Way Back, Higgins Injury Creates A Clearer Path To Targets - RotoBaller",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMi0AFBVV95cUxPa05vcmxTQzk1Tzl5ZHllWV92d25KaHEydlpWNWRwbFNrekpXR2llUVlzOGJucVV1QXNmWEdua1dfRzhfdWEyc29OR0lvVnZoVTF6U0Vub2xYNmM3QlNfRzNUUVViZjdLVGdnQW82Z004aXJXOEpaZEdndEhHSXhJb19XYjVKelh2NENrVUphWVRtNkU3enQyVmk2ei1weFRwVDlKY2FWUmE0Q21wNGtRR09yRDNGTE1qb29Udm1ycEpESnFTZ0NTYXhPaDVvUnZ0?oc=5\" target=\"_blank\">Tank Dell 2026 Fantasy Football Outlook: Working His Way Back, Higgins Injury Creates A Clearer Path To Targets</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
-      "real_news_published": "Sat, 22 Aug 2026 14:37:06 GMT",
-      "real_news_source": "RotoBaller",
-      "real_news_link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPa05vcmxTQzk1Tzl5ZHllWV92d25KaHEydlpWNWRwbFNrekpXR2llUVlzOGJucVV1QXNmWEdua1dfRzhfdWEyc29OR0lvVnZoVTF6U0Vub2xYNmM3QlNfRzNUUVViZjdLVGdnQW82Z004aXJXOEpaZEdndEhHSXhJb19XYjVKelh2NENrVUphWVRtNkU3enQyVmk2ei1weFRwVDlKY2FWUmE0Q21wNGtRR09yRDNGTE1qb29Udm1ycEpESnFTZ0NTYXhPaDVvUnZ0?oc=5"
+      "sleeper_id": "9502",
+      "espn_id": null
+    },
+    {
+      "name": "Keenan Allen",
+      "position": "WR",
+      "team": "IND",
+      "adds_48h": 19704,
+      "injury_status": null,
+      "sleeper_id": "1479",
+      "espn_id": 15818
     },
     {
       "name": "Chris Rodriguez",
-      "summary": "Chris Rodriguez (RB, JAX) is healthy and has drawn significant fantasy attention: 19827 adds over the past 48 hours.",
-      "adds_48h": 19827,
+      "position": "RB",
+      "team": "JAX",
+      "adds_48h": 19701,
       "injury_status": null,
-      "real_news_headline": "Chris Rodriguez Jr. Impressing With his Power Running - NFL News | Fantasy Football - RotoBaller",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOZVJIZ0YweGhCTC1RejZ2MWdHZlVkbW5hQW1iaW1jakxtUUhGaGxZVTJzNHZGcUhtVkRvcVJ2Zk1XRnN5UTlYSF9DY0I3Vk85Yl9mYUdfbXMtMk1lSmV4UzB5VFJ6UTl6d1dmNS1QaHhDQmVZeEFIVTNJMkY3ZENCSFVwT21yR3dZeDlsdkdNSFcxRTNsWHVkNW5GckpGbFU4?oc=5\" target=\"_blank\">Chris Rodriguez Jr. Impressing With his Power Running - NFL News | Fantasy Football</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">RotoBaller</font>",
-      "real_news_published": "Mon, 24 Aug 2026 18:43:08 GMT",
-      "real_news_source": "RotoBaller",
-      "real_news_link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOZVJIZ0YweGhCTC1RejZ2MWdHZlVkbW5hQW1iaW1jakxtUUhGaGxZVTJzNHZGcUhtVkRvcVJ2Zk1XRnN5UTlYSF9DY0I3Vk85Yl9mYUdfbXMtMk1lSmV4UzB5VFJ6UTl6d1dmNS1QaHhDQmVZeEFIVTNJMkY3ZENCSFVwT21yR3dZeDlsdkdNSFcxRTNsWHVkNW5GckpGbFU4?oc=5"
+      "sleeper_id": "10219",
+      "espn_id": null
     },
     {
       "name": "Najee Harris",
-      "summary": "Najee Harris (RB, NYG) is healthy and has drawn significant fantasy attention: 19125 adds over the past 48 hours.",
-      "adds_48h": 19125,
+      "position": "RB",
+      "team": "NYG",
+      "adds_48h": 18835,
       "injury_status": null,
-      "real_news_headline": "Tyrone Tracy loses a step against Najee Harris as NY Giants RB competition heats up - bolavip.com",
-      "real_news_description": "<a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxNdXdxb2x4dEY3ZDZ3Yk0ydGgza2M2cEx1SWRld0ZVdGNuMEo4LUowcC1zWnUyZmdZc2Y5VU5lUjBFWW1sMVdIU3p2RnNFU3ZrLURwb1lDRHg1OTkwR2pBSEZZWElLNkxwRW5DWXY0RmJqdHI1WWVWeEVWTWJWZm5BQjZ1T0hBV3BJa0lpRzVRY0o5TjYyNEl0dC1tTjNEYlBsMG1DT2VIdVpiM2NGSThB0gG0AUFVX3lxTE5Gc29hbldoV1VfNVBxcDBKbS1tVDJwNHZrNDlEc0lRcE55ZjI0NWI0dEdVcWN5UVlfOUw0M3p4SjlDOXRBOVk4S19jalhmYUtFNVNWMU5IcnZaTnZsSVJldkZkSk8xd3FXTTMybzFwb1NQQ0ZKb0hZbWcxUVdEdWt6a1VLMS1OdzQ4OFRud1BTQ05ITlZRMEdJNUVrNUZYZVlRTlNMNTBsd2p0UXBRMmU5WHV4Ng?oc=5\" target=\"_blank\">Tyrone Tracy loses a step against Najee Harris as NY Giants RB competition heats up</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">bolavip.com</font>",
-      "real_news_published": "Sun, 23 Aug 2026 18:24:59 GMT",
-      "real_news_source": "bolavip.com",
-      "real_news_link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNdXdxb2x4dEY3ZDZ3Yk0ydGgza2M2cEx1SWRld0ZVdGNuMEo4LUowcC1zWnUyZmdZc2Y5VU5lUjBFWW1sMVdIU3p2RnNFU3ZrLURwb1lDRHg1OTkwR2pBSEZZWElLNkxwRW5DWXY0RmJqdHI1WWVWeEVWTWJWZm5BQjZ1T0hBV3BJa0lpRzVRY0o5TjYyNEl0dC1tTjNEYlBsMG1DT2VIdVpiM2NGSThB0gG0AUFVX3lxTE5Gc29hbldoV1VfNVBxcDBKbS1tVDJwNHZrNDlEc0lRcE55ZjI0NWI0dEdVcWN5UVlfOUw0M3p4SjlDOXRBOVk4S19jalhmYUtFNVNWMU5IcnZaTnZsSVJldkZkSk8xd3FXTTMybzFwb1NQQ0ZKb0hZbWcxUVdEdWt6a1VLMS1OdzQ4OFRud1BTQ05ITlZRMEdJNUVrNUZYZVlRTlNMNTBsd2p0UXBRMmU5WHV4Ng?oc=5"
+      "sleeper_id": "7528",
+      "espn_id": null
+    }
+  ],
+  "dropped": [
+    {
+      "name": "Emanuel Wilson",
+      "position": "RB",
+      "team": "SEA",
+      "drops_48h": 36207,
+      "injury_status": "Questionable",
+      "sleeper_id": "11435",
+      "espn_id": null
+    },
+    {
+      "name": "Alvin Kamara",
+      "position": "RB",
+      "team": "NO",
+      "drops_48h": 36072,
+      "injury_status": "Questionable",
+      "sleeper_id": "4035",
+      "espn_id": 3054850
+    },
+    {
+      "name": "Tyreek Hill",
+      "position": "WR",
+      "team": "N/A",
+      "drops_48h": 33736,
+      "injury_status": "Questionable",
+      "sleeper_id": "3321",
+      "espn_id": 3116406
+    },
+    {
+      "name": "Trey Benson",
+      "position": "RB",
+      "team": "ARI",
+      "drops_48h": 32862,
+      "injury_status": "Questionable",
+      "sleeper_id": "11589",
+      "espn_id": null
+    },
+    {
+      "name": "Chimere Dike",
+      "position": "WR",
+      "team": "TEN",
+      "drops_48h": 32031,
+      "injury_status": null,
+      "sleeper_id": "12540",
+      "espn_id": null
+    },
+    {
+      "name": "Zach Ertz",
+      "position": "TE",
+      "team": "N/A",
+      "drops_48h": 28764,
+      "injury_status": null,
+      "sleeper_id": "1339",
+      "espn_id": 15835
+    },
+    {
+      "name": "Xavier Hutchinson",
+      "position": "WR",
+      "team": "HOU",
+      "drops_48h": 27664,
+      "injury_status": null,
+      "sleeper_id": "10218",
+      "espn_id": null
+    },
+    {
+      "name": "Tank Dell",
+      "position": "WR",
+      "team": "HOU",
+      "drops_48h": 26864,
+      "injury_status": "Questionable",
+      "sleeper_id": "9502",
+      "espn_id": null
+    },
+    {
+      "name": "Brenton Strange",
+      "position": "TE",
+      "team": "JAX",
+      "drops_48h": 26343,
+      "injury_status": null,
+      "sleeper_id": "9480",
+      "espn_id": null
+    },
+    {
+      "name": "Jordyn Tyson",
+      "position": "WR",
+      "team": "NO",
+      "drops_48h": 25872,
+      "injury_status": "Doubtful",
+      "sleeper_id": "13281",
+      "espn_id": null
+    },
+    {
+      "name": "Isiah Pacheco",
+      "position": "RB",
+      "team": "DET",
+      "drops_48h": 24944,
+      "injury_status": "Questionable",
+      "sleeper_id": "8205",
+      "espn_id": null
+    },
+    {
+      "name": "Jerry Jeudy",
+      "position": "WR",
+      "team": "CLE",
+      "drops_48h": 24363,
+      "injury_status": null,
+      "sleeper_id": "6783",
+      "espn_id": 4241463
+    },
+    {
+      "name": "Devin Singletary",
+      "position": "RB",
+      "team": "NYG",
+      "drops_48h": 23679,
+      "injury_status": null,
+      "sleeper_id": "6130",
+      "espn_id": 4040761
+    },
+    {
+      "name": "Roman Wilson",
+      "position": "WR",
+      "team": "PIT",
+      "drops_48h": 22923,
+      "injury_status": null,
+      "sleeper_id": "11630",
+      "espn_id": null
+    },
+    {
+      "name": "Shedeur Sanders",
+      "position": "QB",
+      "team": "CLE",
+      "drops_48h": 22840,
+      "injury_status": null,
+      "sleeper_id": "12524",
+      "espn_id": null
+    },
+    {
+      "name": "Brashard Smith",
+      "position": "RB",
+      "team": "KC",
+      "drops_48h": 22771,
+      "injury_status": null,
+      "sleeper_id": "12455",
+      "espn_id": null
+    },
+    {
+      "name": "Kenyon Sadiq",
+      "position": "TE",
+      "team": "NYJ",
+      "drops_48h": 22563,
+      "injury_status": "Questionable",
+      "sleeper_id": "13330",
+      "espn_id": null
+    },
+    {
+      "name": "Keaton Mitchell",
+      "position": "RB",
+      "team": "LAC",
+      "drops_48h": 22509,
+      "injury_status": null,
+      "sleeper_id": "9511",
+      "espn_id": null
+    },
+    {
+      "name": "Jayden Higgins",
+      "position": "WR",
+      "team": "HOU",
+      "drops_48h": 21906,
+      "injury_status": "IR",
+      "sleeper_id": "12484",
+      "espn_id": null
+    },
+    {
+      "name": "Brian Robinson",
+      "position": "RB",
+      "team": "ATL",
+      "drops_48h": 21900,
+      "injury_status": null,
+      "sleeper_id": "8154",
+      "espn_id": null
+    },
+    {
+      "name": "Malik Washington",
+      "position": "WR",
+      "team": "MIA",
+      "drops_48h": 21624,
+      "injury_status": null,
+      "sleeper_id": "11610",
+      "espn_id": null
+    },
+    {
+      "name": "Jalen Nailor",
+      "position": "WR",
+      "team": "LV",
+      "drops_48h": 21411,
+      "injury_status": null,
+      "sleeper_id": "8180",
+      "espn_id": null
+    },
+    {
+      "name": "Oronde Gadsden",
+      "position": "TE",
+      "team": "LAC",
+      "drops_48h": 21125,
+      "injury_status": null,
+      "sleeper_id": "12493",
+      "espn_id": null
+    },
+    {
+      "name": "Chris Rodriguez",
+      "position": "RB",
+      "team": "JAX",
+      "drops_48h": 21096,
+      "injury_status": null,
+      "sleeper_id": "10219",
+      "espn_id": null
+    },
+    {
+      "name": "Tank Bigsby",
+      "position": "RB",
+      "team": "PHI",
+      "drops_48h": 20755,
+      "injury_status": null,
+      "sleeper_id": "9225",
+      "espn_id": null
+    },
+    {
+      "name": "Isaiah Davis",
+      "position": "RB",
+      "team": "NYJ",
+      "drops_48h": 20709,
+      "injury_status": "Questionable",
+      "sleeper_id": "11571",
+      "espn_id": null
+    },
+    {
+      "name": "Sean Tucker",
+      "position": "RB",
+      "team": "TB",
+      "drops_48h": 20286,
+      "injury_status": null,
+      "sleeper_id": "9506",
+      "espn_id": null
+    },
+    {
+      "name": "Darnell Mooney",
+      "position": "WR",
+      "team": "NYG",
+      "drops_48h": 20043,
+      "injury_status": null,
+      "sleeper_id": "7090",
+      "espn_id": 4040655
+    },
+    {
+      "name": "MarShawn Lloyd",
+      "position": "RB",
+      "team": "GB",
+      "drops_48h": 19269,
+      "injury_status": null,
+      "sleeper_id": "11581",
+      "espn_id": null
+    },
+    {
+      "name": "Jaydon Blue",
+      "position": "RB",
+      "team": "DAL",
+      "drops_48h": 19128,
+      "injury_status": null,
+      "sleeper_id": "12457",
+      "espn_id": null
     }
   ]
 }

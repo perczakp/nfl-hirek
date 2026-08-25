@@ -648,6 +648,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 
   function starterBucketsForRoster(roster, players){
     var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
+    players = Array.isArray(players) ? players : [];
     (roster && roster.starters || []).forEach(function(id){
       var p = players.filter(function(x){ return String(x.id) === String(id); })[0];
       if(!p) return;
@@ -670,7 +671,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       var starters = starterBucketsForRoster(roster, players);
       list.push({
         rosterId: roster.roster_id,
-        score: strengthScore(pos, buckets, starters, pools)
+        score: strengthScore(pos, buckets, starters, pools, roster, players)
       });
     });
     list.sort(function(a,b){

@@ -47,6 +47,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 .nfln-player{background:var(--card);color:#fff;border-radius:9px;padding:11px}
 .nfln-player strong{display:block}
 .nfln-player small{color:var(--card-soft)}
+.nfln-starter-badge{display:inline-block;margin-left:7px;padding:2px 6px;border-radius:999px;background:#dff4e5;color:#176b2c;font-size:10px;font-weight:800;vertical-align:middle}
+.nfln-bench-badge{display:inline-block;margin-left:7px;padding:2px 6px;border-radius:999px;background:#e9edf1;color:#5c6b77;font-size:10px;font-weight:700;vertical-align:middle}
 .nfln-bye-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .nfln-bye-week{border:1px solid #d8e0e7;border-radius:9px;padding:11px;background:#fafcfd}
 .nfln-bye-week strong{display:block;margin-bottom:6px}
@@ -152,6 +154,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     roster: null,
     players: {},
     marketValues: [],
+    marketValueBySleeperId: {},
+    marketValueByName: {},
     rosterPlayers: [],
     byeWeeks: {}
   };
@@ -210,7 +214,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       var starter = state.roster.starters && state.roster.starters.indexOf(item.id) >= 0;
       var name = playerName(item) || "Ismeretlen játékos";
       card.innerHTML =
-        "<strong>" + escapeText(name) + (starter ? " ★" : "") + "</strong>" +
+        "<strong>" + escapeText(name) +
+        (starter
+          ? '<span class="nfln-starter-badge">STARTER</span>'
+          : '<span class="nfln-bench-badge">BENCH</span>') +
+        "</strong>" +
         "<small>" + escapeText(displayPosition(playerPosition(item))) +
         " · " + escapeText(item.team || "FA") +
         (item.injury_status ? " · " + escapeText(item.injury_status) : "") +
@@ -267,77 +275,182 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return buckets;
   }
 
-  function marketValue(p){
-    var id = String(p.id || "");
-    var name = playerName(p).toLowerCase();
+  function buildMarketValueIndex(){
+    state.marketValueBySleeperId = {};
+    state.marketValueByName = {};
 
-    var match = state.marketValues.filter(function(v){
-      return String(v.sleeperId || v.sleeper_id || "") === id ||
-             String(v.name || "").toLowerCase() === name;
-    })[0];
+    state.marketValues.forEach(function(v){
+      if(!v) return;
+      var value = Number(v.value);
+      if(!Number.isFinite(value) || value <= 0) return;
 
-    if(match && Number.isFinite(Number(match.value))) return Number(match.value);
+      var sid = String(v.sleeperId || v.sleeper_id || "").trim();
+      var name = String(v.name || "").trim().toLowerCase();
 
-    var rank = Number(p.search_rank);
-    if(Number.isFinite(rank) && rank > 0){
-      return Math.max(1, 10000 / Math.sqrt(rank));
-    }
-
-    return 1;
+      if(sid) state.marketValueBySleeperId[sid] = value;
+      if(name) state.marketValueByName[name] = value;
+    });
   }
 
-  function qualityPercentile(p, bucket){
-    if(!bucket.length) return 0;
-    var values = bucket.map(marketValue).sort(function(a,b){ return b-a; });
+  function marketValue(p){
+    var id = String(p.id || "");
+    var name = playerName(p).trim().toLowerCase();
+
+    if(state.marketValueBySleeperId[id]) return state.marketValueBySleeperId[id];
+    if(state.marketValueByName[name]) return state.marketValueByName[name];
+
+    return 0;
+  }
+
+  function marketValuePool(pos){
+    var values = [];
+    var all = state.players || {};
+    Object.keys(all).forEach(function(id){
+      var p = all[id];
+      if(!p) return;
+      var base = basePosition(playerPosition(p));
+      var belongs = pos === "IDP"
+        ? ["DL","LB","DB"].indexOf(base) >= 0
+        : base === pos;
+      if(!belongs) return;
+
+      var value = marketValue({id:id, name:playerName(p)});
+      if(value > 0) values.push(value);
+    });
+
+    return values.sort(function(a,b){ return a-b; });
+  }
+
+  function valuePercentile(value, pool){
+    if(!value || !pool.length) return 0;
+    var lo = 0, hi = pool.length;
+    while(lo < hi){
+      var mid = Math.floor((lo + hi) / 2);
+      if(pool[mid] < value) lo = mid + 1;
+      else hi = mid;
+    }
+    return Math.round((lo / pool.length) * 100);
+  }
+
+  function playerQuality(p, pos, pools){
     var value = marketValue(p);
-    var better = values.filter(function(v){ return v > value; }).length;
-    return Math.round(100 * (1 - better / Math.max(1, values.length - 1)));
+
+    // If FantasyCalc is unavailable for a player, do not invent a strong
+    // score from Sleeper search rank. Treat the player as unknown instead.
+    if(value <= 0) return 35;
+
+    var percentile = valuePercentile(value, pools[pos] || []);
+    var injury = injuryPenalty(p);
+
+    // A dynasty value percentile is the quality signal; injuries reduce it.
+    return Math.max(0, Math.min(100, percentile - injury));
   }
 
   function injuryPenalty(p){
     var s = String(p.injury_status || "").toUpperCase();
-    if(/IR|OUT/.test(s)) return 20;
-    if(/DOUBTFUL/.test(s)) return 12;
-    if(/QUESTIONABLE|Q/.test(s)) return 6;
+    if(/IR|OUT/.test(s)) return 25;
+    if(/DOUBTFUL/.test(s)) return 15;
+    if(/QUESTIONABLE|Q/.test(s)) return 7;
     return 0;
   }
 
-  function strengthScore(pos, buckets, starters){
+  function requiredStarts(){
+    var req = {QB:0,RB:0,WR:0,TE:0,IDP:0};
+    var slots = (state.league.roster_positions || []).map(function(x){
+      return String(x).toUpperCase();
+    });
+
+    slots.forEach(function(slot){
+      if(slot === "QB") req.QB++;
+      else if(slot === "RB") req.RB++;
+      else if(slot === "WR") req.WR++;
+      else if(slot === "TE") req.TE++;
+      else if(["DL","LB","DB","IDP","IDP_FLEX"].indexOf(slot) >= 0) req.IDP++;
+    });
+
+    return req;
+  }
+
+  function strengthScore(pos, buckets, starters, pools){
     var roster = buckets[pos] || [];
     if(!roster.length) return 0;
 
-    var starterList = starters[pos] || [];
-    var ranked = roster.slice().sort(function(a,b){ return marketValue(b)-marketValue(a); });
-    var starterTarget = Math.max(1, starterList.length);
+    var req = requiredStarts();
+    var target = req[pos] || 0;
 
-    var top = ranked.slice(0, starterTarget);
-    var quality = top.reduce(function(sum,p,bucketIndex){
-      return sum + Math.max(0, qualityPercentile(p, roster) - injuryPenalty(p));
-    },0) / top.length;
+    // If the league uses FLEX/SUPER_FLEX and no fixed starter is defined for
+    // a position, use the actual starter count as a floor, not as the whole
+    // strength model.
+    var actualStarters = (starters[pos] || []).length;
+    target = Math.max(target, actualStarters, 1);
 
-    var depth = Math.min(100, Math.max(0, (roster.length - starterTarget) * 12 + 40));
-    var injured = roster.filter(function(p){ return injuryPenalty(p) >= 12; }).length;
+    var ranked = roster.slice().sort(function(a,b){
+      return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
+    });
 
-    return Math.round(Math.max(0, Math.min(100, quality * 0.70 + depth * 0.30 - injured * 4)));
-  }
+    var starterQuality = ranked.slice(0,target).map(function(p){
+      return playerQuality(p,pos,pools);
+    });
 
-  function needScore(pos, buckets, starters){
-    var roster = buckets[pos] || [];
-    var starterList = starters[pos] || [];
-    var starterTarget = Math.max(1, starterList.length);
-    var ranked = roster.slice().sort(function(a,b){ return marketValue(b)-marketValue(a); });
-
-    var top = ranked.slice(0, starterTarget);
-    var avgQuality = top.length
-      ? top.reduce(function(sum,p){ return sum + Math.max(0, qualityPercentile(p, roster) - injuryPenalty(p)); },0) / top.length
+    var avgStarter = starterQuality.length
+      ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
       : 0;
 
-    var depthGap = Math.max(0, starterTarget + 1 - roster.length);
-    var weakStarter = Math.max(0, 65 - avgQuality);
-    var injuryCount = roster.filter(function(p){ return injuryPenalty(p) >= 12; }).length;
+    // Depth matters, but cannot overpower starter quality.
+    var usableDepth = roster.slice(target).map(function(p){
+      return playerQuality(p,pos,pools);
+    }).filter(function(v){ return v >= 45; }).length;
 
-    var score = 20 + weakStarter * 0.65 + depthGap * 18 + injuryCount * 8;
-    if(!starterList.length && !roster.length) score = 35;
+    var depthScore = Math.min(100, 45 + usableDepth * 12);
+    var shortagePenalty = roster.length < target
+      ? (target - roster.length) * 18
+      : 0;
+
+    var injuredStarters = roster.slice(0,target).filter(function(p){
+      return injuryPenalty(p) >= 15;
+    }).length;
+
+    return Math.round(Math.max(0, Math.min(100,
+      avgStarter * 0.78 +
+      depthScore * 0.22 -
+      shortagePenalty -
+      injuredStarters * 10
+    )));
+  }
+
+  function needScore(pos, buckets, starters, pools){
+    var req = requiredStarts();
+    var roster = buckets[pos] || [];
+    var target = Math.max(req[pos] || 0, (starters[pos] || []).length, 1);
+
+    if(!roster.length) return 90;
+
+    var ranked = roster.slice().sort(function(a,b){
+      return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
+    });
+
+    var starterQuality = ranked.slice(0,target).map(function(p){
+      return playerQuality(p,pos,pools);
+    });
+
+    var avg = starterQuality.length
+      ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
+      : 0;
+
+    var shortage = Math.max(0, target - roster.length);
+    var weakStarters = starterQuality.filter(function(v){ return v < 55; }).length;
+    var injured = roster.slice(0,target).filter(function(p){
+      return injuryPenalty(p) >= 15;
+    }).length;
+
+    // Higher = more urgent need.
+    var score = (100 - avg) * 0.72 +
+      weakStarters * 7 +
+      shortage * 20 +
+      injured * 10;
+
+    // Extra depth is a mild positive, not a reason to call a position weak.
+    if(roster.length > target + 1 && avg >= 65) score -= 10;
 
     return Math.round(Math.max(0, Math.min(100, score)));
   }
@@ -358,11 +471,16 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     strength.innerHTML = "";
     needs.innerHTML = "";
 
+    var pools = {};
+    positions.forEach(function(pos){
+      pools[pos] = marketValuePool(pos);
+    });
+
     var results = positions.map(function(pos){
       return {
         pos:pos,
-        need:needScore(pos,buckets,starters),
-        strength:strengthScore(pos,buckets,starters),
+        need:needScore(pos,buckets,starters,pools),
+        strength:strengthScore(pos,buckets,starters,pools),
         count:buckets[pos].length,
         starters:(starters[pos] || []).length
       };
@@ -537,6 +655,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       state.rosters = data[2];
       state.players = data[3];
       state.marketValues = (data[4] && Array.isArray(data[4].values)) ? data[4].values : [];
+      buildMarketValueIndex();
 
       var target = username.toLowerCase();
       state.me = state.users.filter(function(u){

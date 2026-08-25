@@ -97,17 +97,18 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 
   <section class="nfln-panel">
     <h2>League Sync</h2>
-    <p class="nfln-small">Sleeper ligához nincs szükség jelszóra vagy account-hozzáférésre. Add meg a League ID-t és a Sleeper felhasználónevedet, hogy az oldal beazonosítsa a saját rosteredet.</p>
+    <p class="nfln-small">Sleeper ligához nincs szükség jelszóra vagy account-hozzáférésre. Elég a Sleeper felhasználóneved. Az oldal automatikusan megkeresi a hozzá tartozó ligákat, majd kiválaszthatod, melyiket szeretnéd szinkronizálni.</p>
     <div class="nfln-form">
-      <div>
-        <label for="league-id">Sleeper League ID</label>
-        <input id="league-id" class="nfln-input" placeholder="pl. 123456789012345678" autocomplete="off">
-      </div>
       <div>
         <label for="username">Sleeper username</label>
         <input id="username" class="nfln-input" placeholder="pl. perczakp" autocomplete="off">
       </div>
-      <button id="sync-btn" class="nfln-button">Sync League</button>
+      <button id="sync-btn" class="nfln-button">Find My Leagues</button>
+    </div>
+    <div id="league-picker" class="nfln-hidden" style="margin-top:12px;">
+      <label for="league-select">Válaszd ki a ligádat</label>
+      <select id="league-select" class="nfln-input"></select>
+      <button id="sync-selected-btn" class="nfln-button" style="margin-top:10px;">Sync Selected League</button>
     </div>
     <div id="sync-status" class="nfln-status">Még nincs szinkronizálva.</div>
     <div class="nfln-attribution">Adatforrás: Sleeper API. Az API olvasási célú, token nélkül használható.</div>
@@ -629,16 +630,76 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     $("bye-status").className = "nfln-status ok";
   }
 
-  function sync(){
-    var leagueId = $("league-id").value.trim();
+  function findUserAndLeagues(){
     var username = $("username").value.trim();
 
-    if(!leagueId || !username){
-      setStatus("Add meg a League ID-t és a Sleeper felhasználónevedet.","error");
+    if(!username){
+      setStatus("Add meg a Sleeper felhasználónevedet.","error");
       return;
     }
 
     $("sync-btn").disabled = true;
+    setStatus("Sleeper felhasználó és ligák keresése...");
+
+    Promise.all([
+      api("/user/" + encodeURIComponent(username)),
+      currentSeason()
+    ]).then(function(data){
+      state.me = data[0];
+      var season = data[1];
+
+      if(!state.me || !state.me.user_id){
+        throw new Error("Nem található Sleeper felhasználó ezzel a névvel.");
+      }
+
+      return api("/user/" + encodeURIComponent(state.me.user_id) + "/leagues/nfl/" + season)
+        .then(function(leagues){
+          if(!Array.isArray(leagues) || !leagues.length){
+            throw new Error("Ehhez a Sleeper fiókhoz nem található NFL liga a " + season + " szezonban.");
+          }
+
+          state.availableLeagues = leagues;
+          var select = $("league-select");
+          select.innerHTML = "";
+
+          leagues.forEach(function(league){
+            var option = document.createElement("option");
+            option.value = league.league_id;
+            option.textContent =
+              (league.name || "Névtelen liga") +
+              " · " + (league.total_rosters || "?") + " teams" +
+              (league.status ? " · " + league.status : "");
+            select.appendChild(option);
+          });
+
+          $("league-picker").classList.remove("nfln-hidden");
+
+          if(leagues.length === 1){
+            setStatus("1 NFL liga található. Kattints a Sync Selected League gombra.","ok");
+          } else {
+            setStatus(leagues.length + " NFL liga található. Válaszd ki, melyiket szeretnéd szinkronizálni.","ok");
+          }
+        });
+    }).catch(function(err){
+      console.error(err);
+      setStatus(err.message || "Nem sikerült a Sleeper fiók lekérése.","error");
+      $("league-picker").classList.add("nfln-hidden");
+    }).finally(function(){
+      $("sync-btn").disabled = false;
+    });
+  }
+
+  function syncSelectedLeague(){
+    var select = $("league-select");
+    var leagueId = select.value;
+    var username = $("username").value.trim();
+
+    if(!leagueId || !state.me || !state.me.user_id){
+      setStatus("Először keresd meg a Sleeper felhasználódat és válassz ligát.","error");
+      return;
+    }
+
+    $("sync-selected-btn").disabled = true;
     setStatus("Liga, roster és játékosadatok betöltése...");
 
     Promise.all([
@@ -657,13 +718,17 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       state.marketValues = (data[4] && Array.isArray(data[4].values)) ? data[4].values : [];
       buildMarketValueIndex();
 
-      var target = username.toLowerCase();
+      var targetId = String(state.me.user_id);
+      var targetName = username.toLowerCase();
+
       state.me = state.users.filter(function(u){
-        return String(u.username || "").toLowerCase() === target ||
-               String(u.display_name || "").toLowerCase() === target;
+        return String(u.user_id) === targetId ||
+               String(u.username || "").toLowerCase() === targetName;
       })[0];
 
-      if(!state.me) throw new Error("A megadott Sleeper felhasználó nem található ebben a ligában.");
+      if(!state.me){
+        throw new Error("A Sleeper felhasználó nem tagja a kiválasztott ligának.");
+      }
 
       findMyRoster();
       buildRosterPlayers();
@@ -683,13 +748,13 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       $("bye-status").textContent = "A bye week adatok nem tölthetők be.";
       $("bye-status").className = "nfln-status error";
     }).finally(function(){
-      $("sync-btn").disabled = false;
+      $("sync-selected-btn").disabled = false;
     });
   }
 
-  $("sync-btn").addEventListener("click",sync);
-  $("username").addEventListener("keydown",function(e){ if(e.key==="Enter") sync(); });
-  $("league-id").addEventListener("keydown",function(e){ if(e.key==="Enter") sync(); });
+  $("sync-btn").addEventListener("click",findUserAndLeagues);
+  $("sync-selected-btn").addEventListener("click",syncSelectedLeague);
+  $("username").addEventListener("keydown",function(e){ if(e.key==="Enter") findUserAndLeagues(); });
 })();
 </script>
 </body>

@@ -482,19 +482,29 @@ async function fetchSleeperData() {
   if (!trendingRes.ok) throw new Error(`Sleeper trending HTTP ${trendingRes.status}`);
   const trending = await trendingRes.json();
 
+  const droppedRes = await fetch(
+    "https://api.sleeper.app/v1/players/nfl/trending/drop?lookback_hours=48&limit=30"
+  );
+  if (!droppedRes.ok) throw new Error(`Sleeper dropped HTTP ${droppedRes.status}`);
+  const dropped = await droppedRes.json();
+
   console.log("Fetching full player list...");
   const playersRes = await fetch("https://api.sleeper.app/v1/players/nfl");
   if (!playersRes.ok) throw new Error(`Sleeper players HTTP ${playersRes.status}`);
   const allPlayers = await playersRes.json();
 
-  return { trending, allPlayers };
+  return { trending, dropped, allPlayers };
 }
 
 async function main() {
-  const { trending, allPlayers } = await fetchSleeperData();
+  const { trending, dropped, allPlayers } = await fetchSleeperData();
 
   const trendingMap = new Map(
     trending.map((item) => [item.player_id, item.count])
+  );
+
+  const droppedMap = new Map(
+    dropped.map((item) => [item.player_id, item.count])
   );
 
   const searchablePlayers = [];
@@ -516,29 +526,43 @@ async function main() {
       espn_id: p.espn_id || null,
       search_rank: typeof p.search_rank === "number" ? p.search_rank : null,
       adds_48h: trendingMap.get(id) || 0,
+      drops_48h: droppedMap.get(id) || 0,
       isTrending: trendingMap.has(id),
     });
   }
 
   searchablePlayers.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Keep the existing home-page news feed focused on the top trending 30.
-  const newsItems = [];
+  // Build separate home-page lists: most added and most dropped.
+  const addedItems = [];
   for (const t of trending) {
     const p = allPlayers[t.player_id];
     if (!p || !p.full_name) continue;
 
-    newsItems.push({
+    addedItems.push({
       name: p.full_name,
-      summary: buildTemplateSummary({
-        name: p.full_name,
-        position: p.position || "N/A",
-        team: p.team || "N/A",
-        injury_status: p.injury_status,
-        adds_48h: t.count,
-      }),
+      position: p.position || "N/A",
+      team: p.team || "N/A",
       adds_48h: t.count,
       injury_status: p.injury_status || null,
+      sleeper_id: t.player_id,
+      espn_id: p.espn_id || null
+    });
+  }
+
+  const droppedItems = [];
+  for (const d of dropped) {
+    const p = allPlayers[d.player_id];
+    if (!p || !p.full_name) continue;
+
+    droppedItems.push({
+      name: p.full_name,
+      position: p.position || "N/A",
+      team: p.team || "N/A",
+      drops_48h: d.count,
+      injury_status: p.injury_status || null,
+      sleeper_id: d.player_id,
+      espn_id: p.espn_id || null
     });
   }
 
@@ -575,28 +599,13 @@ async function main() {
 
   const playerNews = playerNewsResults.filter(Boolean);
 
-  // Add the top ESPN/Google article to the home-page summary cards when available.
-  const playerNewsByName = new Map(
-    playerNews.map((item) => [item.name.toLowerCase(), item])
-  );
-
-  for (const item of newsItems) {
-    const detailed = playerNewsByName.get(item.name.toLowerCase());
-    const first = detailed?.articles?.[0];
-
-    item.real_news_headline = first?.headline || null;
-    item.real_news_description = first?.description || null;
-    item.real_news_published = first?.published || null;
-    item.real_news_source = first?.source || null;
-    item.real_news_link = first?.link || null;
-  }
-
   await writeFile(
     "news.json",
     JSON.stringify(
       {
         updated_at: new Date().toISOString(),
-        players: newsItems,
+        added: addedItems,
+        dropped: droppedItems,
       },
       null,
       2
@@ -621,7 +630,7 @@ async function main() {
       {
         updated_at: new Date().toISOString(),
         players: searchablePlayers.map(
-          ({ sleeper_id, adds_48h, isTrending, search_rank, ...player }) => player
+          ({ sleeper_id, adds_48h, drops_48h, isTrending, search_rank, ...player }) => player
         ),
       },
       null,
@@ -629,7 +638,7 @@ async function main() {
     )
   );
 
-  console.log(`Saved ${newsItems.length} home-page players to news.json.`);
+  console.log(`Saved ${addedItems.length} added and ${droppedItems.length} dropped players to news.json.`);
   console.log(`Saved ${playerNews.length} detailed player records to player-news.json.`);
   console.log(`Saved ${searchablePlayers.length} searchable players to players.json.`);
 }

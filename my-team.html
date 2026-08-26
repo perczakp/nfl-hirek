@@ -387,7 +387,17 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
   }
 
   function sleeperIdpPool(pos, players){
-    var pool = (players || []).filter(function(p){
+    var list = Array.isArray(players)
+      ? players
+      : (players && typeof players === "object"
+          ? Object.keys(players).map(function(id){
+              var p = players[id];
+              if(!p) return null;
+              return Object.assign({id:id}, p);
+            }).filter(function(p){ return !!p; })
+          : []);
+
+    var pool = list.filter(function(p){
       return basePosition(playerPosition(p)) === pos &&
              sleeperRank(p) !== null;
     });
@@ -430,7 +440,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
   }
 
   function idpPlayerQuality(p, pools){
-    return sleeperIdpScore(p, state.players || []);
+    return sleeperIdpScore(p, state.players || {});
   }
 
   function idpSlotType(slot){

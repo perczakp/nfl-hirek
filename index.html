@@ -54,6 +54,34 @@
       grid-template-columns: 1fr;
     }
   }   .nfln-card {     border: 1px solid #173c60;     border-radius: 10px;     padding: 16px 20px;     background: var(--patriots-blue);     color: var(--card-text);     box-shadow: 0 7px 18px rgba(0,0,0,0.18);     min-width: 0;     overflow-wrap: break-word;     word-break: break-word;   }   .nfln-card-clickable { cursor: pointer; transition: box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease; }   .nfln-card-clickable:hover { box-shadow: 0 10px 22px rgba(0,0,0,0.24); transform: translateY(-1px); background: var(--patriots-blue-hover); }   .nfln-name { font-weight: bold; font-size: 17px; margin: 0 0 6px 0; color: #fff; overflow-wrap: break-word; word-break: break-word; }   .nfln-summary { font-size: 15px; line-height: 1.5; color: var(--card-soft); margin: 0 0 10px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-news {     border-top: 1px solid rgba(255,255,255,0.14);     padding-top: 10px;     margin-top: 4px;   }   .nfln-real-headline { font-size: 14px; font-weight: bold; color: #fff; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-desc { font-size: 13.5px; line-height: 1.5; color: var(--card-soft); margin: 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-real-source { font-size: 11px; color: var(--card-soft); opacity: 0.75; margin-top: 6px; }   .nfln-updated { grid-column: 1 / -1; text-align: right; font-size: 12px; color: var(--muted); margin-top: 4px; }   .nfln-fullwidth { grid-column: 1 / -1; }    .nfln-modal-overlay {     position: fixed;     inset: 0;     background: rgba(10,18,28,0.50);     display: none;     align-items: flex-start;     justify-content: center;     padding: 40px 16px;     overflow-y: auto;     z-index: 100;   }   .nfln-modal-overlay.open { display: flex; }   .nfln-modal {     background: #fff;     border-radius: 14px;     max-width: 600px;     width: 100%;     padding: 24px 26px;     position: relative;     box-shadow: 0 12px 32px rgba(0,0,0,0.3);   }   .nfln-modal-close {     position: absolute;     top: 14px;     right: 16px;     border: none;     background: none;     font-size: 22px;     cursor: pointer;     color: #888;     line-height: 1;   }   .nfln-modal-name { font-size: 20px; font-weight: bold; margin: 0 0 4px 0; color: var(--patriots-blue); overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-meta { font-size: 14px; color: #888; margin-bottom: 6px; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-status {     display: inline-block;     font-size: 12.5px;     font-weight: bold;     padding: 3px 10px;     border-radius: 999px;     margin-bottom: 16px;   }   .nfln-modal-article {     border-top: 1px solid #eee;     padding-top: 12px;     margin-top: 12px;   }   .nfln-modal-headline { font-size: 15px; font-weight: bold; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-headline a { color: var(--patriots-blue); text-decoration: none; }   .nfln-modal-headline a:hover { text-decoration: underline; }   .nfln-modal-desc { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 4px 0; overflow-wrap: break-word; word-break: break-word; }   .nfln-modal-date { font-size: 11.5px; color: #aaa; }   .nfln-modal-source { font-size: 11px; color: #aaa; margin-top: 14px; }   .nfln-modal-loading, .nfln-modal-empty { font-size: 14px; color: #888; padding: 10px 0; } </style>
+
+<style id="site-navigation-layout-fix">
+/* Közös navigáció: mindig egy sorban marad.
+   Keskeny képernyőn vízszintesen görgethető, ezért nem töri két sorba
+   és nem tolja lejjebb az oldal tartalmát. */
+.nfln-nav {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.nfln-nav::-webkit-scrollbar {
+  display: none;
+}
+.nfln-nav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+</style>
+
 </head>
 <body>
 <div class="nfln-back">
@@ -69,7 +97,6 @@
 <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
 <a href="tips.html" class="inactive">Tips</a>
 <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-        <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
 <a href="my-team.html" class="inactive">My Fantasy Team</a>
 </div>
 <div class="nfln-search-wrap">

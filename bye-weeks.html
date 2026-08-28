@@ -191,6 +191,28 @@
     padding: 6px 0 2px;
   }
 </style>
+
+<style id="site-navigation-layout-fix">
+/* Egységes, több soros navigáció minden oldalon */
+.nfln-nav {
+  width: min(760px, 100%);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  overflow: visible;
+  white-space: normal;
+}
+.nfln-nav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+</style>
+
 </head>
 <body>
 

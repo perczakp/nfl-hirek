@@ -27,6 +27,28 @@ td{font-size:14px}
 tbody tr:hover{background:#f8fafb}
 .source{margin-top:14px;font-size:11px;color:#7b838a}
 </style>
+
+<style id="site-navigation-layout-fix">
+/* Egységes, több soros navigáció minden oldalon */
+.nfln-nav {
+  width: min(760px, 100%);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  overflow: visible;
+  white-space: normal;
+}
+.nfln-nav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+</style>
+
 </head>
 <body>
 <div class="nfln-back"><a href="index.html">&larr; Back to homepage</a></div>

@@ -270,28 +270,12 @@
   .calc-balance strong { color: var(--patriots-blue); }
   .calc-balance.balance-left strong { color: var(--patriots-red); }
 </style>
-
-<style id="site-navigation-layout-fix">
-/* Egységes, több soros navigáció minden oldalon */
-.nfln-nav {
-  width: min(760px, 100%);
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-wrap: wrap !important;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  overflow: visible;
-  white-space: normal;
-}
-.nfln-nav a {
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
+<style id="site-navigation-layout-fix-v3">
+.nfln-nav{display:grid!important;grid-template-columns:repeat(3,max-content)!important;justify-content:center!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:900px!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important;overflow:visible!important;white-space:normal!important}
+.nfln-nav a{display:block!important;width:max-content!important;min-width:0!important;flex:none!important;white-space:nowrap!important;box-sizing:border-box!important}
+@media(max-width:760px){.nfln-nav{grid-template-columns:repeat(2,max-content)!important}}
+@media(max-width:500px){.nfln-nav{grid-template-columns:1fr!important}.nfln-nav a{width:100%!important;text-align:center!important}}
 </style>
-
 </head>
 <body>
 
@@ -305,11 +289,14 @@
 </div>
 
 <div class="nfln-nav">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="active">Dynasty Trade Calculator</a>
-  <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-</div>
+    <a href="index.html" class="inactive">Players Trending</a>
+    <a href="trade-chart.html" class="active">Dynasty Trade Calculator</a>
+    <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+    <a href="tips.html" class="inactive">Tips</a>
+    <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+    <a href="my-team.html" class="inactive">My Fantasy Team</a>
+    <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
+  </div>
 
 <div class="calc-attr">
   Trade values powered by <a href="https://www.fantasycalc.com" target="_blank" rel="noopener noreferrer">FantasyCalc.com</a>

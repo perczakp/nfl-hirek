@@ -342,9 +342,7 @@
           var headline = htmlToText(item.headline) || item.headline || "";
           var source = htmlToText(item.source) || item.source || "ESPN";        html2 += '<div class="nfln-modal-article">';
             if (headline) {
-            if (item.link) {           html2 += '<p class="nfln-modal-headline">
-              <a href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(headline) + '</a>
-            </p>';
+            if (item.link) {           html2 += '<p class="nfln-modal-headline"><a href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(headline) + '</a></p>';
             }
             else {           html2 += '<p class="nfln-modal-headline">' + escapeHtml(headline) + '</p>';
             }

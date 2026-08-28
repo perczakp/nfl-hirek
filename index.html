@@ -318,9 +318,7 @@
           if (p.injury_body_part) {       html += '<p class="nfln-modal-meta">Injury: ' + escapeHtml(p.injury_body_part) + "</p>";
           }     if (p.injury_start_date) {       html += '<p class="nfln-modal-meta">Injury reported: ' + escapeHtml(p.injury_start_date) + "</p>";
           }     if (p.practice_participation) {       html += '<p class="nfln-modal-meta">Practice status: ' + escapeHtml(p.practice_participation) + "</p>";
-          }     html += '<div id="nfln-modal-articles">
-            <p class="nfln-modal-loading">Loading full story...</p>
-          </div>';      modalBody.innerHTML = html;     modalOverlay.classList.add("open");
+          }     html += '<div id="nfln-modal-articles"><p class="nfln-modal-loading">Loading full story...</p></div>';      modalBody.innerHTML = html;     modalOverlay.classList.add("open");
           loadCombinedNews(p.espn_id || null, p.name, p.team);
           }    function htmlToText(value) {
           if (!value) return "";
@@ -381,8 +379,7 @@
             return res.json();
             })     .then(function (data) {
             var container = document.getElementById("nfl-fantasy-news");       container.innerHTML = "";
-            if (!data.players || data.players.length === 0) {         container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;
-              color:#888;">No news available right now.</p>';         return;
+            if (!data.players || data.players.length === 0) {         container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;color:#888;">No news available right now.</p>';         return;
               }        data.players.forEach(function (player) {
               var card = document.createElement("div");         card.className = "nfln-card nfln-card-clickable";         card.addEventListener("click", function () {
               var match = allSearchPlayers.filter(function (sp) {
@@ -407,8 +404,7 @@
               var d = new Date(data.updated_at);         updated.textContent = "Last updated: " + d.toLocaleString("en-US");         container.appendChild(updated);
               }
               })     .catch(function (err) {
-              var container = document.getElementById("nfl-fantasy-news");       container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;
-                color:#c0392b;">Failed to load news.</p>';
+              var container = document.getElementById("nfl-fantasy-news");       container.innerHTML = '<p class="nfln-fullwidth" style="text-align:center;color:#c0392b;">Failed to load news.</p>';
                 });
                 })();
               </script>

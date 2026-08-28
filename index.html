@@ -236,18 +236,6 @@
       .nfln-modal-loading, .nfln-modal-empty { font-size: 14px;
       color: #888;
       padding: 10px 0; } 
-<style>
-.nfln-sos-panel{margin-top:18px}
-.nfln-sos-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
-.nfln-sos-head h2{margin-bottom:5px}
-.nfln-sos-badge{background:#eef4f8;color:#123b5d;border:1px solid #d4e0e8;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-.nfln-sos-note{margin:14px 0;background:#f7f9fb;border:1px solid #e1e7ec;border-radius:9px;padding:12px;font-size:13px;line-height:1.5}
-.nfln-sos-table-wrap{overflow:auto}
-.nfln-sos-table{width:100%;border-collapse:collapse}
-.nfln-sos-table th,.nfln-sos-table td{padding:9px 10px;border-bottom:1px solid #e7ebef;text-align:left;font-size:13px}
-.nfln-sos-table th{font-size:11px;text-transform:uppercase;color:#667085}
-.nfln-sos-source{margin-top:12px;font-size:11px;color:#8a94a3}
-</style>
 </style>
     </head>
     <body>
@@ -263,6 +251,7 @@
         <a href="idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
         <a href="tips.html" class="inactive">Tips</a>
         <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+        <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
       </div>
       <div class="nfln-search-wrap">
         <input type="text" id="nfln-search" class="nfln-search-input" placeholder="Search for a player (e.g. Ja'Marr Chase)..." autocomplete="off">
@@ -274,58 +263,6 @@
           color:#888;">Loading news...</p>
         </div>
         
-<section class="nfln-panel nfln-sos-panel">
-  <div class="nfln-sos-head">
-    <div>
-      <h2>Strength of Schedule — 2026</h2>
-      <p class="nfln-small">A 2026-os alapszakasz sorsolásának nehézsége a 2025-ös ellenfelek összesített győzelmi aránya alapján.</p>
-    </div>
-    <span class="nfln-sos-badge">32 csapat</span>
-  </div>
-  <div class="nfln-sos-note">
-    <b>Értelmezés:</b> minél magasabb az ellenfelek 2025-ös győzelmi aránya, annál nehezebb a 2026-os sorsolás.
-    Ez egy objektív preseason kiindulópont, nem szezon közbeni matchup-erősség.
-  </div>
-  <div class="nfln-sos-table-wrap">
-    <table class="nfln-sos-table">
-      <thead><tr><th>SOS</th><th>Team</th><th>Rank</th><th>Opp. Win %</th><th>Difficulty</th></tr></thead>
-      <tbody><tr><td><b>1</b></td><td>Chicago Bears</td><td><b>1</b></td><td>.550</td><td>Hardest</td></tr>
-<tr><td><b>2</b></td><td>Miami Dolphins</td><td><b>2</b></td><td>.542</td><td>Very hard</td></tr>
-<tr><td><b>3</b></td><td>Arizona Cardinals</td><td><b>3</b></td><td>.538</td><td>Very hard</td></tr>
-<tr><td><b>4</b></td><td>Green Bay Packers</td><td><b>3</b></td><td>.538</td><td>Very hard</td></tr>
-<tr><td><b>5</b></td><td>Kansas City Chiefs</td><td><b>5</b></td><td>.536</td><td>Hard</td></tr>
-<tr><td><b>6</b></td><td>New England Patriots</td><td><b>6</b></td><td>.531</td><td>Hard</td></tr>
-<tr><td><b>7</b></td><td>Las Vegas Raiders</td><td><b>7</b></td><td>.529</td><td>Hard</td></tr>
-<tr><td><b>8</b></td><td>Buffalo Bills</td><td><b>8</b></td><td>.528</td><td>Hard</td></tr>
-<tr><td><b>9</b></td><td>Los Angeles Chargers</td><td><b>9</b></td><td>.522</td><td>Above avg.</td></tr>
-<tr><td><b>10</b></td><td>Carolina Panthers</td><td><b>10</b></td><td>.521</td><td>Above avg.</td></tr>
-<tr><td><b>11</b></td><td>Minnesota Vikings</td><td><b>11</b></td><td>.519</td><td>Above avg.</td></tr>
-<tr><td><b>12</b></td><td>New York Jets</td><td><b>12</b></td><td>.517</td><td>Above avg.</td></tr>
-<tr><td><b>13</b></td><td>Los Angeles Rams</td><td><b>13</b></td><td>.516</td><td>Above avg.</td></tr>
-<tr><td><b>14</b></td><td>Seattle Seahawks</td><td><b>14</b></td><td>.514</td><td>Above avg.</td></tr>
-<tr><td><b>15</b></td><td>Denver Broncos</td><td><b>15</b></td><td>.512</td><td>Above avg.</td></tr>
-<tr><td><b>16</b></td><td>Washington Commanders</td><td><b>16</b></td><td>.502</td><td>Average</td></tr>
-<tr><td><b>17</b></td><td>New York Giants</td><td><b>17</b></td><td>.498</td><td>Average</td></tr>
-<tr><td><b>18</b></td><td>San Francisco 49ers</td><td><b>18</b></td><td>.497</td><td>Average</td></tr>
-<tr><td><b>19</b></td><td>Pittsburgh Steelers</td><td><b>19</b></td><td>.495</td><td>Average</td></tr>
-<tr><td><b>20</b></td><td>Dallas Cowboys</td><td><b>20</b></td><td>.493</td><td>Average</td></tr>
-<tr><td><b>21</b></td><td>Tampa Bay Buccaneers</td><td><b>21</b></td><td>.491</td><td>Below avg.</td></tr>
-<tr><td><b>22</b></td><td>Jacksonville Jaguars</td><td><b>22</b></td><td>.490</td><td>Below avg.</td></tr>
-<tr><td><b>23</b></td><td>Philadelphia Eagles</td><td><b>23</b></td><td>.481</td><td>Below avg.</td></tr>
-<tr><td><b>24</b></td><td>Baltimore Ravens</td><td><b>24</b></td><td>.479</td><td>Below avg.</td></tr>
-<tr><td><b>25</b></td><td>Tennessee Titans</td><td><b>25</b></td><td>.476</td><td>Below avg.</td></tr>
-<tr><td><b>26</b></td><td>Houston Texans</td><td><b>26</b></td><td>.474</td><td>Below avg.</td></tr>
-<tr><td><b>27</b></td><td>Detroit Lions</td><td><b>27</b></td><td>.467</td><td>Easy</td></tr>
-<tr><td><b>28</b></td><td>Atlanta Falcons</td><td><b>28</b></td><td>.465</td><td>Easy</td></tr>
-<tr><td><b>29</b></td><td>Indianapolis Colts</td><td><b>28</b></td><td>.465</td><td>Easy</td></tr>
-<tr><td><b>30</b></td><td>Cincinnati Bengals</td><td><b>30</b></td><td>.450</td><td>Very easy</td></tr>
-<tr><td><b>31</b></td><td>New Orleans Saints</td><td><b>31</b></td><td>.434</td><td>Very easy</td></tr>
-<tr><td><b>32</b></td><td>Cleveland Browns</td><td><b>32</b></td><td>.429</td><td>Easiest</td></tr></tbody>
-    </table>
-  </div>
-  <div class="nfln-sos-source">Forrás: The Football Database / 2026 NFL Strength of Schedule. A számítás a 2025-ös ellenfelek W-L-T mérlegén alapul.</div>
-</section>
-
 <div id="nfln-modal-overlay" class="nfln-modal-overlay">
           <div class="nfln-modal">
             <button id="nfln-modal-close" class="nfln-modal-close">&times;</button>

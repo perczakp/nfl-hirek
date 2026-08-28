@@ -54,15 +54,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 .nfln-bye-week strong{display:block;margin-bottom:6px}
 .nfln-bye-player{font-size:13px;margin:3px 0}
 .nfln-strength{display:grid;gap:9px}
-  .nfln-league-rank {
-    font-size: 11px;
-    color: #5b6b7a;
-    white-space: nowrap;
-    margin-left: 4px;
-  }
-  .nfln-rank-good { color: #1e7e34; font-weight: 700; }
-  .nfln-rank-mid { color: #b06a00; font-weight: 700; }
-  .nfln-rank-low { color: #c0392b; font-weight: 700; }
 .nfln-strength-row{display:grid;grid-template-columns:70px 1fr 48px;gap:10px;align-items:center}
 .nfln-bar{height:10px;background:#e3e8ed;border-radius:99px;overflow:hidden}
 .nfln-fill{height:100%;border-radius:99px}
@@ -87,6 +78,28 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 }
 @media(max-width:460px){.nfln-bye-list{grid-template-columns:1fr}}
 </style>
+
+<style id="site-navigation-layout-fix">
+/* Egységes, több soros navigáció minden oldalon */
+.nfln-nav {
+  width: min(760px, 100%);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  overflow: visible;
+  white-space: normal;
+}
+.nfln-nav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+</style>
+
 </head>
 <body>
 <div class="nfln-wrap">
@@ -381,225 +394,20 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return req;
   }
 
-  function sleeperRank(p){
-    var rank = Number(p && p.search_rank);
-    return Number.isFinite(rank) && rank > 0 ? rank : null;
-  }
-
-  function sleeperIdpPool(pos, players){
-    var list = Array.isArray(players)
-      ? players
-      : (players && typeof players === "object"
-          ? Object.keys(players).map(function(id){
-              var p = players[id];
-              if(!p) return null;
-              return Object.assign({id:id}, p);
-            }).filter(function(p){ return !!p; })
-          : []);
-
-    var pool = list.filter(function(p){
-      return basePosition(playerPosition(p)) === pos &&
-             sleeperRank(p) !== null;
-    });
-
-    pool.sort(function(a,b){
-      return sleeperRank(a) - sleeperRank(b);
-    });
-
-    return pool;
-  }
-
-  function sleeperIdpScore(p, players){
-    var rank = sleeperRank(p);
-    if(rank === null) return 35;
-
-    var pos = basePosition(playerPosition(p));
-    var pool = sleeperIdpPool(pos, players);
-
-    if(!pool.length) return 35;
-
-    var index = pool.findIndex(function(x){
-      return String(x.id) === String(p.id);
-    });
-
-    if(index < 0) return 35;
-
-    var percentile = pool.length === 1
-      ? 100
-      : 100 * (1 - index / (pool.length - 1));
-
-    // Non-linear curve: elite IDP players are separated more clearly,
-    // while deep-ranked players are compressed toward the bottom.
-    var score;
-    if(percentile >= 90) score = 90 + (percentile - 90);
-    else if(percentile >= 70) score = 70 + (percentile - 70);
-    else if(percentile >= 40) score = 45 + (percentile - 40) * 0.833333;
-    else score = percentile * 1.125;
-
-    return Math.max(0, Math.min(100, score - injuryPenalty(p)));
-  }
-
-  function idpPlayerQuality(p, pools){
-    return sleeperIdpScore(p, state.players || {});
-  }
-
-  function idpSlotType(slot){
-    slot = String(slot || "").toUpperCase();
-    if(["DL","DE","DT","NT","EDGE"].indexOf(slot) >= 0) return "DL";
-    if(slot === "LB") return "LB";
-    if(slot === "DB") return "DB";
-    if(["IDP","IDP_FLEX","IDP FLEX"].indexOf(slot) >= 0) return "IDP_FLEX";
-    return null;
-  }
-
-  function idpStartRequirements(){
-    var req = {DL:0,LB:0,DB:0,IDP_FLEX:0};
-    (state.league.roster_positions || []).forEach(function(slot){
-      var type = idpSlotType(slot);
-      if(type) req[type]++;
-    });
-    return req;
-  }
-
-  function idpStarterPlan(roster, players, pools){
-    var slots = (state.league.roster_positions || []).map(function(x){
-      return String(x).toUpperCase();
-    });
-    var starters = (roster && roster.starters) || [];
-    var fixed = {DL:[],LB:[],DB:[]};
-    var flexCount = 0;
-    var used = {};
-
-    slots.forEach(function(slot,index){
-      var type = idpSlotType(slot);
-      if(!type) return;
-
-      var id = starters[index];
-      var p = players.filter(function(x){
-        return String(x.id) === String(id);
-      })[0];
-      if(!p) return;
-
-      used[String(p.id)] = true;
-
-      if(type === "IDP_FLEX") flexCount++;
-      else fixed[type].push(p);
-    });
-
-    var remaining = players.filter(function(p){
-      return ["DL","LB","DB"].indexOf(basePosition(playerPosition(p))) >= 0 &&
-             !used[String(p.id)];
-    }).sort(function(a,b){
-      return idpPlayerQuality(b,pools) - idpPlayerQuality(a,pools);
-    });
-
-    var flex = [];
-    for(var i=0;i<flexCount;i++){
-      if(remaining[i]) flex.push(remaining[i]);
-    }
-
-    return {fixed:fixed, flex:flex};
-  }
-
-  function idpStrengthScore(roster, players, pools){
-    var req = idpStartRequirements();
-    var plan = idpStarterPlan(roster, players, pools);
-    var values = [];
-    var missing = 0;
-    var injured = 0;
-
-    ["DL","LB","DB"].forEach(function(pos){
-      for(var i=0;i<(req[pos] || 0);i++){
-        var p = plan.fixed[pos][i];
-        if(!p){ missing++; continue; }
-        values.push(idpPlayerQuality(p,pools));
-        if(injuryPenalty(p) >= 15) injured++;
-      }
-    });
-
-    plan.flex.forEach(function(p){
-      values.push(idpPlayerQuality(p,pools) * 0.85);
-      if(injuryPenalty(p) >= 15) injured++;
-    });
-
-    var starterQuality = values.length
-      ? values.reduce(function(a,b){return a+b;},0) / values.length
-      : 0;
-
-    var depthScores = [];
-    ["DL","LB","DB"].forEach(function(pos){
-      var playersAtPos = players.filter(function(p){
-        return basePosition(playerPosition(p)) === pos;
-      }).sort(function(a,b){
-        return idpPlayerQuality(b,pools) - idpPlayerQuality(a,pools);
-      });
-
-      var depth = playersAtPos.slice(req[pos] || 0, (req[pos] || 0) + 2);
-      if(depth.length){
-        depthScores.push(
-          depth.reduce(function(sum,p){return sum+idpPlayerQuality(p,pools);},0) /
-          depth.length
-        );
-      }
-    });
-
-    var depthQuality = depthScores.length
-      ? depthScores.reduce(function(a,b){return a+b;},0) / depthScores.length
-      : 0;
-
-    return Math.round(Math.max(0, Math.min(100,
-      starterQuality * 0.82 +
-      depthQuality * 0.18 -
-      missing * 18 -
-      injured * 10
-    )));
-  }
-
-  function idpNeedScore(roster, players, pools){
-    var req = idpStartRequirements();
-    var plan = idpStarterPlan(roster, players, pools);
-    var values = [];
-    var missing = 0;
-    var injured = 0;
-
-    ["DL","LB","DB"].forEach(function(pos){
-      for(var i=0;i<(req[pos] || 0);i++){
-        var p = plan.fixed[pos][i];
-        if(!p){ missing++; continue; }
-        values.push(idpPlayerQuality(p,pools));
-        if(injuryPenalty(p) >= 15) injured++;
-      }
-    });
-
-    plan.flex.forEach(function(p){
-      values.push(idpPlayerQuality(p,pools) * 0.85);
-      if(injuryPenalty(p) >= 15) injured++;
-    });
-
-    var avg = values.length
-      ? values.reduce(function(a,b){return a+b;},0) / values.length
-      : 0;
-
-    var weak = values.filter(function(v){ return v < 55; }).length;
-
-    return Math.round(Math.max(0, Math.min(100,
-      (100-avg) * 0.78 +
-      weak * 6 +
-      missing * 20 +
-      injured * 10
-    )));
-  }
-
-  function strengthScore(pos, buckets, starters, pools, roster, players){
-    if(pos === "IDP") return idpStrengthScore(roster, players, pools);
-
-    var rosterPlayers = buckets[pos] || [];
-    if(!rosterPlayers.length) return 0;
+  function strengthScore(pos, buckets, starters, pools){
+    var roster = buckets[pos] || [];
+    if(!roster.length) return 0;
 
     var req = requiredStarts();
-    var target = Math.max(req[pos] || 0, (starters[pos] || []).length, 1);
+    var target = req[pos] || 0;
 
-    var ranked = rosterPlayers.slice().sort(function(a,b){
+    // If the league uses FLEX/SUPER_FLEX and no fixed starter is defined for
+    // a position, use the actual starter count as a floor, not as the whole
+    // strength model.
+    var actualStarters = (starters[pos] || []).length;
+    target = Math.max(target, actualStarters, 1);
+
+    var ranked = roster.slice().sort(function(a,b){
       return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
     });
 
@@ -611,16 +419,17 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
       : 0;
 
-    var usableDepth = rosterPlayers.slice(target).map(function(p){
+    // Depth matters, but cannot overpower starter quality.
+    var usableDepth = roster.slice(target).map(function(p){
       return playerQuality(p,pos,pools);
     }).filter(function(v){ return v >= 45; }).length;
 
     var depthScore = Math.min(100, 45 + usableDepth * 12);
-    var shortagePenalty = rosterPlayers.length < target
-      ? (target - rosterPlayers.length) * 18
+    var shortagePenalty = roster.length < target
+      ? (target - roster.length) * 18
       : 0;
 
-    var injuredStarters = ranked.slice(0,target).filter(function(p){
+    var injuredStarters = roster.slice(0,target).filter(function(p){
       return injuryPenalty(p) >= 15;
     }).length;
 
@@ -632,15 +441,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     )));
   }
 
-  function needScore(pos, buckets, starters, pools, roster, players){
-    if(pos === "IDP") return idpNeedScore(roster, players, pools);
-
+  function needScore(pos, buckets, starters, pools){
     var req = requiredStarts();
-    var rosterPlayers = buckets[pos] || [];
+    var roster = buckets[pos] || [];
     var target = Math.max(req[pos] || 0, (starters[pos] || []).length, 1);
-    if(!rosterPlayers.length) return 90;
 
-    var ranked = rosterPlayers.slice().sort(function(a,b){
+    if(!roster.length) return 90;
+
+    var ranked = roster.slice().sort(function(a,b){
       return playerQuality(b,pos,pools) - playerQuality(a,pos,pools);
     });
 
@@ -652,18 +460,20 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       ? starterQuality.reduce(function(a,b){return a+b;},0) / starterQuality.length
       : 0;
 
-    var shortage = Math.max(0, target - rosterPlayers.length);
+    var shortage = Math.max(0, target - roster.length);
     var weakStarters = starterQuality.filter(function(v){ return v < 55; }).length;
-    var injured = ranked.slice(0,target).filter(function(p){
+    var injured = roster.slice(0,target).filter(function(p){
       return injuryPenalty(p) >= 15;
     }).length;
 
-    var score = (100-avg) * 0.72 +
+    // Higher = more urgent need.
+    var score = (100 - avg) * 0.72 +
       weakStarters * 7 +
       shortage * 20 +
       injured * 10;
 
-    if(rosterPlayers.length > target + 1 && avg >= 65) score -= 10;
+    // Extra depth is a mild positive, not a reason to call a position weak.
+    if(roster.length > target + 1 && avg >= 65) score -= 10;
 
     return Math.round(Math.max(0, Math.min(100, score)));
   }
@@ -673,79 +483,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     if(score >= 55) return "mid";
     if(score >= 40) return "warn";
     return "bad";
-  }
-
-
-  function playersForRoster(roster){
-    return (roster && roster.players || []).map(function(id){
-      var p = state.players[id];
-      if(!p) return null;
-      return Object.assign({id:id, name:playerName(p)}, p);
-    }).filter(function(p){ return p && p.name; });
-  }
-
-  function bucketsForPlayers(players){
-    var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
-    players.forEach(function(p){
-      var base = basePosition(playerPosition(p));
-      if(base === "QB") buckets.QB.push(p);
-      else if(base === "RB") buckets.RB.push(p);
-      else if(base === "WR") buckets.WR.push(p);
-      else if(base === "TE") buckets.TE.push(p);
-      else if(["DL","LB","DB"].indexOf(base) >= 0) buckets.IDP.push(p);
-      else if(base === "DEF") buckets.DEF.push(p);
-    });
-    return buckets;
-  }
-
-  function starterBucketsForRoster(roster, players){
-    var buckets = {QB:[],RB:[],WR:[],TE:[],IDP:[],DEF:[]};
-    players = Array.isArray(players) ? players : [];
-    (roster && roster.starters || []).forEach(function(id){
-      var p = players.filter(function(x){ return String(x.id) === String(id); })[0];
-      if(!p) return;
-      var base = basePosition(playerPosition(p));
-      if(base === "QB") buckets.QB.push(p);
-      else if(base === "RB") buckets.RB.push(p);
-      else if(base === "WR") buckets.WR.push(p);
-      else if(base === "TE") buckets.TE.push(p);
-      else if(["DL","LB","DB"].indexOf(base) >= 0) buckets.IDP.push(p);
-      else if(base === "DEF") buckets.DEF.push(p);
-    });
-    return buckets;
-  }
-
-  function leaguePositionStrengths(pos, pools){
-    var list = [];
-    (state.rosters || []).forEach(function(roster){
-      var players = playersForRoster(roster);
-      var buckets = bucketsForPlayers(players);
-      var starters = starterBucketsForRoster(roster, players);
-      list.push({
-        rosterId: roster.roster_id,
-        score: strengthScore(pos, buckets, starters, pools, roster, players)
-      });
-    });
-    list.sort(function(a,b){
-      if(b.score !== a.score) return b.score-a.score;
-      return String(a.rosterId).localeCompare(String(b.rosterId));
-    });
-    return list;
-  }
-
-  function leagueRank(pos, pools){
-    var list=leaguePositionStrengths(pos,pools);
-    var rankMap={};
-    var lastScore=null, lastRank=0;
-    list.forEach(function(x,i){
-      if(x.score !== lastScore) lastRank=i+1;
-      lastScore=x.score;
-      rankMap[String(x.rosterId)]=lastRank;
-    });
-    return {
-      rank: state.roster ? rankMap[String(state.roster.roster_id)] : list.length,
-      total: list.length
-    };
   }
 
   function renderAnalysis(){
@@ -761,44 +498,31 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     positions.forEach(function(pos){
       pools[pos] = marketValuePool(pos);
     });
-    pools.DL = marketValuePool("DL");
-    pools.LB = marketValuePool("LB");
-    pools.DB = marketValuePool("DB");
 
     var results = positions.map(function(pos){
-      var rank = leagueRank(pos,pools);
       return {
         pos:pos,
-        need:needScore(pos,buckets,starters,pools,state.roster,state.rosterPlayers),
-        strength:strengthScore(pos,buckets,starters,pools,state.roster,state.rosterPlayers),
+        need:needScore(pos,buckets,starters,pools),
+        strength:strengthScore(pos,buckets,starters,pools),
         count:buckets[pos].length,
-        starters:(starters[pos] || []).length,
-        rank:rank.rank,
-        total:rank.total
+        starters:(starters[pos] || []).length
       };
-    }).sort(function(a,b){
-      if(b.need !== a.need) return b.need-a.need;
-      return a.rank-b.rank;
-    });
+    }).sort(function(a,b){ return b.need-a.need; });
 
     results.forEach(function(r){
       var row = document.createElement("div");
       row.className = "nfln-strength-row";
-      var rankClass = r.rank <= Math.ceil(r.total/3)
-        ? "nfln-rank-good"
-        : (r.rank <= Math.ceil(r.total*2/3) ? "nfln-rank-mid" : "nfln-rank-low");
       row.innerHTML =
         "<strong>" + r.pos + "</strong>" +
         '<div class="nfln-bar"><div class="nfln-fill ' + strengthClass(r.strength) +
         '" style="width:' + r.strength + '%"></div></div>' +
-        "<strong>" + r.strength + "</strong>" +
-        '<span class="nfln-league-rank ' + rankClass + '">#' + r.rank + "/" + r.total + "</span>";
+        "<strong>" + r.strength + "</strong>";
       strength.appendChild(row);
     });
 
     var table = document.createElement("table");
     table.className = "nfln-table";
-    table.innerHTML = "<thead><tr><th>Pos</th><th>Roster</th><th>League Rank</th><th>Need</th><th>Priority</th></tr></thead>";
+    table.innerHTML = "<thead><tr><th>Pos</th><th>Roster</th><th>Need</th><th>Priority</th></tr></thead>";
     var tbody = document.createElement("tbody");
 
     results.forEach(function(r){
@@ -807,7 +531,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       tr.innerHTML =
         "<td><strong>" + r.pos + "</strong></td>" +
         "<td>" + r.count + " (" + r.starters + " start)</td>" +
-        "<td><strong>#" + r.rank + "/" + r.total + "</strong></td>" +
         "<td>" + r.need + "/100</td>" +
         '<td><span class="nfln-badge ' + priority.toLowerCase() + '">' + priority + "</span></td>";
       tbody.appendChild(tr);
@@ -819,7 +542,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     var top = results[0];
     $("need-summary").innerHTML =
       "<strong>Legnagyobb erősítési igény: " + top.pos + "</strong><br>" +
-      '<span class="nfln-small">A Roster Strength a kezdőhelyek minőségét, a DL/LB/DB bontású IDP-eloszlást, a depth-et és a sérülési kockázatot kombinálja. A #1/12 a legerősebb, a #12/12 a leggyengébb roster az adott pozíción a ligádban. A Need 0–100, ahol a magasabb érték nagyobb erősítési igényt jelent.</span>';
+      '<span class="nfln-small">A pontszám a kezdő játékosok piaci értékét, a roster mélységét és a sérülési kockázatot veszi figyelembe. A FantasyCalc értékek elsődlegesek, ha elérhetők.</span>';
   }
 
   function teamName(user){
@@ -866,14 +589,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     }
 
     return Promise.all(weeks).then(function(results){
-      var validWeeks = results.filter(function(data){
-        return data && Array.isArray(data.events);
-      }).length;
-
-      if(validWeeks === 0){
-        throw new Error("Az ESPN menetrend adatai jelenleg nem érhetők el.");
-      }
-
       var playedByWeek = {};
       results.forEach(function(data,index){
         var set = {};
@@ -1045,14 +760,10 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       return currentSeason();
     }).then(function(season){
       $("bye-status").textContent = "Bye weekek betöltése (" + season + ")...";
-      return fetchByeWeeks(season).then(function(bye){
-        state.byeWeeks = bye;
-        renderByes();
-      }).catch(function(err){
-        console.warn("Bye week betöltési hiba:", err);
-        $("bye-status").textContent = "A roster szinkronizálása sikeres, de a bye week adatok jelenleg nem érhetők el.";
-        $("bye-status").className = "nfln-status error";
-      });
+      return fetchByeWeeks(season);
+    }).then(function(bye){
+      state.byeWeeks = bye;
+      renderByes();
     }).catch(function(err){
       console.error(err);
       setStatus(err.message || "Nem sikerült a szinkronizálás.","error");

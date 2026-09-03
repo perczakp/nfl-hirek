@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-08-30
+**Last updated:** 2026-09-03
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent and stable.
@@ -13,12 +13,13 @@ Build a free NFL fantasy web application hosted on GitHub Pages, using real data
 5. Bye Weeks
 6. My Fantasy Team
 7. Strength of Schedule
+8. 2026 IDP Rankings
 
 Planned:
-8. Preseason
+9. Preseason
 
 ### Navigation
-Navigation is a site-wide component. Every page must contain the same links and the same layout rules. The current 7-tab layout is intentionally multi-row. When Preseason is added, the target is a clean 4 + 4 layout.
+Navigation is a site-wide component. Every page must contain the same links and the same layout rules. The current 8-tab layout is intentionally multi-row: three columns on desktop, two on smaller tablets, and one on narrow phones.
 
 ## 3. Permanent filename rule
 When an existing file is modified, it keeps its original filename.
@@ -34,7 +35,8 @@ Never create `-fixed`, `-final`, `-v2`, `index2`, or similar duplicate names for
 ## 4. Current main files
 - index.html
 - trade-chart.html
-- idp-rankings.html
+- rookie-idp-rankings.html
+- IDP26rankings.html
 - tips.html
 - bye-weeks.html
 - my-team.html
@@ -177,7 +179,25 @@ SOS should not automatically be mixed into base player value unless explicitly d
 
 # PRESEASON
 
-## 15. Planned Preseason tab
+## 15. 2026 IDP Rankings
+
+`IDP26rankings.html` is a static, self-contained presentation of the RPO Football 2026 IDP ranking data:
+- 73 DL (Defensive Linemen) rankings;
+- 73 LB (Linebacker) rankings;
+- 78 DB (Defensive Back) rankings;
+- rank, player name, and team abbreviation for every entry.
+
+Source links must remain visible on the page:
+- RPO Football: `https://rpofootball.com/2026-idp-rankings/`
+- Published RPO ranking sheet: `https://docs.google.com/spreadsheets/d/e/2PACX-1vSV5QwPm3AwySfxiIgC8XUGtORGwfC-rXcXoFG8bbjIqqGRZ-C0alw7QKTf_SsrywtKRKN5PlZZoWzR/pubhtml?headers=false&widget=true`
+
+The page intentionally stores the verified ranking data in its own HTML rather than relying on an iframe, so the rankings remain visible even if the source embed fails. Refreshes require a new, explicit data verification against the RPO source.
+
+## 16. Rookie IDP filename and navigation
+
+The canonical Rookie IDP page filename is `rookie-idp-rankings.html`. The incorrectly named `rookie idp-rankings.html` file (with a space) was removed after its content was migrated. All site navigation links must use the canonical hyphenated filename.
+
+## 17. Planned Preseason tab
 A future `Preseason` tab should cover:
 - QB
 - RB
@@ -197,7 +217,7 @@ The user prefers separate **Passing** and **Rushing** columns/sections.
 ### Snap count
 Snap count was investigated and is currently **not included**.
 
-## 16. Preseason data-source direction
+## 18. Preseason data-source direction
 The Football Database and NFL.com were investigated as potential sources.
 
 The user prefers, if possible, to obtain all relevant information from one free sports website.
@@ -208,7 +228,7 @@ Preseason is not considered complete until the real data source, schema, and upd
 
 # FANTASYPROS RESEARCH
 
-## 17. FantasyPros investigation
+## 19. FantasyPros investigation
 FantasyPros was used as a reference for roster evaluation.
 
 We investigated browser developer tools, page source, network activity, large JavaScript bundles, and possible VORP/replacement concepts.
@@ -217,7 +237,7 @@ A very large bundled codebase was encountered, and simple searches for `VORP` an
 
 Do not assume one visible formula in compiled/minified code represents the entire FantasyPros model.
 
-## 18. Lessons from FantasyPros comparison
+## 20. Lessons from FantasyPros comparison
 Roster analysis needs:
 - league-relative context;
 - position awareness;
@@ -229,7 +249,7 @@ The model should be validated against real examples rather than tuned only to re
 
 # NAVIGATION LESSONS
 
-## 19. Navigation bug
+## 21. Navigation bug
 A previous change caused:
 - some pages to show all tabs on one line;
 - others to use multiple rows;
@@ -245,14 +265,13 @@ Correct approach:
 
 The current stable direction uses CSS Grid rather than relying only on flex wrapping.
 
-## 20. Current target layout
-With 7 tabs:
-- Row 1: 3
-- Row 2: 3
-- Row 3: 1
+## 22. Current navigation layout
+With the current 8 tabs:
+- desktop: 3 + 3 + 2;
+- medium screens: two columns;
+- narrow screens: one column.
 
-With 8 tabs after Preseason:
-- target: 4 + 4
+The layout must remain consistent across every page.
 
 Do not sacrifice working page content just to change navigation.
 
@@ -395,6 +414,12 @@ The goal is to keep it useful as a compact but sufficiently detailed project mem
 Use the changelog to record significant project milestones and decisions.
 
 Initial entries:
+
+### 2026-09-03
+- Rebuilt `IDP26rankings.html` with the complete verified RPO Football 2026 IDP rankings: 73 DL, 73 LB, and 78 DB entries.
+- Replaced the broken external-sheet iframe with self-contained, responsive ranking tables and visible RPO source links.
+- Renamed the Rookie IDP page to the canonical `rookie-idp-rankings.html` filename and removed the incorrectly space-named source file.
+- Synchronized the Rookie and 2026 IDP navigation links across every affected page.
 
 ### 2026-08-30
 - Created `PROJECT_STATE.md` as the project's persistent working-memory document.

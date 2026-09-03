@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 IDP Rankings · NFL Fantasy News</title>
+
+<style>
+  :root{
+    --patriots-blue:#0b2f52;
+    --patriots-red:#d7092f;
+    --silver:#d5dadd;
+    --silver-dark:#aeb7be;
+    --page:#dfe3e6;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    padding:28px 16px 60px;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--page);
+    color:#1b1f22;
+  }
+
+  .nfln-back{
+    display:block;
+    max-width:1000px;
+    margin:0 auto 14px;
+    font-size:14px;
+  }
+
+  .nfln-back a{
+    color:#50565b;
+    text-decoration:none;
+  }
+
+  .nfln-back a:hover{color:var(--patriots-blue)}
+
+  .nfln-header{
+    max-width:1000px;
+    margin:0 auto 16px;
+    text-align:center;
+  }
+
+  .nfln-header h1{
+    color:var(--patriots-blue);
+    font-size:30px;
+    margin:0 0 5px;
+  }
+
+  .nfln-header p{
+    color:#68727a;
+    font-size:14px;
+    margin:0;
+  }
+
+  /* Keep the site's multi-row navigation layout stable as more tabs are added. */
+  .nfln-nav{
+    display:grid!important;
+    grid-template-columns:repeat(3,max-content)!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:8px!important;
+    width:100%;
+    max-width:1000px;
+    margin:0 auto 24px;
+    overflow:visible;
+    white-space:normal;
+  }
+
+  .nfln-nav a{
+    display:block!important;
+    width:max-content;
+    min-width:0;
+    padding:9px 16px;
+    border-radius:9px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:bold;
+    white-space:nowrap;
+    border:1px solid var(--silver-dark);
+    background:rgba(255,255,255,.95);
+    color:var(--patriots-blue);
+    text-align:center;
+  }
+
+  .nfln-nav a:hover{
+    background:var(--patriots-blue);
+    color:#fff;
+    border-color:var(--patriots-blue);
+  }
+
+  .nfln-nav a.active{
+    background:var(--patriots-red);
+    color:#fff;
+    border-color:var(--patriots-red);
+  }
+
+  .idp-card{
+    max-width:1100px;
+    margin:0 auto;
+    background:#fff;
+    border:1px solid #d5dce1;
+    border-radius:14px;
+    box-shadow:0 7px 18px rgba(0,0,0,.10);
+    overflow:hidden;
+  }
+
+  .idp-card-head{
+    padding:18px 22px 14px;
+    border-bottom:1px solid #e1e5e8;
+  }
+
+  .idp-card-head h2{
+    margin:0 0 5px;
+    color:var(--patriots-blue);
+    font-size:21px;
+  }
+
+  .idp-card-head p{
+    margin:0;
+    color:#68727a;
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  .idp-source{
+    margin-top:8px!important;
+  }
+
+  .idp-source a{
+    color:var(--patriots-blue);
+    font-weight:bold;
+  }
+
+  .sheet-wrap{
+    width:100%;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  .sheet-frame{
+    display:block;
+    width:100%;
+    height:1150px;
+    border:0;
+  }
+
+  .idp-note{
+    padding:12px 18px;
+    font-size:12px;
+    color:#68727a;
+    background:#f6f8f9;
+    border-top:1px solid #e1e5e8;
+  }
+
+  @media(max-width:760px){
+    .nfln-nav{
+      grid-template-columns:repeat(2,max-content)!important;
+    }
+
+    .sheet-frame{
+      height:1050px;
+    }
+  }
+
+  @media(max-width:500px){
+    .nfln-nav{
+      grid-template-columns:1fr!important;
+    }
+
+    .nfln-nav a{
+      width:100%;
+    }
+
+    .sheet-frame{
+      height:950px;
+    }
+
+    .nfln-header h1{
+      font-size:25px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="nfln-back">
+  <a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a>
+</div>
+
+<div class="nfln-header">
+  <h1>2026 IDP Rankings</h1>
+  <p>2026 fantasy rankings for Defensive Linemen, Linebackers and Defensive Backs</p>
+</div>
+
+<div class="nfln-nav">
+  <a href="index.html" class="inactive">Players Trending</a>
+  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
+  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+  <a href="tips.html" class="inactive">Tips</a>
+  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+  <a href="my-team.html" class="inactive">My Fantasy Team</a>
+  <a href="IDP26rankings.html" class="active">2026 IDP Rankings</a>
+</div>
+
+<div class="idp-card">
+  <div class="idp-card-head">
+    <h2>RPO Football — 2026 IDP Rankings</h2>
+    <p>
+      RPO Football's 2026 IDP rankings, covering DL (Defensive Linemen),
+      LB (Linebackers) and DB (Defensive Backs).
+    </p>
+    <p class="idp-source">
+      Source:
+      <a href="https://rpofootball.com/idp-rankings-for-2026/" target="_blank" rel="noopener noreferrer">
+        RPO Football — 2026 IDP Rankings
+      </a>
+    </p>
+  </div>
+
+  <div class="sheet-wrap">
+    <iframe
+      class="sheet-frame"
+      title="RPO Football 2026 IDP Rankings"
+      src="https://docs.google.com/spreadsheets/d/e/2PACX-1v5V5QwPm3AwySfxIiGc8XUGtORGwFc-rXcXoFG8bbjIqqGRZ-C0alw7QKTf_SsrywtKRKN5P1ZZoWzR/pubhtml?widget=true&amp;headers=false"
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <div class="idp-note">
+    Ranking source: RPO Football. The table is displayed from the source's published Google Sheet so the complete ranking remains available.
+  </div>
+</div>
+
+</body>
+</html>

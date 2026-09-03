@@ -4,237 +4,394 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 IDP Rankings · NFL Fantasy News</title>
-
 <style>
-  :root{
-    --patriots-blue:#0b2f52;
-    --patriots-red:#d7092f;
-    --silver:#d5dadd;
-    --silver-dark:#aeb7be;
-    --page:#dfe3e6;
+  :root {
+    --page-bg: #d5d8da;
+    --page-bg-dark: #c4c8cc;
+    --patriots-blue: #0b2a4a;
+    --patriots-blue-hover: #123b63;
+    --patriots-red: #c8102e;
+    --silver-dark: #8f959a;
+    --text: #1a1a1a;
+    --muted: #666c72;
+    --border: #c5c9cc;
   }
 
-  *{box-sizing:border-box}
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
-  body{
-    margin:0;
-    padding:28px 16px 60px;
-    font-family:Arial,Helvetica,sans-serif;
-    background:var(--page);
-    color:#1b1f22;
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+      linear-gradient(rgba(213,216,218,.94), rgba(196,200,204,.94)),
+      repeating-linear-gradient(90deg, transparent 0, transparent calc(12.5% - 1px), rgba(255,255,255,.24) calc(12.5% - 1px), rgba(255,255,255,.24) 12.5%),
+      repeating-linear-gradient(0deg, transparent 0, transparent 92px, rgba(255,255,255,.18) 92px, rgba(255,255,255,.18) 94px);
+    background-attachment: fixed;
   }
 
-  .nfln-back{
-    display:block;
-    max-width:1000px;
-    margin:0 auto 14px;
-    font-size:14px;
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .75;
+    background: linear-gradient(90deg, transparent 0 49.7%, rgba(255,255,255,.30) 49.7% 50.3%, transparent 50.3% 100%);
   }
 
-  .nfln-back a{
-    color:#50565b;
-    text-decoration:none;
+  .nfln-back { display: block; max-width: 1000px; margin: 0 auto 16px; font-size: 14px; }
+  .nfln-back a { color: #50565b; text-decoration: none; }
+  .nfln-back a:hover { color: var(--patriots-blue); }
+
+  .nfln-header { max-width: 1000px; margin: 0 auto 16px; text-align: center; }
+  .nfln-header h1 { margin: 0 0 5px; color: var(--patriots-blue); font-size: 28px; letter-spacing: -.5px; }
+  .nfln-header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .nfln-nav {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 24px;
   }
 
-  .nfln-back a:hover{color:var(--patriots-blue)}
-
-  .nfln-header{
-    max-width:1000px;
-    margin:0 auto 16px;
-    text-align:center;
+  .nfln-nav a {
+    display: block;
+    width: max-content;
+    padding: 9px 17px;
+    border: 1px solid var(--silver-dark);
+    border-radius: 8px;
+    color: var(--patriots-blue);
+    background: rgba(255,255,255,.94);
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background .18s ease, border-color .18s ease, transform .18s ease;
   }
 
-  .nfln-header h1{
-    color:var(--patriots-blue);
-    font-size:30px;
-    margin:0 0 5px;
-  }
+  .nfln-nav a.active { color: #fff; background: var(--patriots-red); border-color: var(--patriots-red); box-shadow: 0 3px 10px rgba(0,0,0,.14); }
+  .nfln-nav a.inactive:hover { color: #fff; background: var(--patriots-blue); border-color: var(--patriots-blue); transform: translateY(-1px); }
 
-  .nfln-header p{
-    color:#68727a;
-    font-size:14px;
-    margin:0;
-  }
+  .idp-card { max-width: 1200px; margin: 0 auto; overflow: hidden; background: #fff; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 7px 18px rgba(0,0,0,.14); }
+  .idp-card-head { padding: 22px; border-bottom: 1px solid #dfe3e6; text-align: center; }
+  .idp-card-head h2 { margin: 0 0 8px; color: var(--patriots-blue); font-size: 22px; }
+  .idp-card-head p { max-width: 720px; margin: 7px auto 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .idp-card-head a { color: var(--patriots-blue); font-weight: bold; }
 
-  /* Keep the site's multi-row navigation layout stable as more tabs are added. */
-  .nfln-nav{
-    display:grid!important;
-    grid-template-columns:repeat(3,max-content)!important;
-    justify-content:center!important;
-    align-items:center!important;
-    gap:8px!important;
-    width:100%;
-    max-width:1000px;
-    margin:0 auto 24px;
-    overflow:visible;
-    white-space:normal;
-  }
+  .rankings-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 18px; background: #f4f6f7; }
+  .ranking-section { min-width: 0; overflow: hidden; background: #fff; border: 1px solid #d7dce0; border-radius: 10px; }
+  .ranking-section h2 { margin: 0; padding: 14px 16px 3px; color: #fff; background: var(--patriots-blue); font-size: 18px; text-align: center; }
+  .ranking-count { margin: 0; padding: 0 16px 12px; color: #d5dfe8; background: var(--patriots-blue); font-size: 12px; text-align: center; }
+  .table-wrap { max-height: 660px; overflow: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { position: sticky; top: 0; z-index: 1; padding: 10px 12px; color: var(--patriots-blue); background: #eef1f3; border-bottom: 1px solid #cdd3d7; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid #e4e7e9; }
+  tbody tr:nth-child(even) { background: #fafbfb; }
+  tbody tr:hover { background: #edf4fa; }
+  .rank { width: 60px; color: var(--patriots-red); font-weight: bold; text-align: center; }
+  .team { display: inline-block; min-width: 34px; padding: 2px 5px; border-radius: 4px; color: var(--patriots-blue); background: #e8edf1; font-size: 12px; font-weight: bold; text-align: center; }
+  .idp-note { margin: 0; padding: 14px 18px; color: var(--muted); background: #fff; border-top: 1px solid #dfe3e6; font-size: 12px; line-height: 1.5; text-align: center; }
 
-  .nfln-nav a{
-    display:block!important;
-    width:max-content;
-    min-width:0;
-    padding:9px 16px;
-    border-radius:9px;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    white-space:nowrap;
-    border:1px solid var(--silver-dark);
-    background:rgba(255,255,255,.95);
-    color:var(--patriots-blue);
-    text-align:center;
-  }
-
-  .nfln-nav a:hover{
-    background:var(--patriots-blue);
-    color:#fff;
-    border-color:var(--patriots-blue);
-  }
-
-  .nfln-nav a.active{
-    background:var(--patriots-red);
-    color:#fff;
-    border-color:var(--patriots-red);
-  }
-
-  .idp-card{
-    max-width:1100px;
-    margin:0 auto;
-    background:#fff;
-    border:1px solid #d5dce1;
-    border-radius:14px;
-    box-shadow:0 7px 18px rgba(0,0,0,.10);
-    overflow:hidden;
-  }
-
-  .idp-card-head{
-    padding:18px 22px 14px;
-    border-bottom:1px solid #e1e5e8;
-  }
-
-  .idp-card-head h2{
-    margin:0 0 5px;
-    color:var(--patriots-blue);
-    font-size:21px;
-  }
-
-  .idp-card-head p{
-    margin:0;
-    color:#68727a;
-    font-size:13px;
-    line-height:1.5;
-  }
-
-  .idp-source{
-    margin-top:8px!important;
-  }
-
-  .idp-source a{
-    color:var(--patriots-blue);
-    font-weight:bold;
-  }
-
-  .sheet-wrap{
-    width:100%;
-    overflow:hidden;
-    background:#fff;
-  }
-
-  .sheet-frame{
-    display:block;
-    width:100%;
-    height:1150px;
-    border:0;
-  }
-
-  .idp-note{
-    padding:12px 18px;
-    font-size:12px;
-    color:#68727a;
-    background:#f6f8f9;
-    border-top:1px solid #e1e5e8;
-  }
-
-  @media(max-width:760px){
-    .nfln-nav{
-      grid-template-columns:repeat(2,max-content)!important;
-    }
-
-    .sheet-frame{
-      height:1050px;
-    }
-  }
-
-  @media(max-width:500px){
-    .nfln-nav{
-      grid-template-columns:1fr!important;
-    }
-
-    .nfln-nav a{
-      width:100%;
-    }
-
-    .sheet-frame{
-      height:950px;
-    }
-
-    .nfln-header h1{
-      font-size:25px;
-    }
-  }
+  @media (max-width: 950px) { .rankings-grid { grid-template-columns: 1fr; max-width: 620px; margin: 0 auto; } .table-wrap { max-height: 520px; } }
+  @media (max-width: 760px) { .nfln-nav { grid-template-columns: repeat(2, max-content); } }
+  @media (max-width: 500px) { body { padding: 18px 10px 40px; } .nfln-nav { grid-template-columns: 1fr; } .nfln-nav a { width: 100%; } .nfln-header h1 { font-size: 25px; } .idp-card-head { padding: 18px 14px; } .rankings-grid { padding: 10px; } }
 </style>
 </head>
-
 <body>
+<div class="nfln-back"><a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a></div>
 
-<div class="nfln-back">
-  <a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a>
-</div>
-
-<div class="nfln-header">
+<header class="nfln-header">
   <h1>2026 IDP Rankings</h1>
-  <p>2026 fantasy rankings for Defensive Linemen, Linebackers and Defensive Backs</p>
-</div>
+  <p>Fantasy rankings for Defensive Linemen, Linebackers and Defensive Backs</p>
+</header>
 
-<div class="nfln-nav">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-  <a href="my-team.html" class="inactive">My Fantasy Team</a>
-  <a href="IDP26rankings.html" class="active">2026 IDP Rankings</a>
-</div>
+<nav class="nfln-nav" aria-label="Site navigation">
+    <a href="index.html" class="inactive">Players Trending</a>
+    <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
+    <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+    <a href="tips.html" class="inactive">Tips</a>
+    <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+    <a href="my-team.html" class="inactive">My Fantasy Team</a>
+    <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
+    <a href="IDP26rankings.html" class="active">2026 IDP Rankings</a>
+</nav>
 
-<div class="idp-card">
+<main class="idp-card">
   <div class="idp-card-head">
     <h2>RPO Football — 2026 IDP Rankings</h2>
-    <p>
-      RPO Football's 2026 IDP rankings, covering DL (Defensive Linemen),
-      LB (Linebackers) and DB (Defensive Backs).
-    </p>
-    <p class="idp-source">
-      Source:
-      <a href="https://rpofootball.com/idp-rankings-for-2026/" target="_blank" rel="noopener noreferrer">
-        RPO Football — 2026 IDP Rankings
-      </a>
-    </p>
+    <p>Complete DL, LB and DB rankings, including each player’s source rank and team.</p>
+    <p>Source: <a href="https://rpofootball.com/2026-idp-rankings/" target="_blank" rel="noopener noreferrer">RPO Football 2026 IDP Rankings</a> · <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSV5QwPm3AwySfxiIgC8XUGtORGwfC-rXcXoFG8bbjIqqGRZ-C0alw7QKTf_SsrywtKRKN5PlZZoWzR/pubhtml?headers=false&amp;widget=true" target="_blank" rel="noopener noreferrer">published ranking sheet</a></p>
   </div>
 
-  <div class="sheet-wrap">
-    <iframe
-      class="sheet-frame"
-      title="RPO Football 2026 IDP Rankings"
-      src="https://docs.google.com/spreadsheets/d/e/2PACX-1v5V5QwPm3AwySfxIiGc8XUGtORGwFc-rXcXoFG8bbjIqqGRZ-C0alw7QKTf_SsrywtKRKN5P1ZZoWzR/pubhtml?widget=true&amp;headers=false"
-      loading="lazy">
-    </iframe>
+  <div class="rankings-grid">
+    <section class="ranking-section" aria-labelledby="dl-heading">
+      <h2 id="dl-heading">DL</h2>
+      <p class="ranking-count">73 ranked players</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Team</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Myles Garrett</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">2</td><td>Maxx Crosby</td><td><span class="team">LV</span></td></tr>
+            <tr><td class="rank">3</td><td>Aidan Hutchinson</td><td><span class="team">DET</span></td></tr>
+            <tr><td class="rank">4</td><td>Will Anderson Jr.</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">5</td><td>Nick Bosa</td><td><span class="team">SF</span></td></tr>
+            <tr><td class="rank">6</td><td>Arvell Reese</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">7</td><td>T.J. Watt</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">8</td><td>Brian Burns</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">9</td><td>Danielle Hunter</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">10</td><td>Andrew Van Ginkel</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">11</td><td>Byron Young</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">12</td><td>Jared Verse</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">13</td><td>Jeffery Simmons</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">14</td><td>Tuli Tuipulotu</td><td><span class="team">LAC</span></td></tr>
+            <tr><td class="rank">15</td><td>Josh Hines-Allen</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">16</td><td>Alex Highsmith</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">17</td><td>Dallas Turner</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">18</td><td>Trey Hendrickson</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">19</td><td>Nik Bonitto</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">20</td><td>Jonathan Greenard</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">21</td><td>Montez Sweat</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">22</td><td>DeForest Buckner</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">23</td><td>Chase Young</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">24</td><td>Laiatu Latu</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">25</td><td>Jaelan Phillips</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">26</td><td>Yaya Diaby</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">27</td><td>Greg Rousseau</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">28</td><td>Abdul Carter</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">29</td><td>George Karlaftis III</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">30</td><td>Travon Walker</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">31</td><td>Micah Parsons</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">32</td><td>Quinnen Williams</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">33</td><td>Odafe Oweh</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">34</td><td>Derrick Brown</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">35</td><td>Cameron Heyward</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">36</td><td>Khalil Mack</td><td><span class="team">LAC</span></td></tr>
+            <tr><td class="rank">37</td><td>Harold Landry III</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">38</td><td>Bradley Chubb</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">39</td><td>Leonard Williams</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">40</td><td>Carl Granderson</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">41</td><td>Jalen Redmond</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">42</td><td>David Bailey</td><td><span class="team">NYJ</span></td></tr>
+            <tr><td class="rank">43</td><td>DeMarcus Lawrence</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">44</td><td>Josh Sweat</td><td><span class="team">ARI</span></td></tr>
+            <tr><td class="rank">45</td><td>Jermaine Johnson II</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">46</td><td>Rueben Bain Jr.</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">47</td><td>Rashan Gary</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">48</td><td>Boye Mafe</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">49</td><td>Jalen Carter</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">50</td><td>Zach Sieler</td><td><span class="team">MIA</span></td></tr>
+            <tr><td class="rank">51</td><td>Zach Allen</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">52</td><td>Austin Booker</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">53</td><td>Myles Murphy</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">54</td><td>Nnamdi Madubuike</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">55</td><td>Ed Oliver</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">56</td><td>Kobie Turner</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">57</td><td>Chris Jones</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">58</td><td>Chop Robinson</td><td><span class="team">MIA</span></td></tr>
+            <tr><td class="rank">59</td><td>Byron Murphy II</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">60</td><td>Will McDonald IV</td><td><span class="team">NYJ</span></td></tr>
+            <tr><td class="rank">61</td><td>Donovan Ezeiruaku</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">62</td><td>Jalyx Hunt</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">63</td><td>Jonathon Cooper</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">64</td><td>Nolan Smith Jr.</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">65</td><td>Tommy Togiai</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">66</td><td>Lukas Van Ness</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">67</td><td>Nick Herbig</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">68</td><td>Jordan Davis</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">69</td><td>James Pearce Jr.</td><td><span class="team">ATL</span></td></tr>
+            <tr><td class="rank">70</td><td>Malachi Lawrence</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">71</td><td>Von Miller</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">72</td><td>Aaron Donald</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">73</td><td>Jonah Elliss</td><td><span class="team">DEN</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="ranking-section" aria-labelledby="lb-heading">
+      <h2 id="lb-heading">LB</h2>
+      <p class="ranking-count">73 ranked players</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Team</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Jordyn Brooks</td><td><span class="team">MIA</span></td></tr>
+            <tr><td class="rank">2</td><td>Jack Campbell</td><td><span class="team">DET</span></td></tr>
+            <tr><td class="rank">3</td><td>Blake Cashman</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">4</td><td>Carson Schwesinger</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">5</td><td>Roquan Smith</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">6</td><td>Ernest Jones IV</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">7</td><td>Fred Warner</td><td><span class="team">SF</span></td></tr>
+            <tr><td class="rank">8</td><td>Foyesade Oluokun</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">9</td><td>Nick Bolton</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">10</td><td>Jamien Sherwood</td><td><span class="team">NYJ</span></td></tr>
+            <tr><td class="rank">11</td><td>Cedric Gray</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">12</td><td>Quay Walker</td><td><span class="team">LV</span></td></tr>
+            <tr><td class="rank">13</td><td>Zack Baun</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">14</td><td>Alex Singleton</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">15</td><td>Nate Landman</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">16</td><td>Nakobe Dean</td><td><span class="team">LV</span></td></tr>
+            <tr><td class="rank">17</td><td>Edgerrin Cooper</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">18</td><td>Jacob Rodriguez</td><td><span class="team">MIA</span></td></tr>
+            <tr><td class="rank">19</td><td>Tremaine Edmunds</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">20</td><td>Sonny Styles</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">21</td><td>Robert Spillane</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">22</td><td>T.J. Edwards</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">23</td><td>Daiyan Henley</td><td><span class="team">LAC</span></td></tr>
+            <tr><td class="rank">24</td><td>Devin Lloyd</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">25</td><td>Devin Bush Jr.</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">26</td><td>Barrett Carter</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">27</td><td>Kaden Elliss</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">28</td><td>Mack Wilson Sr.</td><td><span class="team">ARI</span></td></tr>
+            <tr><td class="rank">29</td><td>Demario Davis</td><td><span class="team">NYJ</span></td></tr>
+            <tr><td class="rank">30</td><td>Zaire Franklin</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">31</td><td>Azeez Al-Shaair</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">32</td><td>Terrel Bernard</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">33</td><td>Patrick Queen</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">34</td><td>DeMarvion Overshown</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">35</td><td>Quincy Williams</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">36</td><td>Arvell Reese</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">37</td><td>Divine Deablo</td><td><span class="team">ATL</span></td></tr>
+            <tr><td class="rank">38</td><td>Eric Wilson</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">39</td><td>Alex Anzalone</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">40</td><td>Frankie Luvu</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">41</td><td>Josiah Trotter</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">42</td><td>Drue Tranquill</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">43</td><td>Jihaad Campbell</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">44</td><td>T.J. Watt</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">45</td><td>Andrew Van Ginkel</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">46</td><td>Dre Greenlaw</td><td><span class="team">SF</span></td></tr>
+            <tr><td class="rank">47</td><td>Demetrius Knight Jr.</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">48</td><td>CJ Allen</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">49</td><td>Henry To&#39;oTo&#39;o</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">50</td><td>Akeem Davis-Gaither</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">51</td><td>Bobby Okereke</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">52</td><td>Drake Thomas</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">53</td><td>Payton Wilson</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">54</td><td>Alex Highsmith</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">55</td><td>Micah Parsons</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">56</td><td>Ventrell Miller</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">57</td><td>Dee Winters</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">58</td><td>Derrick Barnes</td><td><span class="team">DET</span></td></tr>
+            <tr><td class="rank">59</td><td>Jack Gibbens</td><td><span class="team">ARI</span></td></tr>
+            <tr><td class="rank">60</td><td>Christian Elliss</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">61</td><td>Cody Barton</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">62</td><td>Omar Speights</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">63</td><td>Pete Werner</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">64</td><td>Kendal Daniels</td><td><span class="team">ATL</span></td></tr>
+            <tr><td class="rank">65</td><td>Teddye Buchanan</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">66</td><td>Kaleb Elarms-Orr</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">67</td><td>Justin Strnad</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">68</td><td>Jaishawn Barham</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">69</td><td>Branson Combs</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">70</td><td>Anthony Hill Jr.</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">71</td><td>Jaylon Carlies</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">72</td><td>Dorian Williams</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">73</td><td>Trevin Wallace</td><td><span class="team">NYJ</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="ranking-section" aria-labelledby="db-heading">
+      <h2 id="db-heading">DB</h2>
+      <p class="ranking-count">78 ranked players</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Team</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Kyle Hamilton</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">2</td><td>Nick Emmanwori</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">3</td><td>Nick Cross</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">4</td><td>Budda Baker</td><td><span class="team">ARI</span></td></tr>
+            <tr><td class="rank">5</td><td>Tykee Smith</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">6</td><td>Derwin James Jr.</td><td><span class="team">LAC</span></td></tr>
+            <tr><td class="rank">7</td><td>Kam Curl</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">8</td><td>Talanoa Hufanga</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">9</td><td>Jeremy Chinn</td><td><span class="team">LV</span></td></tr>
+            <tr><td class="rank">10</td><td>Chamarri Conner</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">11</td><td>Quentin Lake</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">12</td><td>Tre&#39;von Moehrig</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">13</td><td>Jordan Battle</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">14</td><td>Jessie Bates III</td><td><span class="team">ATL</span></td></tr>
+            <tr><td class="rank">15</td><td>Antoine Winfield Jr.</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">16</td><td>Xavier McKinney</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">17</td><td>Devon Witherspoon</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">18</td><td>Kamari Lassiter</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">19</td><td>Joshua Metellus</td><td><span class="team">MIN</span></td></tr>
+            <tr><td class="rank">20</td><td>Jaquan Brisker</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">21</td><td>Cooper DeJean</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">22</td><td>Kevin Byard III</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">23</td><td>Minkah Fitzpatrick</td><td><span class="team">NYJ</span></td></tr>
+            <tr><td class="rank">24</td><td>Julian Love</td><td><span class="team">SEA</span></td></tr>
+            <tr><td class="rank">25</td><td>Cole Bishop</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">26</td><td>Paulson Adebo</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">27</td><td>Malik Mustapha</td><td><span class="team">SF</span></td></tr>
+            <tr><td class="rank">28</td><td>Jalen Thompson</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">29</td><td>Jalen Pitre</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">30</td><td>Dillon Thieneman</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">31</td><td>AJ Haulcy</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">32</td><td>Evan Williams</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">33</td><td>Xavier Watts</td><td><span class="team">ATL</span></td></tr>
+            <tr><td class="rank">34</td><td>Brandon Jones</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">35</td><td>Kevin Winston Jr.</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">36</td><td>DaRon Bland</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">37</td><td>Trent McDuffie</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">38</td><td>Grant Delpit</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">39</td><td>Caleb Downs</td><td><span class="team">DAL</span></td></tr>
+            <tr><td class="rank">40</td><td>Nick Scott</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">41</td><td>Tyler Nubin</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">42</td><td>Ronnie Hickman Jr.</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">43</td><td>Alontae Taylor</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">44</td><td>Marlon Humphrey</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">45</td><td>Alohi Gilman</td><td><span class="team">KC</span></td></tr>
+            <tr><td class="rank">46</td><td>Cam Bynum</td><td><span class="team">IND</span></td></tr>
+            <tr><td class="rank">47</td><td>Tyson Campbell</td><td><span class="team">CLE</span></td></tr>
+            <tr><td class="rank">48</td><td>Justin Reid</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">49</td><td>Dax Hill</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">50</td><td>Amani Hooker</td><td><span class="team">TEN</span></td></tr>
+            <tr><td class="rank">51</td><td>Christian Gonzalez</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">52</td><td>Cameron Lewis</td><td><span class="team">CHI</span></td></tr>
+            <tr><td class="rank">53</td><td>Brian Branch</td><td><span class="team">DET</span></td></tr>
+            <tr><td class="rank">54</td><td>Bryan Cook</td><td><span class="team">CIN</span></td></tr>
+            <tr><td class="rank">55</td><td>Reed Blankenship</td><td><span class="team">HOU</span></td></tr>
+            <tr><td class="rank">56</td><td>Zyon McCollum</td><td><span class="team">TB</span></td></tr>
+            <tr><td class="rank">57</td><td>Antonio Johnson</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">58</td><td>C.J. Gardner-Johnson</td><td><span class="team">BUF</span></td></tr>
+            <tr><td class="rank">59</td><td>Mike Sainristil</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">60</td><td>Craig Woodson</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">61</td><td>Malaki Starks</td><td><span class="team">BAL</span></td></tr>
+            <tr><td class="rank">62</td><td>Andrew Wingard</td><td><span class="team">ARI</span></td></tr>
+            <tr><td class="rank">63</td><td>Eric Murray</td><td><span class="team">JAC</span></td></tr>
+            <tr><td class="rank">64</td><td>Jevon Holland</td><td><span class="team">NYG</span></td></tr>
+            <tr><td class="rank">65</td><td>Andrew Mukuba</td><td><span class="team">PHI</span></td></tr>
+            <tr><td class="rank">66</td><td>Kamren Kinchens</td><td><span class="team">LAR</span></td></tr>
+            <tr><td class="rank">67</td><td>Isaiah Pola-Mao</td><td><span class="team">LV</span></td></tr>
+            <tr><td class="rank">68</td><td>Ji&#39;Ayir Brown</td><td><span class="team">SF</span></td></tr>
+            <tr><td class="rank">69</td><td>Keisean Nixon</td><td><span class="team">GB</span></td></tr>
+            <tr><td class="rank">70</td><td>Jonas Sanker</td><td><span class="team">NO</span></td></tr>
+            <tr><td class="rank">71</td><td>Elijah Molden</td><td><span class="team">LAC</span></td></tr>
+            <tr><td class="rank">72</td><td>Dane Belton</td><td><span class="team">MIA</span></td></tr>
+            <tr><td class="rank">73</td><td>Riley Moss</td><td><span class="team">DEN</span></td></tr>
+            <tr><td class="rank">74</td><td>Jalen Ramsey</td><td><span class="team">PIT</span></td></tr>
+            <tr><td class="rank">75</td><td>Marcus Jones</td><td><span class="team">NE</span></td></tr>
+            <tr><td class="rank">76</td><td>Jeremy Reaves</td><td><span class="team">WAS</span></td></tr>
+            <tr><td class="rank">77</td><td>Mike Jackson Sr.</td><td><span class="team">CAR</span></td></tr>
+            <tr><td class="rank">78</td><td>DeShon Elliott</td><td><span class="team">PIT</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
-  <div class="idp-note">
-    Ranking source: RPO Football. The table is displayed from the source's published Google Sheet so the complete ranking remains available.
-  </div>
-</div>
-
+  <p class="idp-note">Ranks and team abbreviations are reproduced from RPO Football’s published 2026 IDP ranking sheet. Verified September 3, 2026.</p>
+</main>
 </body>
 </html>

@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Fantasy Team</title></head><body><script>
-(function(){"use strict";
-var backup="./my-team.backup-20260907-2235.html?ts="+Date.now();
-fetch(backup,{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("Backup betöltési hiba: "+r.status);return r.text()}).then(function(html){
-  html=html.replace(/function buildRosterPlayers\(\)\{[\s\S]*?\}\nfunction currentSeason/,function(){return 'function buildRosterPlayers(){state.rosterPlayers=(state.roster.players||[]).map(function(id){var p=state.players[id];if(!p)return {id:id,name:"Player "+id,position:"N/A",fantasy_positions:[],team:""};return Object.assign({id:id,name:playerName(p)},p)}).filter(function(p){return p&&p.id})}\nfunction currentSeason'});
-  var start=html.indexOf('function findUserAndLeagues()');
-  var end=html.indexOf('$("sync-btn").addEventListener',start);
-  if(start<0||end<0)throw new Error("League Sync kódblokk nem található a backupban.");
-  var replacement='function findUserAndLeagues(){var username=$("username").value.trim();if(!username){setStatus("Add meg a Sleeper felhasználónevedet.","error");return}$("sync-btn").disabled=true;setStatus("Sleeper felhasználó és ligák keresése...");api("/user/"+encodeURIComponent(username)).then(function(user){if(!user||!user.user_id)throw new Error("Nem található Sleeper felhasználó ezzel a névvel.");state.me=user;return api("/state/nfl").catch(function(){return{}})}).then(function(s){var years=unique([s&&s.league_season,s&&s.season,s&&s.previous_season,new Date().getFullYear(),new Date().getFullYear()-1].filter(Boolean).map(String));return Promise.all(years.map(function(year){return api("/user/"+encodeURIComponent(state.me.user_id)+"/leagues/nfl/"+year).catch(function(){return[]})})).then(function(lists){var map={};lists.forEach(function(list){(Array.isArray(list)?list:[]).forEach(function(league){if(league&&league.league_id)map[String(league.league_id)]=league})});var leagues=Object.keys(map).map(function(id){return map[id]});leagues.sort(function(a,b){var sa=a.status==="in_season"?0:a.status==="drafting"?1:a.status==="pre_draft"?2:3;var sb=b.status==="in_season"?0:b.status==="drafting"?1:b.status==="pre_draft"?2:3;return sa-sb||(String(b.season||"").localeCompare(String(a.season||"")))||(String(a.name||"").localeCompare(String(b.name||"")))});if(!leagues.length)throw new Error("Ehhez a Sleeper fiókhoz nem található NFL liga a lekérdezett szezonokban.");state.availableLeagues=leagues;var select=$("league-select");select.innerHTML="";leagues.forEach(function(league){var option=document.createElement("option");option.value=league.league_id;option.textContent=(league.name||"Névtelen liga")+" · "+(league.season||"?")+" · "+(league.total_rosters||"?")+" teams"+(league.status?" · "+league.status:"");select.appendChild(option)});$("league-picker").classList.remove("nfln-hidden");setStatus(leagues.length+" NFL liga található. Válaszd ki, melyiket szeretnéd szinkronizálni.","ok")})}).catch(function(err){console.error(err);setStatus(err.message||"Nem sikerült a Sleeper fiók lekérése.","error");$("league-picker").classList.add("nfln-hidden")}).finally(function(){$("sync-btn").disabled=false})}
-function syncSelectedLeague(){var select=$("league-select"),leagueId=select.value,username=$("username").value.trim();if(!leagueId||!state.me||!state.me.user_id){setStatus("Először keresd meg a Sleeper felhasználódat és válassz ligát.","error");return}$("sync-selected-btn").disabled=true;setStatus("Liga, roster és játékosadatok betöltése...");Promise.all([api("/league/"+encodeURIComponent(leagueId)),api("/league/"+encodeURIComponent(leagueId)+"/users"),api("/league/"+encodeURIComponent(leagueId)+"/rosters")]).then(function(data){state.league=data[0];state.users=data[1];state.rosters=data[2];var targetId=String(state.me.user_id),targetName=username.toLowerCase();state.me=state.users.filter(function(u){return String(u.user_id)===targetId||String(u.username||"").toLowerCase()===targetName})[0];if(!state.me)throw new Error("A Sleeper felhasználó nem tagja a kiválasztott ligának.");findMyRoster();state.players={};buildRosterPlayers();renderLeague();setStatus("Liga sikeresen szinkronizálva: "+state.league.name,"ok");var playerLoad=api("/players/nfl").then(function(players){state.players=players||{};buildRosterPlayers();renderLeague()}).catch(function(err){console.warn("Sleeper players nem töltődött be:",err);setStatus("Liga szinkronizálva. A játékosadatok külön nem töltődtek be, de a roster kapcsolat működik.","ok")});var extras=Promise.all([fetch("./fantasycalc-values.json?ts="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():{values:[]}}).catch(function(){return{values:[]}}),loadRpoIdpRankings().catch(function(){return{DL:{},LB:{},DB:{}}})]).then(function(extra){state.marketValues=extra[0]&&Array.isArray(extra[0].values)?extra[0].values:[];state.rpoIdp=extra[1]||{DL:{},LB:{},DB:{}};buildMarketValueIndex();if(Object.keys(state.players||{}).length){buildRosterPlayers();renderLeague()}});currentSeason().then(function(season){$("bye-status").textContent="Bye weekek betöltése ("+season+")...";return fetchByeWeeks(season)}).then(function(bye){state.byeWeeks=bye;renderByes()}).catch(function(err){console.warn("Bye weeks nem töltődött be:",err);$("bye-status").textContent="A League Sync működik, de a bye week adatok most nem tölthetők be.";$("bye-status").className="nfln-status"});return Promise.all([playerLoad,extras]).catch(function(){})}).catch(function(err){console.error(err);setStatus(err.message||"Nem sikerült a liga szinkronizálása.","error")}).finally(function(){$("sync-selected-btn").disabled=false})}
-';
-  html=html.slice(0,start)+replacement+html.slice(end);
-  document.open();document.write(html);document.close();
-}).catch(function(err){document.body.innerHTML='<div style="font-family:Arial;padding:24px;color:#9c2b2b">My Team betöltési hiba: '+String(err.message||err)+'</div>'});
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Fantasy Team</title>
+</head>
+<body>
+<script>
+(function(){
+  "use strict";
+  var src="./my-team.backup-20260907-2235.html?ts="+Date.now();
+  fetch(src,{cache:"no-store"})
+    .then(function(r){
+      if(!r.ok) throw new Error("My Team source HTTP "+r.status);
+      return r.text();
+    })
+    .then(function(html){
+      document.open();
+      document.write(html);
+      document.close();
+    })
+    .catch(function(err){
+      document.body.innerHTML='<div style="font-family:Arial;padding:24px;color:#9c2b2b">My Team betöltési hiba: '+String(err.message||err)+'</div>';
+      console.error(err);
+    });
 })();
-</script></body></html>
+</script>
+</body>
+</html>

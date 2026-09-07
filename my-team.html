@@ -165,6 +165,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     marketValues: [],
     marketValueBySleeperId: {},
     marketValueByName: {},
+    rpoIdp: {DL:{},LB:{},DB:{}},
     rosterPlayers: [],
     byeWeeks: {}
   };
@@ -190,6 +191,10 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 
   function playerName(p){
     return p ? (p.name || p.full_name || p.display_name || p.player_name || "") : "";
+  }
+
+  function normalizeName(value){
+    return String(value || "").trim().toLowerCase().replace(/\s+/g," ");
   }
 
   function playerPosition(p){
@@ -311,6 +316,51 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     return 0;
   }
 
+  function loadRpoIdpRankings(){
+    return fetch("./IDP26rankings.html?ts=" + Date.now(), {cache:"no-store"}).then(function(res){
+      if(!res.ok) throw new Error("RPO IDP rankings HTTP " + res.status);
+      return res.text();
+    }).then(function(html){
+      var doc = new DOMParser().parseFromString(html,"text/html");
+      var result = {DL:{},LB:{},DB:{}};
+
+      Array.prototype.forEach.call(doc.querySelectorAll(".ranking-section"), function(section){
+        var heading = section.querySelector("h2");
+        var pos = heading ? String(heading.textContent || "").trim().toUpperCase() : "";
+        if(["DL","LB","DB"].indexOf(pos) < 0) return;
+
+        var rows = section.querySelectorAll("tbody tr");
+        Array.prototype.forEach.call(rows, function(row){
+          var cells = row.querySelectorAll("td");
+          if(cells.length < 2) return;
+          var rank = Number(String(cells[0].textContent || "").trim());
+          var name = normalizeName(cells[1].textContent);
+          if(!Number.isFinite(rank) || rank <= 0 || !name) return;
+          result[pos][name] = rank;
+        });
+      });
+
+      state.rpoIdp = result;
+      return result;
+    });
+  }
+
+  function rpoIdpQuality(p){
+    var pos = basePosition(playerPosition(p));
+    if(["DL","LB","DB"].indexOf(pos) < 0) return 35;
+
+    var rank = state.rpoIdp[pos][normalizeName(playerName(p))];
+    if(!Number.isFinite(rank)) return 35;
+
+    var ranks = Object.keys(state.rpoIdp[pos]).map(function(name){
+      return Number(state.rpoIdp[pos][name]);
+    }).filter(function(v){ return Number.isFinite(v) && v > 0; });
+
+    if(ranks.length <= 1) return 100;
+    var maxRank = Math.max.apply(null,ranks);
+    return Math.round(100 - ((rank - 1) / (maxRank - 1)) * 100);
+  }
+
   function marketValuePool(pos){
     var values = [];
     var all = state.players || {};
@@ -342,6 +392,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
   }
 
   function playerQuality(p, pos, pools){
+    if(pos === "IDP"){
+      var rpoQuality = rpoIdpQuality(p);
+      var injury = injuryPenalty(p);
+      return Math.max(0, Math.min(100, rpoQuality - injury));
+    }
+
     var value = marketValue(p);
 
     // If FantasyCalc is unavailable for a player, do not invent a strong
@@ -528,7 +584,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
     var top = results[0];
     $("need-summary").innerHTML =
       "<strong>Legnagyobb erősítési igény: " + top.pos + "</strong><br>" +
-      '<span class="nfln-small">A pontszám a kezdő játékosok piaci értékét, a roster mélységét és a sérülési kockázatot veszi figyelembe. A FantasyCalc értékek elsődlegesek, ha elérhetők.</span>';
+      '<span class="nfln-small">A pontszám a kezdő játékosok értékét, a roster mélységét és a sérülési kockázatot veszi figyelembe. IDP esetén az RPO Football 2026 DL/LB/DB rangsor az érték alapja; támadó posztokon a FantasyCalc értékek elsődlegesek, ha elérhetők.</span>';
   }
 
   function teamName(user){
@@ -717,13 +773,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
       api("/players/nfl"),
       fetch("./fantasycalc-values.json?ts=" + Date.now()).then(function(r){
         return r.ok ? r.json() : {values:[]};
-      }).catch(function(){ return {values:[]}; })
+      }).catch(function(){ return {values:[]}; }),
+      loadRpoIdpRankings()
     ]).then(function(data){
       state.league = data[0];
       state.users = data[1];
       state.rosters = data[2];
       state.players = data[3];
       state.marketValues = (data[4] && Array.isArray(data[4].values)) ? data[4].values : [];
+      state.rpoIdp = data[5] || {DL:{},LB:{},DB:{}};
       buildMarketValueIndex();
 
       var targetId = String(state.me.user_id);

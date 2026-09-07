@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-06T04:06:54.458Z",
+  "updated_at": "2026-09-07T04:06:58.675Z",
   "players": [
     {
       "name": "A.J. Bouye",
@@ -1955,8 +1955,8 @@
       "name": "Brandon Pili",
       "team": "SEA",
       "position": "DT",
-      "injury_status": "Questionable",
-      "injury_body_part": "Lower Leg",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -3785,8 +3785,8 @@
       "name": "Christian Barmore",
       "team": "NE",
       "position": "DT",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Knee",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -7195,8 +7195,8 @@
       "name": "Emanuel Wilson",
       "team": "SEA",
       "position": "RB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Hamstring",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -11945,8 +11945,8 @@
       "name": "Julian Neal",
       "team": "SEA",
       "position": "DB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Leg",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -12722,16 +12722,6 @@
       "espn_id": null
     },
     {
-      "name": "Keivie Rose",
-      "team": "JAX",
-      "position": "DL",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
       "name": "Keldric Faulk",
       "team": "TEN",
       "position": "DL",
@@ -12880,16 +12870,6 @@
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3122752
-    },
-    {
-      "name": "Kenny Dyson",
-      "team": "MIN",
-      "position": "LB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
     },
     {
       "name": "Kenny Gainwell",
@@ -14675,16 +14655,6 @@
       "name": "Marvin Harrison",
       "team": "ARI",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
-      "name": "Marvin Jones",
-      "team": "SEA",
-      "position": "DE",
       "injury_status": null,
       "injury_body_part": null,
       "injury_start_date": null,
@@ -19865,8 +19835,8 @@
       "name": "Ty Okada",
       "team": "SEA",
       "position": "DB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Hamstring",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -21077,16 +21047,6 @@
       "position": "DB",
       "injury_status": null,
       "injury_body_part": null,
-      "injury_start_date": null,
-      "practice_participation": null,
-      "espn_id": null
-    },
-    {
-      "name": "Zech McPhearson",
-      "team": "LAR",
-      "position": "CB",
-      "injury_status": "Questionable",
-      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null

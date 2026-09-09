@@ -13,7 +13,9 @@
 
 <style id="site-navigation-layout-fix-nfl-games">
 .nfln-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; }
-.nfln-nav a { display: block; text-align: center; }
+.nfln-nav a { display: block; text-align: center; padding: 9px 12px; border: 1px solid var(--silver-dark); border-radius: 8px; background: #fff; color: var(--patriots-blue); font-weight: bold; text-decoration: none; }
+.nfln-nav a:hover { background: var(--patriots-blue); color: #fff; }
+.nfln-nav a.active { background: var(--patriots-red); color: #fff; border-color: var(--patriots-red); }
 @media (max-width: 900px) { .nfln-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .nfln-nav { grid-template-columns: 1fr; } }
 </style>

@@ -12,12 +12,11 @@
 </style>
 
 <style id="site-navigation-layout-fix-nfl-games">
-.nfln-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; }
-.nfln-nav a { display: block; text-align: center; padding: 9px 12px; border: 1px solid var(--silver-dark); border-radius: 8px; background: #fff; color: var(--patriots-blue); font-weight: bold; text-decoration: none; }
-.nfln-nav a:hover { background: var(--patriots-blue); color: #fff; }
-.nfln-nav a.active { background: var(--patriots-red); color: #fff; border-color: var(--patriots-red); }
-@media (max-width: 900px) { .nfln-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 600px) { .nfln-nav { grid-template-columns: 1fr; } }
+.nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.nfln-nav a { padding: 9px 17px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+.nfln-nav a.active { background: var(--patriots-red); color: #fff; border: 1px solid var(--patriots-red); box-shadow: 0 3px 10px rgba(0,0,0,0.14); }
+.nfln-nav a.inactive { background: rgba(255,255,255,0.94); color: var(--patriots-blue); border: 1px solid var(--silver-dark); }
+.nfln-nav a.inactive:hover { background: var(--patriots-blue); color: #fff; border-color: var(--patriots-blue); transform: translateY(-1px); }
 </style>
 </head>
 <body>

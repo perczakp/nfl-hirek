@@ -1,0 +1,129 @@
+name: One-time NFL Games navigation migration
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.event.head_commit.message == 'Enable NFL Games navigation migration'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Update navigation consistently
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          import subprocess
+
+          pages = [
+              'index.html',
+              'trade-chart.html',
+              'rookie-idp-rankings.html',
+              'tips.html',
+              'bye-weeks.html',
+              'my-team.html',
+              'strength-of-schedule.html',
+              'IDP26rankings.html',
+          ]
+
+          nav_items = [
+              ('index.html', 'Players Trending'),
+              ('trade-chart.html', 'Dynasty Trade Calculator'),
+              ('rookie-idp-rankings.html', 'IDP Rankings (Rookies)'),
+              ('tips.html', 'Tips'),
+              ('bye-weeks.html', 'Bye Weeks'),
+              ('my-team.html', 'My Fantasy Team'),
+              ('strength-of-schedule.html', 'Strength of Schedule'),
+              ('IDP26rankings.html', '2026 IDP Rankings'),
+              ('nfl-games.html', 'NFL Games'),
+          ]
+
+          def nav_html(current):
+              lines = []
+              for href, label in nav_items:
+                  cls = 'active' if href == current else 'inactive'
+                  lines.append(f'    <a href="{href}" class="{cls}">{label}</a>')
+              return '<div class="nfln-nav">\n' + '\n'.join(lines) + '\n  </div>'
+
+          for filename in pages:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              if 'class="nfln-nav"' in text:
+                  pattern = r'<div class="nfln-nav">.*?</div>'
+                  replacement = nav_html(filename)
+              elif filename == 'my-team.html' and '<nav class="nav">' in text:
+                  pattern = r'<nav class="nav">.*?</nav>'
+                  replacement = '<nav class="nav">\n' + '\n'.join(
+                      f'  <a href="{href}" class="{("active" if href == filename else "inactive")}">{label}</a>'
+                      for href, label in nav_items
+                  ) + '\n</nav>'
+              else:
+                  raise SystemExit(f'Expected navigation block not found in {filename}')
+
+              updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f'Navigation replacement failed for {filename}')
+              path.write_text(updated, encoding='utf-8')
+
+          games = Path('nfl-games.html')
+          text = games.read_text(encoding='utf-8')
+          if 'class="nfln-nav"' in text:
+              raise SystemExit('nfl-games.html unexpectedly already has navigation')
+
+          css = '''\n<style id="site-navigation-layout-fix-v3">\n.nfln-nav{display:grid!important;grid-template-columns:repeat(3,max-content)!important;justify-content:center!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:900px!important;margin:0 auto 24px!important;box-sizing:border-box!important;overflow:visible!important;white-space:normal!important}\n.nfln-nav a{display:block!important;width:max-content!important;min-width:0!important;flex:none!important;white-space:nowrap!important;box-sizing:border-box!important;padding:9px 17px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:bold;transition:background .18s ease,border-color .18s ease,transform .18s ease}\n.nfln-nav a.active{background:var(--patriots-red);color:#fff;border:1px solid var(--patriots-red);box-shadow:0 3px 10px rgba(0,0,0,.14)}\n.nfln-nav a.inactive{background:rgba(255,255,255,.94);color:var(--patriots-blue);border:1px solid var(--silver-dark)}\n.nfln-nav a.inactive:hover{background:var(--patriots-blue);color:#fff;border-color:var(--patriots-blue);transform:translateY(-1px)}\n@media(max-width:760px){.nfln-nav{grid-template-columns:repeat(2,max-content)!important}}\n@media(max-width:500px){.nfln-nav{grid-template-columns:1fr!important}.nfln-nav a{width:100%!important;text-align:center!important}}\n</style>\n'''
+          if '</head>' not in text or '</div>\n<div class="controls">' not in text:
+              raise SystemExit('Unexpected nfl-games.html structure')
+          text = text.replace('</head>', css + '</head>', 1)
+          text = text.replace('</div>\n<div class="controls">', nav_html('nfl-games.html') + '\n<div class="controls">', 1)
+          games.write_text(text, encoding='utf-8')
+
+          state = Path('PROJECT_STATE.md')
+          state_text = state.read_text(encoding='utf-8')
+          section = '''\n\n## 2026-09-09 — NFL Games navigation integration\n- Added **NFL Games** to the main navigation across all 9 production pages.\n- Navigation order is synchronized: Players Trending, Dynasty Trade Calculator, IDP Rankings (Rookies), Tips, Bye Weeks, My Fantasy Team, Strength of Schedule, 2026 IDP Rankings, NFL Games.\n- NFL Games is active on `nfl-games.html`; other pages keep their existing page-specific active state.\n- Desktop navigation remains 3 columns; tablet 2 columns; mobile 1 column.\n- Preseason remains deprioritized and is not part of the navigation.\n- No NFL Games data/API behavior was changed by this navigation-only migration.\n'''
+          if '## 2026-09-09 — NFL Games navigation integration' not in state_text:
+              state.write_text(state_text.rstrip() + section, encoding='utf-8')
+
+      - name: Verify all production pages contain the same 9 links
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          pages = [
+              'index.html', 'trade-chart.html', 'rookie-idp-rankings.html',
+              'tips.html', 'bye-weeks.html', 'my-team.html',
+              'strength-of-schedule.html', 'IDP26rankings.html', 'nfl-games.html'
+          ]
+          expected = [
+              'index.html', 'trade-chart.html', 'rookie-idp-rankings.html',
+              'tips.html', 'bye-weeks.html', 'my-team.html',
+              'strength-of-schedule.html', 'IDP26rankings.html', 'nfl-games.html'
+          ]
+          for filename in pages:
+              text = Path(filename).read_text(encoding='utf-8')
+              if not all(f'href="{href}"' in text for href in expected):
+                  raise SystemExit(f'Missing navigation link in {filename}')
+              if filename == 'nfl-games.html' and 'class="active">NFL Games</a>' not in text:
+                  raise SystemExit('NFL Games is not active on nfl-games.html')
+              if filename != 'nfl-games.html' and 'class="active">NFL Games</a>' in text:
+                  raise SystemExit(f'NFL Games incorrectly active on {filename}')
+              if 'nfl-games.html' not in text:
+                  raise SystemExit(f'NFL Games link missing from {filename}')
+          print('Navigation verification passed for all 9 production pages.')
+
+      - name: Commit migration and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/one-time-add-nfl-games-navigation.yml
+          git add index.html trade-chart.html rookie-idp-rankings.html tips.html bye-weeks.html my-team.html strength-of-schedule.html IDP26rankings.html nfl-games.html PROJECT_STATE.md .github/workflows/one-time-add-nfl-games-navigation.yml
+          git commit -m "Add NFL Games to main navigation"
+          git push origin main

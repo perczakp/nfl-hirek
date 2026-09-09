@@ -1,6 +1,31 @@
 const ESPN_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
 
 /**
+ * Normalize ESPN's status fields into the application's stable game categories.
+ */
+function normalizeEspnStatus(status, competitionStatus) {
+  const statusType = status || {};
+  const state = String(statusType.state || "unknown").trim().toLowerCase();
+  const completed = statusType.completed === true;
+
+  let category = "UNKNOWN";
+  if (state === "pre") category = "UPCOMING";
+  if (state === "in") category = "LIVE";
+  if (state === "post" || completed) category = "FINAL";
+
+  return {
+    category,
+    state,
+    name: statusType.name ?? null,
+    description: statusType.description ?? null,
+    completed,
+    clock: competitionStatus?.clock ?? null,
+    displayClock: competitionStatus?.displayClock ?? null,
+    period: competitionStatus?.period ?? null
+  };
+}
+
+/**
  * Normalize one ESPN scoreboard event into the application's stable game shape.
  * The UI should consume this shape instead of depending on ESPN's raw JSON.
  */
@@ -17,12 +42,6 @@ function normalizeEspnGame(event) {
   if (!home || !away) return null;
 
   const statusType = competition.status?.type || {};
-  const state = statusType.state || "unknown";
-
-  let category = "UNKNOWN";
-  if (state === "pre") category = "UPCOMING";
-  if (state === "in") category = "LIVE";
-  if (state === "post" || statusType.completed === true) category = "FINAL";
 
   return {
     id: String(event.id),
@@ -34,16 +53,7 @@ function normalizeEspnGame(event) {
     kickoffUtc: event.date ?? null,
     homeTeam: normalizeEspnTeam(home),
     awayTeam: normalizeEspnTeam(away),
-    status: {
-      category,
-      state,
-      name: statusType.name ?? null,
-      description: statusType.description ?? null,
-      completed: statusType.completed === true,
-      clock: competition.status?.clock ?? null,
-      displayClock: competition.status?.displayClock ?? null,
-      period: competition.status?.period ?? null
-    },
+    status: normalizeEspnStatus(statusType, competition.status),
     venue: normalizeEspnVenue(competition.venue),
     neutralSite: competition.neutralSite === true
   };
@@ -104,6 +114,7 @@ function buildEspnDateUrl(date) {
 if (typeof window !== "undefined") {
   window.NFLGamesData = {
     ESPN_SCOREBOARD_URL,
+    normalizeEspnStatus,
     normalizeEspnGame,
     normalizeEspnTeam,
     normalizeEspnVenue,

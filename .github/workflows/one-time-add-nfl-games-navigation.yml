@@ -1,0 +1,174 @@
+name: One-time NFL Games navigation integration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch navigation and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+          import sys
+
+          repo_root = Path.cwd()
+          backup_ref = "origin/backup-20260909-before-nfl-games-navigation"
+
+          pages = [
+              "index.html",
+              "trade-chart.html",
+              "rookie-idp-rankings.html",
+              "tips.html",
+              "bye-weeks.html",
+              "my-team.html",
+              "strength-of-schedule.html",
+              "IDP26rankings.html",
+              "nfl-games.html",
+          ]
+
+          hrefs = [
+              "index.html",
+              "trade-chart.html",
+              "rookie-idp-rankings.html",
+              "tips.html",
+              "bye-weeks.html",
+              "my-team.html",
+              "strength-of-schedule.html",
+              "IDP26rankings.html",
+              "nfl-games.html",
+          ]
+
+          # Safety gate: the already-verified backup branch must match main for
+          # all existing production pages before this migration touches them.
+          subprocess.run(["git", "fetch", "origin", "backup-20260909-before-nfl-games-navigation"], check=True)
+          result = subprocess.run(
+              ["git", "diff", "--quiet", backup_ref, "--", *pages],
+              check=False,
+          )
+          if result.returncode != 0:
+              raise SystemExit(
+                  "ABORTED: production pages differ from the verified backup branch. "
+                  "No navigation changes were made."
+              )
+
+          canonical_links = {
+              "index.html": "Players Trending",
+              "trade-chart.html": "Dynasty Trade Calculator",
+              "rookie-idp-rankings.html": "IDP Rankings (Rookies)",
+              "tips.html": "Tips",
+              "bye-weeks.html": "Bye Weeks",
+              "my-team.html": "My Fantasy Team",
+              "strength-of-schedule.html": "Strength of Schedule",
+              "IDP26rankings.html": "2026 IDP Rankings",
+              "nfl-games.html": "NFL Games",
+          }
+
+          def nav_html(active):
+              lines = ['<div class="nfln-nav">']
+              for href, label in canonical_links.items():
+                  cls = ' class="active"' if href == active else ""
+                  lines.append(f'  <a href="{href}"{cls}>{label}</a>')
+              lines.append("</div>")
+              return "\n".join(lines)
+
+          # Patch the eight existing navigation blocks.
+          for page in pages[:8]:
+              path = repo_root / page
+              text = path.read_text(encoding="utf-8")
+              if page == "my-team.html":
+                  pattern = re.compile(r'<nav\s+class=["\']nav["\'][^>]*>.*?</nav>', re.S | re.I)
+              else:
+                  pattern = re.compile(r'<div\s+class=["\']nfln-nav["\'][^>]*>.*?</div>', re.S | re.I)
+
+              matches = list(pattern.finditer(text))
+              if len(matches) != 1:
+                  raise SystemExit(f"ABORTED: expected exactly one navigation block in {page}, found {len(matches)}")
+
+              replacement = nav_html(page)
+              text = pattern.sub(replacement, text, count=1)
+              path.write_text(text, encoding="utf-8")
+
+          # Add the same navigation to nfl-games.html, with responsive layout
+          # CSS. The CSS is intentionally scoped to the NFL navigation only.
+          nfl_path = repo_root / "nfl-games.html"
+          text = nfl_path.read_text(encoding="utf-8")
+          if re.search(r'<div\s+class=["\']nfln-nav["\']', text, re.I):
+              raise SystemExit("ABORTED: nfl-games.html already contains an NFL navigation block")
+
+          nav = nav_html("nfl-games.html")
+          css = '''\n<style id="site-navigation-layout-fix-nfl-games">\n.nfln-nav {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n  margin: 0 0 18px;\n}\n.nfln-nav a {\n  display: block;\n  text-align: center;\n}\n@media (max-width: 900px) {\n  .nfln-nav {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n@media (max-width: 600px) {\n  .nfln-nav {\n    grid-template-columns: 1fr;\n  }\n}\n</style>\n'''
+
+          if "site-navigation-layout-fix-nfl-games" not in text:
+              if "</head>" not in text:
+                  raise SystemExit("ABORTED: could not find </head> in nfl-games.html")
+              text = text.replace("</head>", css + "</head>", 1)
+
+          insertion_markers = [
+              "<main",
+              '<div class="container">',
+              '<div class="controls">',
+          ]
+          inserted = False
+          for marker in insertion_markers:
+              if marker in text:
+                  text = text.replace(marker, nav + "\n" + marker, 1)
+                  inserted = True
+                  break
+          if not inserted:
+              raise SystemExit("ABORTED: could not find a safe insertion point for navigation in nfl-games.html")
+          nfl_path.write_text(text, encoding="utf-8")
+
+          # Update PROJECT_STATE.md.
+          state_path = repo_root / "PROJECT_STATE.md"
+          state = state_path.read_text(encoding="utf-8")
+          heading = "## 2026-09-09 — NFL Games navigation integration"
+          if heading not in state:
+              section = f'''\n\n{heading}\n- Integrated **NFL Games** into the main site navigation across all 9 production pages.\n- Synchronized navigation order across every page; **Preseason** remains excluded.\n- Set the active navigation state to the current page on each page.\n- Added responsive 3-column / 2-column / 1-column navigation behavior to `nfl-games.html`.\n- No NFL Games data source, ESPN endpoint, normalization logic, or existing page functionality was changed.\n'''
+              state_path.write_text(state.rstrip() + section, encoding="utf-8")
+
+          # Final verification before commit.
+          for page in pages:
+              text = (repo_root / page).read_text(encoding="utf-8")
+              for href in hrefs:
+                  if f'href="{href}"' not in text and f"href='{href}'" not in text:
+                      raise SystemExit(f"VERIFICATION FAILED: {href} missing from {page}")
+              active_count = len(re.findall(r'<a[^>]+href=["\']nfl-games\.html["\'][^>]*class=["\']active["\']', text, re.I))
+              if page == "nfl-games.html" and active_count != 1:
+                  raise SystemExit(f"VERIFICATION FAILED: nfl-games.html active state incorrect ({active_count})")
+              if page != "nfl-games.html" and active_count != 0:
+                  raise SystemExit(f"VERIFICATION FAILED: NFL Games unexpectedly active on {page}")
+
+          if "Preseason" in "\n".join((repo_root / page).read_text(encoding="utf-8") for page in pages):
+              raise SystemExit("VERIFICATION FAILED: Preseason text/link detected in the 9 production navigation pages")
+
+          print("Navigation migration and verification completed successfully.")
+          PY
+
+      - name: Commit production migration and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html trade-chart.html rookie-idp-rankings.html tips.html bye-weeks.html my-team.html strength-of-schedule.html IDP26rankings.html nfl-games.html PROJECT_STATE.md
+          git add .github/workflows/one-time-add-nfl-games-navigation.yml
+          git rm .github/workflows/one-time-add-nfl-games-navigation.yml
+          git diff --cached --check
+          git diff --cached --name-status
+          git commit -m "Add NFL Games to main navigation"
+          git push origin HEAD:main

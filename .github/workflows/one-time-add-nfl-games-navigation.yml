@@ -1,6 +1,7 @@
 name: One-time NFL Games navigation integration
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
 
@@ -28,44 +29,21 @@ jobs:
 
           repo_root = Path.cwd()
           backup_ref = "origin/backup-20260909-before-nfl-games-navigation"
-
           pages = [
-              "index.html",
-              "trade-chart.html",
-              "rookie-idp-rankings.html",
-              "tips.html",
-              "bye-weeks.html",
-              "my-team.html",
-              "strength-of-schedule.html",
-              "IDP26rankings.html",
-              "nfl-games.html",
+              "index.html", "trade-chart.html", "rookie-idp-rankings.html", "tips.html",
+              "bye-weeks.html", "my-team.html", "strength-of-schedule.html",
+              "IDP26rankings.html", "nfl-games.html",
           ]
-
           hrefs = [
-              "index.html",
-              "trade-chart.html",
-              "rookie-idp-rankings.html",
-              "tips.html",
-              "bye-weeks.html",
-              "my-team.html",
-              "strength-of-schedule.html",
-              "IDP26rankings.html",
-              "nfl-games.html",
+              "index.html", "trade-chart.html", "rookie-idp-rankings.html", "tips.html",
+              "bye-weeks.html", "my-team.html", "strength-of-schedule.html",
+              "IDP26rankings.html", "nfl-games.html",
           ]
 
-          subprocess.run(
-              ["git", "fetch", "origin", "backup-20260909-before-nfl-games-navigation"],
-              check=True,
-          )
-          result = subprocess.run(
-              ["git", "diff", "--quiet", backup_ref, "--", *pages],
-              check=False,
-          )
+          subprocess.run(["git", "fetch", "origin", "backup-20260909-before-nfl-games-navigation"], check=True)
+          result = subprocess.run(["git", "diff", "--quiet", backup_ref, "--", *pages], check=False)
           if result.returncode != 0:
-              raise SystemExit(
-                  "ABORTED: production pages differ from the verified backup branch. "
-                  "No navigation changes were made."
-              )
+              raise SystemExit("ABORTED: production pages differ from the verified backup branch. No navigation changes were made.")
 
           canonical_links = [
               ("index.html", "Players Trending"),
@@ -87,85 +65,42 @@ jobs:
               lines.append(f"</{wrapper}>")
               return "\n".join(lines)
 
-          # Existing site navigation blocks. Support both <div> and <nav>
-          # wrappers because IDP26rankings.html uses <nav>.
           for page in pages[:8]:
               path = repo_root / page
               text = path.read_text(encoding="utf-8")
-
               if page == "my-team.html":
-                  pattern = re.compile(
-                      r'<nav\s+class=["\']nav["\'][^>]*>.*?</nav>',
-                      re.S | re.I,
-                  )
+                  pattern = re.compile(r'<nav\s+class=["\']nav["\'][^>]*>.*?</nav>', re.S | re.I)
                   replacement = nav_html(page, "nav")
               else:
-                  pattern = re.compile(
-                      r'<(div|nav)\s+class=["\']nfln-nav["\'][^>]*>.*?</\1>',
-                      re.S | re.I,
-                  )
+                  pattern = re.compile(r'<(div|nav)\s+class=["\']nfln-nav["\'][^>]*>.*?</\1>', re.S | re.I)
                   matches = list(pattern.finditer(text))
                   if len(matches) != 1:
-                      raise SystemExit(
-                          f"ABORTED: expected exactly one existing NFL navigation block in {page}, "
-                          f"found {len(matches)}"
-                      )
-                  wrapper = matches[0].group(1).lower()
-                  replacement = nav_html(page, wrapper)
-
+                      raise SystemExit(f"ABORTED: expected exactly one existing NFL navigation block in {page}, found {len(matches)}")
+                  replacement = nav_html(page, matches[0].group(1).lower())
               matches = list(pattern.finditer(text))
               if len(matches) != 1:
-                  raise SystemExit(
-                      f"ABORTED: expected exactly one navigation block in {page}, found {len(matches)}"
-                  )
+                  raise SystemExit(f"ABORTED: expected exactly one navigation block in {page}, found {len(matches)}")
+              path.write_text(pattern.sub(replacement, text, count=1), encoding="utf-8")
 
-              text = pattern.sub(replacement, text, count=1)
-              path.write_text(text, encoding="utf-8")
-
-          # nfl-games.html had no main site navigation yet.
           nfl_path = repo_root / "nfl-games.html"
           text = nfl_path.read_text(encoding="utf-8")
           if re.search(r'<(div|nav)\s+class=["\']nfln-nav["\']', text, re.I):
               raise SystemExit("ABORTED: nfl-games.html already contains an NFL navigation block")
-
           nav = nav_html("nfl-games.html", "nav")
           css = '''
 <style id="site-navigation-layout-fix-nfl-games">
-.nfln-nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin: 0 0 18px;
-}
-.nfln-nav a {
-  display: block;
-  text-align: center;
-}
-@media (max-width: 900px) {
-  .nfln-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 600px) {
-  .nfln-nav {
-    grid-template-columns: 1fr;
-  }
-}
+.nfln-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; }
+.nfln-nav a { display: block; text-align: center; }
+@media (max-width: 900px) { .nfln-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .nfln-nav { grid-template-columns: 1fr; } }
 </style>
 '''
-
           if "site-navigation-layout-fix-nfl-games" not in text:
               if "</head>" not in text:
                   raise SystemExit("ABORTED: could not find </head> in nfl-games.html")
               text = text.replace("</head>", css + "</head>", 1)
-
-          insertion_markers = [
-              "<main",
-              '<div class="container">',
-              '<div class="controls">',
-          ]
           inserted = False
-          for marker in insertion_markers:
+          for marker in ["<main", '<div class="container">', '<div class="controls">']:
               if marker in text:
                   text = text.replace(marker, nav + "\n" + marker, 1)
                   inserted = True
@@ -174,7 +109,6 @@ jobs:
               raise SystemExit("ABORTED: could not find a safe insertion point for navigation in nfl-games.html")
           nfl_path.write_text(text, encoding="utf-8")
 
-          # Update PROJECT_STATE.md.
           state_path = repo_root / "PROJECT_STATE.md"
           state = state_path.read_text(encoding="utf-8")
           heading = "## 2026-09-09 — NFL Games navigation integration"
@@ -182,15 +116,9 @@ jobs:
               section = f'''\n\n{heading}\n- Integrated **NFL Games** into the main site navigation across all 9 production pages.\n- Synchronized navigation order across every page; **Preseason** remains excluded.\n- Set the active navigation state to the current page on each page.\n- Added responsive 3-column / 2-column / 1-column navigation behavior to `nfl-games.html`.\n- No NFL Games data source, ESPN endpoint, normalization logic, or existing page functionality was changed.\n'''
               state_path.write_text(state.rstrip() + section, encoding="utf-8")
 
-          # Final verification. Inspect only the navigation blocks for the
-          # Preseason requirement so unrelated page content is not rejected.
           for page in pages:
               text = (repo_root / page).read_text(encoding="utf-8")
-              nav_matches = list(re.finditer(
-                  r'<(div|nav)\s+class=["\']nfln-nav["\'][^>]*>.*?</\1>',
-                  text,
-                  re.S | re.I,
-              ))
+              nav_matches = list(re.finditer(r'<(div|nav)\s+class=["\']nfln-nav["\'][^>]*>.*?</\1>', text, re.S | re.I))
               if len(nav_matches) != 1:
                   raise SystemExit(f"VERIFICATION FAILED: expected one NFL navigation block in {page}")
               nav_text = nav_matches[0].group(0)
@@ -199,17 +127,9 @@ jobs:
                       raise SystemExit(f"VERIFICATION FAILED: {href} missing from navigation in {page}")
               if re.search(r"Preseason", nav_text, re.I):
                   raise SystemExit(f"VERIFICATION FAILED: Preseason detected in navigation of {page}")
-
-              active = re.findall(
-                  r'<a[^>]+href=["\']([^"\']+)["\'][^>]*class=["\']active["\']',
-                  nav_text,
-                  re.I,
-              )
+              active = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*class=["\']active["\']', nav_text, re.I)
               if active != [page]:
-                  raise SystemExit(
-                      f"VERIFICATION FAILED: active state in {page} is {active}, expected [{page}]"
-                  )
-
+                  raise SystemExit(f"VERIFICATION FAILED: active state in {page} is {active}, expected [{page}]")
           print("Navigation migration and verification completed successfully.")
           PY
 
@@ -222,6 +142,5 @@ jobs:
           git add index.html trade-chart.html rookie-idp-rankings.html tips.html bye-weeks.html my-team.html strength-of-schedule.html IDP26rankings.html nfl-games.html PROJECT_STATE.md
           git rm .github/workflows/one-time-add-nfl-games-navigation.yml
           git diff --cached --check
-          git diff --cached --name-status
           git commit -m "Add NFL Games to main navigation"
           git push origin HEAD:main

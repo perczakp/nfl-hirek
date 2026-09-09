@@ -55,9 +55,13 @@
   const tzEtButton=document.getElementById('tz-et');
   const TIMEZONES={HU:'Europe/Budapest',ET:'America/New_York'};
   const TIMEZONE_LABELS={HU:'HU',ET:'ET'};
+  const AUTO_REFRESH_MS={pre:300000,live:45000};
   let currentWeek=1;
   let currentTimezone='HU';
   let currentGames=[];
+  let refreshTimer=null;
+  let activeController=null;
+  let loadRequestId=0;
   for(let i=1;i<=18;i++){const option=document.createElement('option');option.value=String(i);option.textContent='Week '+i;weekSelect.appendChild(option)}
   weekSelect.value=String(currentWeek);
 
@@ -124,10 +128,29 @@
     });
   }
 
-  async function loadWeek(week){
-    currentWeek=week;weekSelect.value=String(week);statusEl.textContent='Loading Week '+week+'...';gamesEl.innerHTML='';
-    try{const response=await fetch(data.buildEspnWeekUrl(week),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const raw=await response.json();currentGames=data.normalizeEspnScoreboard(raw);render(currentGames);statusEl.textContent='Week '+week+' · '+currentGames.length+' games';}
-    catch(error){statusEl.textContent='Could not load Week '+week;gamesEl.innerHTML='<div class="error">The NFL game data could not be loaded right now.</div>';console.error(error)}
+  function stopAutoRefresh(){
+    if(refreshTimer!==null){clearTimeout(refreshTimer);refreshTimer=null;}
+  }
+
+  function scheduleAutoRefresh(){
+    stopAutoRefresh();
+    const hasLive=currentGames.some((game)=>game.status.category==='LIVE');
+    const hasUpcoming=currentGames.some((game)=>game.status.category==='UPCOMING');
+    const delay=hasLive?AUTO_REFRESH_MS.live:hasUpcoming?AUTO_REFRESH_MS.pre:null;
+    if(delay===null)return;
+    refreshTimer=setTimeout(()=>loadWeek(currentWeek,true),delay);
+  }
+
+  async function loadWeek(week,isRefresh=false){
+    currentWeek=week;weekSelect.value=String(week);stopAutoRefresh();
+    if(activeController)activeController.abort();
+    const controller=new AbortController();
+    activeController=controller;
+    const requestId=++loadRequestId;
+    if(!isRefresh){statusEl.textContent='Loading Week '+week+'...';gamesEl.innerHTML='';}
+    try{const response=await fetch(data.buildEspnWeekUrl(week),{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error('HTTP '+response.status);const raw=await response.json();if(requestId!==loadRequestId)return;currentGames=data.normalizeEspnScoreboard(raw);render(currentGames);statusEl.textContent='Week '+week+' · '+currentGames.length+' games';}
+    catch(error){if(error.name==='AbortError')return;if(requestId!==loadRequestId)return;if(!isRefresh){statusEl.textContent='Could not load Week '+week;gamesEl.innerHTML='<div class="error">The NFL game data could not be loaded right now.</div>'; }console.error(error)}
+    finally{if(requestId===loadRequestId){activeController=null;scheduleAutoRefresh();}}
   }
 
   function setTimezone(timezoneKey){

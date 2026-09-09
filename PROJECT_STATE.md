@@ -53,6 +53,9 @@ Backups are separate safety copies and may use timestamped `*.backup-*` filename
 - `bye-weeks.html`
 - `my-team.html`
 - `strength-of-schedule.html`
+- `nfl-games.html`
+- `nfl-games.js`
+- `nfl-games-normalization-test.html`
 - `fantasycalc-values.json`
 - `FANTASYCALC-CACHE.md`
 - `PROJECT_STATE.md`
@@ -224,9 +227,62 @@ Current preseason concept:
 
 SOS should not automatically alter base player value unless explicitly decided and documented.
 
+# NFL GAMES
+
+## 16. NFL Games page
+`nfl-games.html` is the current NFL Games feature page.
+
+The page uses the shared `nfl-games.js` normalization layer rather than consuming ESPN's raw event structure directly.
+
+Current functionality:
+- Week 1–18 selector;
+- Previous Week / Next Week controls;
+- real ESPN regular-season game data;
+- home and away teams;
+- kickoff time;
+- UPCOMING / LIVE / FINAL status mapping;
+- scores when supplied by ESPN;
+- venue and location;
+- neutral-site indication.
+
+The page is implemented and browser-tested, but it is **not yet integrated into the site-wide navigation**. The existing 8-tab navigation therefore remains unchanged until navigation integration is handled consistently across the site.
+
+## 17. ESPN game-data normalization
+`nfl-games.js` converts ESPN scoreboard events into a stable application-specific game shape.
+
+The normalized game contains:
+- game ID;
+- season year/type;
+- week;
+- kickoff UTC timestamp;
+- normalized home and away teams;
+- normalized game status;
+- venue information;
+- neutral-site flag.
+
+ESPN status mapping:
+- `pre` → `UPCOMING`;
+- `in` → `LIVE`;
+- `post` or completed → `FINAL`;
+- anything else → `UNKNOWN`.
+
+This creates a separation between the ESPN data format and the web page's data format.
+
+## 18. NFL Games runtime verification
+`nfl-games-normalization-test.html` verified the normalization layer against real ESPN data before the NFL Games page was built.
+
+Browser testing of `nfl-games.html` then verified:
+- Week 1 loads 16 games;
+- Week 2 loads 16 games;
+- Week 18 loads 16 games;
+- game cards render real teams, kickoff times, venues, and statuses;
+- the neutral-site indicator works for the Melbourne game.
+
+The user confirmed the Week 2 and Week 18 views visually in the browser. The NFL Games page is therefore considered **runtime-validated for the tested regular-season weeks**.
+
 # IDP / PRESEASON
 
-## 16. 2026 IDP Rankings
+## 19. 2026 IDP Rankings
 `IDP26rankings.html` is a static, self-contained presentation of the RPO Football 2026 IDP rankings:
 - 73 DL;
 - 73 LB;
@@ -239,12 +295,12 @@ Visible sources:
 
 The page intentionally stores the verified ranking data locally instead of relying on an iframe. Any refresh requires explicit re-verification against the RPO source.
 
-## 17. Rookie IDP page
+## 20. Rookie IDP page
 Canonical filename: `rookie-idp-rankings.html`.
 
 The incorrectly named space-containing version was removed. All navigation must use the canonical filename.
 
-## 18. Planned Preseason tab
+## 21. Planned Preseason tab
 Future `Preseason` tab should cover:
 - QB
 - RB
@@ -267,14 +323,14 @@ Preseason is not complete until the real data source, schema, and update process
 
 # FANTASYPROS RESEARCH
 
-## 19. FantasyPros reference work
+## 22. FantasyPros reference work
 FantasyPros was investigated as a reference for roster evaluation, including browser developer tools, page source, network activity, large JavaScript bundles, VORP/replacement concepts, and Draft Analyzer outputs.
 
 The exact proprietary calculation was not recovered.
 
 Do not claim exact formula replication. Use FantasyPros outputs as validation/reference points and keep the project's model transparent and independently defined.
 
-## 20. Lessons from FantasyPros comparison
+## 23. Lessons from FantasyPros comparison
 Roster analysis needs:
 - league-relative context;
 - position awareness;
@@ -286,7 +342,7 @@ Validate against multiple real examples rather than tuning to reproduce one scre
 
 # NAVIGATION
 
-## 21. Site-wide navigation rule
+## 24. Site-wide navigation rule
 A navigation change is a site-wide change.
 
 All pages must:
@@ -298,7 +354,7 @@ Current stable implementation uses CSS Grid.
 
 # DEVELOPMENT WORKFLOW
 
-## 22. Mandatory pre-change audit
+## 25. Mandatory pre-change audit
 For a substantive change, **do not start by editing code**.
 
 First:
@@ -312,7 +368,7 @@ First:
 
 This rule was added after the League Sync / Roster Strength debugging cycle demonstrated that partial fixes can create new failures or preserve the wrong data flow.
 
-## 23. Backup-first rule
+## 26. Backup-first rule
 Before modifying an existing production file:
 
 1. Fetch the current production file.
@@ -325,7 +381,7 @@ If the backup cannot be created, **do not modify the original**.
 
 Backups are safety copies, not production alternatives.
 
-## 24. Minimal-change and verification rule
+## 27. Minimal-change and verification rule
 After the backup:
 1. Make the smallest necessary modification.
 2. Preserve all unrelated working functionality.
@@ -367,6 +423,8 @@ The current repository history also shows later automated updates to the Fantasy
 
 The latest user feedback after the starter mapping and League Sync/Roster Strength corrections was that the result **looked correct**. This is not a substitute for a full browser/runtime test with a real Sleeper league.
 
+The NFL Games feature was added after this My Fantasy Team baseline. Its browser-validated implementation is in `nfl-games.html` and `nfl-games.js`.
+
 # CURRENT PRIORITIES
 
 ## High priority
@@ -378,15 +436,16 @@ The latest user feedback after the starter mapping and League Sync/Roster Streng
 6. Verify Roster Strength across multiple real league examples.
 7. Verify Position Needs.
 8. Remove the current hidden `injuryPenalty()` effect from base player quality and show Injury Risk separately.
-9. Verify navigation consistency on every page.
+9. Verify navigation consistency on every page, including integrating the NFL Games page consistently.
 10. Keep `PROJECT_STATE.md` synchronized after every substantive project change.
 
 ## Next major feature
-11. Build Preseason tab.
-12. Establish a real free preseason data source.
-13. Define the preseason JSON schema.
-14. Add games, passing, rushing, and target-share data.
-15. Define and test the update process after each preseason game.
+11. Complete site-wide navigation integration for the NFL Games page.
+12. Build Preseason tab.
+13. Establish a real free preseason data source.
+14. Define the preseason JSON schema.
+15. Add games, passing, rushing, and target-share data.
+16. Define and test the update process after each preseason game.
 
 # PROJECT PHILOSOPHY
 
@@ -469,6 +528,11 @@ Do not update it for every tiny CSS adjustment or typo fix unless the change mat
 - Added the mandatory end-to-end pre-change audit rule based on the recent debugging lessons.
 - Strengthened the backup-first workflow and documented the current verified My Team production baseline.
 - Documented the presence of timestamped safety backups separately from canonical production filenames.
+- Added the ESPN NFL Games normalization layer in `nfl-games.js`.
+- Added `nfl-games-normalization-test.html` and validated the normalized data against real ESPN Week 1 and date-specific game data.
+- Added `nfl-games.html` as the first NFL Games feature page using the normalized data layer.
+- Browser-tested NFL Games with Week 1, Week 2, and Week 18; all tested weeks returned 16 games and rendered correctly.
+- Confirmed that the NFL Games page is working but has not yet been added to the site-wide navigation; navigation integration remains the next step.
 
 ## 2026-09-03
 - Rebuilt `IDP26rankings.html` with the complete verified RPO Football 2026 IDP rankings: 73 DL, 73 LB, and 78 DB entries.

@@ -84,7 +84,7 @@
       const home=game.homeTeam, away=game.awayTeam;
       const venue=game.venue;
       const venueText=venue?[venue.name,venue.city,venue.state||venue.country].filter(Boolean).join(', '):'Venue unavailable';
-      card.innerHTML=`<div class="game-top"><span>${formatKickoff(game.kickoffUtc)}</span><span class="badge">${game.status.category}</span></div><div class="teams"><div class="team"><span class="team-left"><span class="abbr">${away.abbreviation||''}</span>${away.name||'Unknown team'}</span><span class="score">${away.score??''}</span></div><div class="team"><span class="team-left"><span class="abbr">${home.abbreviation||''}</span>${home.name||'Unknown team'}</span><span class="score">${home.score??''}</span></div></div><div class="venue">${venueText}${game.neutralSite?' · Neutral site':''}</div>`;
+      card.innerHTML=`<div class="game-top"><span>${formatKickoff(game.kickoffUtc)}</span><span class="badge">${game.status.category}</span></div><div class="teams"><div class="team"><span class="team-left"><span class="abbr">${home.abbreviation||''}</span>${home.name||'Unknown team'}</span><span class="score">${home.score??''}</span></div><div class="team"><span class="team-left"><span class="abbr">${away.abbreviation||''}</span>${away.name||'Unknown team'}</span><span class="score">${away.score??''}</span></div></div><div class="venue">${venueText}${game.neutralSite?' · Neutral site':''}</div>`;
       gamesEl.appendChild(card);
     });
   }

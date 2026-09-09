@@ -548,3 +548,10 @@ Do not update it for every tiny CSS adjustment or typo fix unless the change mat
 - Documented My Fantasy Team architecture and current calculation principles.
 - Documented the planned Preseason feature and its current data requirements.
 - Added the rule that `PROJECT_STATE.md` must be maintained as the project evolves.
+
+## 2026-09-09 — NFL Games navigation integration
+- Integrated **NFL Games** into the main site navigation across all 9 production pages.
+- Synchronized navigation order across every page; **Preseason** remains excluded.
+- Set the active navigation state to the current page on each page.
+- Added responsive 3-column / 2-column / 1-column navigation behavior to `nfl-games.html`.
+- No NFL Games data source, ESPN endpoint, normalization logic, or existing page functionality was changed.

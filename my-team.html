@@ -5,7 +5,17 @@
 @media(max-width:760px){.nav{grid-template-columns:repeat(2,max-content)}.form,.grid2,.roster{grid-template-columns:1fr}.bench{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){.nav{grid-template-columns:1fr}.nav a{text-align:center}.bench{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <div class="head"><h1>My Fantasy Team</h1><p>Szinkronizáld a saját Sleeper ligádat, és nézd meg a rosteredet.</p></div>
-<nav class="nav"><a class="inactive" href="index.html">Players Trending</a><a class="inactive" href="trade-chart.html">Dynasty Trade Calculator</a><a class="inactive" href="rookie-idp-rankings.html">IDP Rankings (Rookies)</a><a class="inactive" href="tips.html">Tips</a><a class="inactive" href="bye-weeks.html">Bye Weeks</a><a class="active" href="my-team.html">My Fantasy Team</a><a class="inactive" href="strength-of-schedule.html">Strength of Schedule</a><a class="inactive" href="IDP26rankings.html">2026 IDP Rankings</a></nav>
+<nav class="nfln-nav" aria-label="Site navigation">
+  <a href="index.html" class="inactive">Players Trending</a>
+  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
+  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
+  <a href="tips.html" class="inactive">Tips</a>
+  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
+  <a href="my-team.html" class="active">My Fantasy Team</a>
+  <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
+  <a href="IDP26rankings.html" class="inactive">2026 IDP Rankings</a>
+  <a href="nfl-games.html" class="inactive">NFL Games</a>
+</nav>
 <section class="panel"><h2>League Sync</h2><p class="small">Csak az aktuális Sleeper NFL szezon ligáit listázzuk. A league/roster sync külön fut a játékos-metaadatoktól és az elemzési adatforrásoktól.</p><div class="form"><div><label class="label" for="username">Sleeper username</label><input id="username" class="input" placeholder="pl. perczakp" autocomplete="off"></div><button id="find" class="btn">Find My Leagues</button></div><div id="picker" class="hidden" style="margin-top:12px"><label class="label" for="league">Válaszd ki a ligádat</label><select id="league" class="input"></select><button id="sync" class="btn" style="margin-top:10px">Sync Selected League</button></div><div id="status" class="status">Még nincs szinkronizálva.</div></section>
 <div id="dash" class="hidden"><section class="panel"><h2 id="title">My Roster</h2><div id="meta" class="small"></div><div id="roster"></div></section><div class="grid2"><section class="panel"><h2>Roster Strength</h2><div id="strength"></div><p id="note" class="small"></p></section><section class="panel"><h2>Position Needs</h2><div id="needs"></div></section></div></div></div>
 <script>

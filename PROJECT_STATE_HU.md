@@ -45,7 +45,7 @@ Példák:
 
 Tilos `-fixed`, `-final`, `-v2`, `index2` vagy hasonló nevű production helyettesítő fájlokat létrehozni.
 
-A backupok külön biztonsági másolatok lehetnek timestampelt `*.backup-*` fájlok vagy dedikált backup branchek.
+A backupok külön biztonsági másolatok lehetnek dedikált backup brancheken; nem valók a GitHub Pages production gyökerébe.
 
 ## 4. Jelenlegi fő fájlok
 - `index.html`
@@ -58,7 +58,6 @@ A backupok külön biztonsági másolatok lehetnek timestampelt `*.backup-*` fá
 - `strength-of-schedule.html`
 - `nfl-games.html`
 - `nfl-games.js`
-- `nfl-games-normalization-test.html`
 - `fantasycalc-values.json`
 - `FANTASYCALC-CACHE.md`
 - `PROJECT_STATE.md`
@@ -67,7 +66,7 @@ A backupok külön biztonsági másolatok lehetnek timestampelt `*.backup-*` fá
 Jövőbeli:
 - `preseason.html`
 
-A repository timestampelt fejlesztési backupokat is tartalmaz. Ezek biztonsági másolatok, nem alternatív production fájlnevek.
+A Git history és dedikált backup branchek szolgálnak a fejlesztési állapotok megőrzésére; manuális backup fájlokat nem tartunk a production gyökérben.
 
 # MY FANTASY TEAM
 
@@ -299,67 +298,67 @@ A normál felhasználói NFL Games flow ezért runtime-validáltnak tekinthető.
 # IDP / PRESEASON
 
 ## 19. 2026 IDP Rankings
-Az `IDP26rankings.html` statikus, önálló megjelenítése az RPO Football 2026 IDP rankingnek:
+Az `IDP26rankings.html` statikus, önálló bemutatása az RPO Football 2026 IDP rangsorainak:
 - 73 DL;
 - 73 LB;
 - 78 DB;
-- rank, játékosnév és team abbreviation.
+- rank, játékosnév és team abbreviation minden bejegyzéshez.
 
 Látható források:
 - RPO Football 2026 IDP Rankings;
 - publikált RPO ranking sheet.
 
-Az oldal a validált ranking adatokat helyben tárolja, nem külső iframe-re támaszkodik. Frissítés csak az RPO forrással történő újraellenőrzés után történhet.
+Az oldal szándékosan helyben tárolja az ellenőrzött ranking adatokat, és nem külső iframe-re támaszkodik. Frissítés csak az RPO forrás újraellenőrzésével történhet.
 
 ## 20. Rookie IDP oldal
-A canonical fájlnév: `rookie-idp-rankings.html`.
+Kanonikus fájlnév: `rookie-idp-rankings.html`.
 
-A hibás, szóközt tartalmazó változat eltávolításra került. Minden navigációnak a canonical fájlnevet kell használnia.
+A hibás, szóközt tartalmazó verzió eltávolításra került. Minden navigációnak a kanonikus fájlnevet kell használnia.
 
 ## 21. Tervezett Preseason tab
-A jövőbeli `Preseason` tab:
+A jövőbeli `Preseason` tab az alábbi posztokat kezeli:
 - QB
 - RB
 - WR
 - TE
 
-A dataset minden preseason mérkőzés után bővülhet.
+Az adatbázis minden új preseason mérkőzéssel bővül.
 
 Megbeszélt mezők:
-- games played;
+- meccsek száma;
 - target share;
 - passing statisztikák;
 - rushing statisztikák.
 
 A felhasználó külön **Passing** és **Rushing** oszlopokat / szekciókat szeretne.
 
-A snap countot vizsgáltuk, de jelenleg nem kerül bele.
+A snap countot vizsgáltuk, de jelenleg **nem kerül bele**.
 
-A Preseason addig nem tekinthető késznek, amíg a valós adatforrás, schema és frissítési folyamat nincs tesztelve.
+A Preseason funkciót addig nem tekintjük késznek, amíg a valós adatforrás, séma és frissítési folyamat nincs tesztelve.
 
 # FANTASYPROS KUTATÁS
 
-## 22. FantasyPros referencia-kutatás
-A FantasyPros vizsgálata rosterértékelési referenciaként történt, többek között browser developer tools, page source, network activity, nagy JavaScript bundle-ök, VORP/replacement fogalmak és Draft Analyzer outputok segítségével.
+## 22. FantasyPros referencia-munka
+A FantasyProst rosterértékelési referenciaként vizsgáltuk, többek között browser developer tools, page source, network activity, nagy JavaScript bundle-ök, VORP/replacement fogalmak és Draft Analyzer outputok segítségével.
 
-A pontos proprietary számítási formula nem került elő.
+A pontos proprietary számítás nem került elő.
 
-Nem állítható, hogy a projekt pontosan reprodukálja a FantasyPros képletét. A FantasyPros outputjai validációs/referencia pontok lehetnek, miközben a projekt saját modellje átlátható és független marad.
+Nem szabad pontos formula-reprodukciót állítani. A FantasyPros outputjai validációs/referencia pontok, miközben a projekt modellje átlátható és független marad.
 
 ## 23. A FantasyPros-összehasonlítás tanulságai
-A rosterértékelésnek figyelembe kell vennie:
-- liga-relatív kontextust;
-- pozíciót;
-- starter/depth helyzetet;
-- értelmes játékosértékeket;
-- a rank, market value, roster strength és roster need világos elkülönítését.
+A rosterértékelésnek szüksége van:
+- liga-relatív kontextusra;
+- pozíciótudatosságra;
+- starter/depth tudatosságra;
+- értelmes játékosértékekre;
+- a rank, market value, roster strength és roster need világos elkülönítésére.
 
-A modellt több valódi példával kell validálni, nem egyetlen screenshot reprodukálására hangolni.
+A modellt több valódi példával kell validálni, nem egyetlen screenshot reprodukálására kell hangolni.
 
 # NAVIGÁCIÓ
 
 ## 24. Site-wide navigációs szabály
-A navigáció módosítása site-wide változtatás.
+Egy navigációs változtatás site-wide változtatás.
 
 Minden oldalnak:
 - ugyanazokat az aktuális linkeket kell tartalmaznia;
@@ -368,115 +367,118 @@ Minden oldalnak:
 
 A jelenlegi stabil implementáció CSS Gridet használ a 9 aktuális navigációs elemmel.
 
-# FEJLESZTÉSI MUNKAFOLYAMAT
+# FEJLESZTÉSI WORKFLOW
 
-## 25. Kötelező pre-change audit
-Érdemi változtatásnál **nem szabad azonnal kódot szerkeszteni**.
+## 25. Kötelező módosítás előtti audit
+Érdemi változtatásnál **nem szabad a kód szerkesztésével kezdeni**.
 
 Először:
-1. Állapítsuk meg a tényleges aktuális GitHub állapotot.
-2. Vizsgáljuk meg a teljes releváns adatfolyamot end-to-end.
-3. Azonosítsuk az érintett fájlokat, API-kat, függőségeket és számításokat.
-4. Hasonlítsuk össze az aktuális kódot a `PROJECT_STATE.md`-vel.
-5. A gyökérokot keressük, ne csak a látható tünetet.
-6. Ha van működő baseline, ellenőrizzük a legutolsó ismert jó verziót.
-7. Határozzuk meg a legkisebb biztonságos módosítást.
+1. A tényleges aktuális állapot meghatározása GitHubból.
+2. A teljes releváns adatfolyam end-to-end átvizsgálása.
+3. Az érintett fájlok, API-k, függőségek és számítások azonosítása.
+4. Az aktuális kód összevetése a `PROJECT_STATE.md`-vel.
+5. A gyökérok azonosítása, nem csak a látható tünet javítása.
+6. Az utolsó ismert jó verzió ellenőrzése, ha van működő baseline.
+7. A legkisebb biztonságos változtatás meghatározása.
 
-Ez a szabály a League Sync / Roster Strength hibakeresési ciklus után került rögzítésre, mert a részleges javítások új hibákat hozhatnak létre vagy rossz adatfolyamot tarthatnak fenn.
+Ez a szabály a League Sync / Roster Strength hibakeresési ciklus után került be, mert a részleges javítások új hibákat hozhatnak létre, vagy rossz adatfolyamot hagyhatnak meg.
 
 ## 26. Backup-first szabály
 Meglévő production fájl módosítása előtt:
 
-1. Fetch-eljük az aktuális production fájlt.
-2. Készítsünk backupot.
-3. Ellenőrizzük, hogy a backup valóban létezik.
-4. Módosítsuk az eredeti fájlt.
-5. Ellenőrizzük az eredményt.
+1. Az aktuális production fájl lekérése.
+2. Backup készítése.
+3. A backup meglétének ellenőrzése.
+4. Az eredeti fájl módosítása.
+5. Az eredmény ellenőrzése.
 
-Ha a backup nem hozható létre, **az eredetit nem módosítjuk**.
+Ha a backup nem készíthető el, **az eredetit nem szabad módosítani**.
 
-A backup biztonsági másolat, nem production alternatíva.
+A backupok fejlesztési biztonsági másolatok; nem kerülhetnek a GitHub Pages production gyökerébe.
 
-## 27. Minimális változtatás és ellenőrzés
+## 27. Minimális módosítás és ellenőrzés
 Backup után:
-1. A lehető legkisebb szükséges módosítást végezzük.
-2. Minden nem kapcsolódó működő funkcionalitást őrizzünk meg.
-3. Ellenőrizzük a syntaxot és a strukturális konzisztenciát.
-4. Ha a környezet lehetővé teszi, teszteljük az oldalbetöltést, JavaScript/data flow-t, navigációt, vizuális struktúrát és releváns számításokat.
-5. Egyértelműen jelentsük, mit teszteltünk és mit nem.
+1. A legkisebb szükséges módosítás elvégzése.
+2. Minden függetlenül működő funkció megőrzése.
+3. Szintaxis és strukturális konzisztencia ellenőrzése.
+4. Oldalbetöltés, JavaScript/adatfolyam, navigáció, vizuális struktúra és releváns számítások tesztelése, amikor a környezet ezt lehetővé teszi.
+5. Egyértelmű jelentés arról, mi lett és mi nem lett ténylegesen tesztelve.
 
-Soha ne állítsunk működőnek olyan runtime tesztet, amelyet nem végeztünk el.
+Soha ne állítsunk runtime tesztet olyasmiről, amit nem végeztünk el.
 
-# ELKERÜLENDŐ ISMERT HIBÁK
+# ISMERT HIBÁK, AMIKET EL KELL KERÜLNI
 
 - Ne készítsünk `-fixed`, `-final`, `-v2` vagy hasonló production duplikátumokat.
 - Ne nevezzük át feleslegesen a production fájlokat.
-- Ne módosítsuk csak egyetlen oldal navigációját.
-- Ne feltételezzük, hogy a megjegyzett/régi kód az aktuális.
+- Ne módosítsuk csak egy oldal navigációját.
+- Ne feltételezzük, hogy a megjegyzett vagy régi kód az aktuálisan telepített kód.
 - Ne cseréljük le a működő JavaScriptet mock vagy placeholder kódra.
 - Ne találjunk ki FantasyCalc értékeket.
 - Ne engedjük, hogy az Injury Risk rejtetten módosítsa az alapértéket.
-- Ne nevezzünk működőnek nem tesztelt preview-t.
-- Ne mutassunk sample adatot valós adatként.
+- Ne nevezzünk működőnek egy nem tesztelt preview-t.
+- Ne mutassunk mintaadatot valós adatként.
 - Ne változtassunk csendben számítási logikát.
-- Ne állítsuk, hogy egy generált ZIP tesztelve lett pusztán azért, mert létrejött.
-- Ne aggregáljunk több Sleeper szezont, ha a feature az aktív/current liga szezonját igényli.
+- Ne állítsuk, hogy egy generált ZIP-et teszteltünk csak azért, mert létrejött.
+- Ne aggregáljunk több Sleeper szezont, amikor a funkció az aktív/aktuális liga szezonját igényli.
 - Ne párosítsuk a `roster.starters` tömböt a teljes `roster_positions` tömbbel a `BN` slotok kiszűrése nélkül.
-- Opcionális adatforrás hibája nem akadályozhatja meg a core League Syncot.
-- Komplex alrendszert ne javítsunk piecemeal end-to-end adatfolyam audit nélkül.
+- Ne engedjük, hogy opcionális adatforrás-hibák megakadályozzák a core League Syncot.
+- Ne javítsunk összetett alrendszert piecemeal módon a teljes end-to-end adatfolyam auditja nélkül.
 
 # JELENLEGI ELLENŐRZÖTT BASELINE
 
-2026-09-10-i állapot szerint a legutóbbi production változtatás az NFL Games navigációs gombjainak standardizálása.
+2026-09-10 állapot szerint a legutóbbi production változtatás az NFL Games navigációs gombstílusa.
 
 Legutóbbi production commit:
 `1276292953fb1d829b6c5efd4cdaab3d8a781905`
 
-A legutóbbi My Fantasy Team kód-baseline továbbra is a Sleeper starter-slot mapping javítása:
+A legutóbbi My Fantasy Team kód baseline továbbra is a Sleeper starter-slot mapping javítása:
 `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
 
-Ezt a javítást megelőző dedikált backup commit:
+Ezt a javítást megelőzte a dedikált backup commit:
 `f07891578f39c535e32539fac72afd3e8fc0c8e4`
 
-A repository történetében későbbi automatikus FantasyCalc cache és news/tips adatfrissítések is vannak; ezek adatfrissítések, és nem váltják ki a My Fantasy Team kód-baseline-ját.
+A repository history későbbi automatikus FantasyCalc cache- és news/tips adatfrissítéseket is tartalmaz; ezek adatfrissítések, és nem váltják ki a My Fantasy Team kód baseline-ját.
 
-A starter mapping és League Sync/Roster Strength javítások után a felhasználói visszajelzés szerint az eredmény helyesnek tűnt. Ez azonban nem helyettesíti a teljes, valódi Sleeper ligával végzett browser/runtime tesztet.
+A starter mapping és League Sync/Roster Strength javítások után a legutóbbi felhasználói visszajelzés szerint az eredmény helyesnek tűnt. Ez nem helyettesíti a teljes böngészős/runtime tesztet valódi Sleeper ligával.
 
-Az NFL Games funkció most már integrálva van a site-wide navigációba, és a normál felhasználói flow browserben validálva lett.
+Az NFL Games funkció most már be van építve a site-wide navigációba, és normál felhasználói flow-ja böngészőben validálva lett.
 
 # JELENLEGI PRIORITÁSOK
 
 ## P0 — My Fantasy Team stabilitás és helyesség
-1. A `my-team.html` teljes runtime tesztje valódi Sleeper ligával.
-2. Ellenőrizni, hogy az aktuális szezon League Sync pontosan a felhasználó jelenlegi ligáit adja vissza.
-3. Roster betöltés és pontos Sleeper starter slot mapping ellenőrzése.
-4. Player identification ellenőrzése a valódi rosteren.
+1. A `my-team.html` teljes runtime tesztelése valódi Sleeper ligával.
+2. Ellenőrizni, hogy az aktuális szezon League Sync pontosan a felhasználó aktuális ligáit adja vissza.
+3. Roster betöltésének és a pontos Sleeper starter slot mappingnek az ellenőrzése.
+4. A valódi roster játékosazonosításának ellenőrzése.
 5. FantasyCalc értékek és missing-value fallbackek ellenőrzése.
 6. Roster Strength ellenőrzése több valódi liga példáján.
 7. Position Needs ellenőrzése.
-8. A jelenlegi rejtett `injuryPenalty()` hatás eltávolítása a base player quality-ból, és az Injury Risk külön megjelenítése.
+8. A jelenlegi rejtett `injuryPenalty()` hatás eltávolítása a base player quality-ből, és az Injury Risk külön megjelenítése.
 
-## P1 — Projektmegbízhatóság és karbantartás
-9. A navigáció konzisztenciájának ellenőrzése minden production oldalon a 9-tabos integráció után.
+## P1 — Projekt megbízhatóság és karbantarthatóság
+9. Navigációs konzisztencia ellenőrzése minden production oldalon a 9-tabos integráció után.
 10. A GitHub Actions news/tips és FantasyCalc refresh workflow-k auditja hibakezelés és stale-data viselkedés szempontjából.
-11. A nagy JSON datasetek, például `player-news.json` és `players.json`, méretének és betöltési viselkedésének felülvizsgálata a szezon terhelése előtt.
-12. A `PROJECT_STATE.md` szinkronban tartása minden érdemi projektváltoztatás után.
-13. A fejlesztési backupok fokozatos kivezetése a production `main` tree-ből, és ahol célszerű, biztonsági másolatok dedikált backup branchekben tartása.
+11. A nagy JSON adatkészletek, például `player-news.json` és `players.json`, méretének és betöltési viselkedésének felülvizsgálata a peak season előtt.
+12. A `PROJECT_STATE.md` szinkronban tartása minden érdemi projektváltozás után.
+13. A fejlesztési backupok fokozatos kivezetése a production `main` tree-ből, és ahol praktikus, biztonsági másolatok használata dedikált backup brancheken.
+14. Repo hygiene fenntartása: manuális backup- és ideiglenes tesztfájlok ne kerüljenek a GitHub Pages production gyökerébe.
 
 ## P2 — Tesztelés és kódminőség
-14. A jelenlegi browser normalization test kibővítése könnyű regression suite-tá a legfontosabb adatfolyamokra.
-15. A dinamikus HTML rendering és külső adatok kezelésének auditja karbantarthatóság és biztonságos DOM használat szempontjából.
-16. Teljes cross-page mobile/desktop regression pass nagyobb navigációs vagy layout változtatások után.
+15. A jelenlegi browser normalization tesztből könnyű regression suite bővítése a legfontosabb adatfolyamokra.
+16. A dinamikus HTML rendering és külső adatok kezelésének auditja karbantarthatóság és biztonságos DOM használat szempontjából.
+17. Teljes cross-page mobile/desktop regression pass nagyobb navigációs vagy layout változások után.
 
-## Következő nagy feature
-17. Preseason tab elkészítése.
-18. Valós, ingyenes preseason adatforrás meghatározása.
-19. Preseason JSON schema definiálása.
-20. Games, passing, rushing és target-share adatok hozzáadása.
-21. Az egyes preseason mérkőzések utáni frissítési folyamat definiálása és tesztelése.
+## Következő nagy funkció
+18. Preseason tab elkészítése.
+19. Valós, ingyenes preseason adatforrás meghatározása.
+20. Preseason JSON schema meghatározása.
+21. Games, passing, rushing és target-share adatok hozzáadása.
+22. A minden preseason meccs utáni frissítési folyamat meghatározása és tesztelése.
 
 # PROJEKT FILOZÓFIÁJA
 
-**Valós adat → átlátható logika → kis, biztonságos változtatás → explicit tesztelés → dokumentált állapot.**
+A projekt prioritása:
 
-A projektben nem a funkciók gyors hozzáadása az elsődleges, hanem az adatok helyessége és a stabil működés.
+**Valós adat → átlátható logika → kis, biztonságos változtatások → explicit tesztelés → dokumentált állapot.**
+
+A gyors feature-bővítés nem írhatja felül az adathelyességet vagy a stabilitást.

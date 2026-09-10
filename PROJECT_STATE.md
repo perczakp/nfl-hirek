@@ -45,7 +45,7 @@ Examples:
 
 Do not create `-fixed`, `-final`, `-v2`, `index2`, or similar names as replacements for production files.
 
-Backups are separate safety copies and may use dedicated backup branches. They should not live in the GitHub Pages production root.
+Backups are separate safety copies and may use timestamped `*.backup-*` filenames or dedicated backup branches.
 
 ## 4. Current main files
 - `index.html`
@@ -58,6 +58,7 @@ Backups are separate safety copies and may use dedicated backup branches. They s
 - `strength-of-schedule.html`
 - `nfl-games.html`
 - `nfl-games.js`
+- `nfl-games-normalization-test.html`
 - `fantasycalc-values.json`
 - `FANTASYCALC-CACHE.md`
 - `PROJECT_STATE.md`
@@ -66,7 +67,7 @@ Backups are separate safety copies and may use dedicated backup branches. They s
 Future:
 - `preseason.html`
 
-Development backup files and temporary test pages are not part of the production tree. Git history and dedicated backup branches are used to preserve development states.
+The repository also contains timestamped development backups. These are safety copies, not alternate production filenames.
 
 # MY FANTASY TEAM
 
@@ -423,7 +424,6 @@ Never claim a runtime test that was not performed.
 - Do not pair `roster.starters` against the full `roster_positions` array without filtering `BN` slots.
 - Do not let optional data-source failures prevent core League Sync.
 - Do not fix a complex subsystem piecemeal without first auditing its end-to-end data flow.
-- Do not keep manual backup copies or temporary test pages in the GitHub Pages production root.
 
 # CURRENT VERIFIED BASELINE
 
@@ -462,19 +462,18 @@ The NFL Games feature is now integrated into the site-wide navigation and has be
 11. Review the size and loading behavior of large JSON datasets such as `player-news.json` and `players.json` before peak season traffic.
 12. Keep `PROJECT_STATE.md` synchronized after every substantive project change.
 13. Gradually move development backups out of the production `main` tree and keep safety copies in dedicated backup branches where practical.
-14. Keep repo hygiene clean: manual backup files and temporary test pages must stay out of the GitHub Pages production root.
 
 ## P2 — Testing and code quality
-15. Expand the current browser normalization test into a lightweight regression suite for the most important data flows.
-16. Audit dynamic HTML rendering and external-data handling for maintainability and safe DOM practices.
-17. Perform a full cross-page mobile/desktop regression pass after major navigation or layout changes.
+14. Expand the current browser normalization test into a lightweight regression suite for the most important data flows.
+15. Audit dynamic HTML rendering and external-data handling for maintainability and safe DOM practices.
+16. Perform a full cross-page mobile/desktop regression pass after major navigation or layout changes.
 
 ## Next major feature
-18. Build Preseason tab.
-19. Establish a real free preseason data source.
-20. Define the preseason JSON schema.
-21. Add games, passing, rushing, and target-share data.
-22. Define and test the update process after each preseason game.
+17. Build Preseason tab.
+18. Establish a real free preseason data source.
+19. Define the preseason JSON schema.
+20. Add games, passing, rushing, and target-share data.
+21. Define and test the update process after each preseason game.
 
 # PROJECT PHILOSOPHY
 

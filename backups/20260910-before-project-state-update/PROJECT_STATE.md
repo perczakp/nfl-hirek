@@ -449,4 +449,109 @@ The NFL Games feature was added after this My Fantasy Team baseline. Its browser
 
 # PROJECT PHILOSOPHY
 
-**... (truncated)**
+**Real data > invented data**
+
+**Transparent calculations > unexplained scores**
+
+**League-relative context > arbitrary absolute numbers**
+
+**Separate risk information > hidden penalties**
+
+**Stable architecture > quick patches**
+
+**Current repository > remembered code**
+
+**One canonical filename > duplicate production versions**
+
+# SESSION CONTINUATION PROTOCOL
+
+When starting a new conversation on this project:
+
+1. Load `PROJECT_STATE.md`.
+2. Treat it as the documented project decisions and architecture.
+3. Read the actual current GitHub files that will be modified.
+4. Compare the documentation with the real repository state.
+5. If they disagree, explicitly report the discrepancy before making a change.
+6. For substantive work, perform the mandatory end-to-end audit before editing.
+7. Follow the backup-first rule.
+8. Update `PROJECT_STATE.md` after significant changes.
+
+This document is project memory, but it never replaces the actual source code.
+
+# OPEN QUESTIONS
+
+- Final mathematical formula for Roster Strength.
+- Final mathematical formula for Position Needs.
+- Exact FantasyPros methodology versus our independent model.
+- Final treatment of Injury Risk without changing base player value.
+- Best single free source for complete preseason statistics.
+- Final preseason JSON schema.
+- Whether snap count can eventually be sourced from the same provider.
+- Whether SOS should later influence matchup/player analysis.
+- Final navigation layout after any future tabs are added.
+
+# GOLDEN RULE
+
+> **Never sacrifice a known working part of the project to make a new part work faster.**
+>
+> When in doubt: preserve the working version, perform a full audit, make a backup, make the smallest safe change, test it, and only then replace the production file.
+
+# PROJECT STATE MAINTENANCE RULE
+
+`PROJECT_STATE.md` is a living project-memory document and must be kept synchronized with the project.
+
+For every significant project change:
+
+**Audit → Backup → Code change → Test → Update PROJECT_STATE.md → Save/commit current state**
+
+Update it when:
+- a feature is added, removed, or substantially changed;
+- a data source changes;
+- a calculation formula/evaluation logic changes;
+- an API/data-flow changes;
+- a major UI/navigation decision changes;
+- a previously discovered bug is fixed;
+- a new recurring development rule is established;
+- an important project decision is reversed/superseded;
+- a major feature is verified as working.
+
+Do not update it for every tiny CSS adjustment or typo fix unless the change materially affects project state.
+
+# CHANGELOG
+
+## 2026-09-09
+- Reconciled `PROJECT_STATE.md` against the current GitHub repository state.
+- Documented the current `my-team.html` League Sync architecture: active/current-season league discovery, core sync separated from optional enrichment, and fallback behavior when player metadata is unavailable.
+- Documented the Sleeper starter-slot mapping rule: filter `BN` slots before pairing ordered starters with roster positions.
+- Documented the current Roster Strength model and its independent relationship to FantasyPros.
+- Recorded the known conflict between the permanent Injury Risk design decision and the current `injuryPenalty()` implementation; this remains a required future cleanup.
+- Added the mandatory end-to-end pre-change audit rule based on the recent debugging lessons.
+- Strengthened the backup-first workflow and documented the current verified My Team production baseline.
+- Documented the presence of timestamped safety backups separately from canonical production filenames.
+- Added the ESPN NFL Games normalization layer in `nfl-games.js`.
+- Added `nfl-games-normalization-test.html` and validated the normalized data against real ESPN Week 1 and date-specific game data.
+- Added `nfl-games.html` as the first NFL Games feature page using the normalized data layer.
+- Browser-tested NFL Games with Week 1, Week 2, and Week 18; all tested weeks returned 16 games and rendered correctly.
+- Confirmed that the NFL Games page is working but has not yet been added to the site-wide navigation; navigation integration remains the next step.
+
+## 2026-09-03
+- Rebuilt `IDP26rankings.html` with the complete verified RPO Football 2026 IDP rankings: 73 DL, 73 LB, and 78 DB entries.
+- Replaced the broken external-sheet iframe with self-contained, responsive ranking tables and visible RPO source links.
+- Renamed the Rookie IDP page to the canonical `rookie-idp-rankings.html` filename and removed the incorrectly space-named source file.
+- Synchronized the Rookie and 2026 IDP navigation links across every affected page.
+
+## 2026-08-30
+- Created `PROJECT_STATE.md` as the project's persistent working-memory document.
+- Established GitHub as the source of truth for current production code.
+- Established the original-filename rule.
+- Documented the site-wide navigation consistency requirement.
+- Documented My Fantasy Team architecture and current calculation principles.
+- Documented the planned Preseason feature and its current data requirements.
+- Added the rule that `PROJECT_STATE.md` must be maintained as the project evolves.
+
+## 2026-09-09 — NFL Games navigation integration
+- Integrated **NFL Games** into the main site navigation across all 9 production pages.
+- Synchronized navigation order across every page; **Preseason** remains excluded.
+- Set the active navigation state to the current page on each page.
+- Added responsive 3-column / 2-column / 1-column navigation behavior to `nfl-games.html`.
+- No NFL Games data source, ESPN endpoint, normalization logic, or existing page functionality was changed.

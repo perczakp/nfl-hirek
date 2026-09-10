@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-09T04:06:41.633Z",
+  "updated_at": "2026-09-10T04:07:12.787Z",
   "predictors": [
     {
       "name": "Cheeseheads",
@@ -7,6 +7,405 @@
         {
           "team": "Tippelt eredmény",
           "prediction": "7-10"
+        }
+      ]
+    },
+    {
+      "name": "Cs. Tomi",
+      "picks": [
+        {
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Miami Dolphins",
+          "prediction": "3-14"
+        },
+        {
+          "team": "New England Patriots",
+          "prediction": "8-9"
+        },
+        {
+          "team": "New York Jets",
+          "prediction": "3-14"
+        },
+        {
+          "team": "Baltimore Ravens",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Cincinnati Bengals",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Cleveland Browns",
+          "prediction": "1-16"
+        },
+        {
+          "team": "Pittsburgh Steelers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Houston Texans",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Indianapolis Colts",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Jacksonville Jaguars",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Tennessee Titans",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Denver Broncos",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Kansas City Chiefs",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Las Vegas Raiders",
+          "prediction": "4-13"
+        },
+        {
+          "team": "Los Angeles Chargers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Dallas Cowboys",
+          "prediction": "8-9"
+        },
+        {
+          "team": "New York Giants",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Philadelphia Eagles",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Washington Commanders",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Chicago Bears",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Detroit Lions",
+          "prediction": "13-4"
+        },
+        {
+          "team": "Green Bay Packers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Minnesota Vikings",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Atlanta Falcons",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Carolina Panthers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "New Orleans Saints",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Tampa Bay Buccaneers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Arizona Cardinals",
+          "prediction": "2-15"
+        },
+        {
+          "team": "Los Angeles Rams",
+          "prediction": "15-2"
+        },
+        {
+          "team": "San Francisco 49ers",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Seattle Seahawks",
+          "prediction": "12-5"
+        }
+      ]
+    },
+    {
+      "name": "Gergely",
+      "picks": [
+        {
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Miami Dolphins",
+          "prediction": "0-17"
+        },
+        {
+          "team": "New England Patriots",
+          "prediction": "8-9"
+        },
+        {
+          "team": "New York Jets",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Baltimore Ravens",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Cincinnati Bengals",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Cleveland Browns",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Pittsburgh Steelers",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Houston Texans",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Indianapolis Colts",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Jacksonville Jaguars",
+          "prediction": "13-4"
+        },
+        {
+          "team": "Tennessee Titans",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Denver Broncos",
+          "prediction": "13-4"
+        },
+        {
+          "team": "Kansas City Chiefs",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Las Vegas Raiders",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Los Angeles Chargers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Dallas Cowboys",
+          "prediction": "10-7"
+        },
+        {
+          "team": "New York Giants",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Philadelphia Eagles",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Washington Commanders",
+          "prediction": "3-14"
+        },
+        {
+          "team": "Chicago Bears",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Detroit Lions",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Green Bay Packers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Minnesota Vikings",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Atlanta Falcons",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Carolina Panthers",
+          "prediction": "11-6"
+        },
+        {
+          "team": "New Orleans Saints",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Tampa Bay Buccaneers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Arizona Cardinals",
+          "prediction": "2-15"
+        },
+        {
+          "team": "Los Angeles Rams",
+          "prediction": "15-2"
+        },
+        {
+          "team": "San Francisco 49ers",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Seattle Seahawks",
+          "prediction": "14-3"
+        }
+      ]
+    },
+    {
+      "name": "Poviati",
+      "picks": [
+        {
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Miami Dolphins",
+          "prediction": "1-16"
+        },
+        {
+          "team": "New England Patriots",
+          "prediction": "11-6"
+        },
+        {
+          "team": "New York Jets",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Baltimore Ravens",
+          "prediction": "13-4"
+        },
+        {
+          "team": "Cincinnati Bengals",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Cleveland Browns",
+          "prediction": "3-14"
+        },
+        {
+          "team": "Pittsburgh Steelers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Houston Texans",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Indianapolis Colts",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Jacksonville Jaguars",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Tennessee Titans",
+          "prediction": "4-13"
+        },
+        {
+          "team": "Denver Broncos",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Kansas City Chiefs",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Las Vegas Raiders",
+          "prediction": "4-13"
+        },
+        {
+          "team": "Los Angeles Chargers",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Dallas Cowboys",
+          "prediction": "9-8"
+        },
+        {
+          "team": "New York Giants",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Philadelphia Eagles",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Washington Commanders",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Chicago Bears",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Detroit Lions",
+          "prediction": "14-3"
+        },
+        {
+          "team": "Green Bay Packers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Minnesota Vikings",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Atlanta Falcons",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Carolina Panthers",
+          "prediction": "6-11"
+        },
+        {
+          "team": "New Orleans Saints",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Tampa Bay Buccaneers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Arizona Cardinals",
+          "prediction": "2-15"
+        },
+        {
+          "team": "Los Angeles Rams",
+          "prediction": "13-4"
+        },
+        {
+          "team": "San Francisco 49ers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Seattle Seahawks",
+          "prediction": "11-6"
         }
       ]
     },
@@ -136,6 +535,272 @@
         {
           "team": "San Francisco 49ers",
           "prediction": "11-6"
+        },
+        {
+          "team": "Seattle Seahawks",
+          "prediction": "12-5"
+        }
+      ]
+    },
+    {
+      "name": "RocketCardinals",
+      "picks": [
+        {
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Miami Dolphins",
+          "prediction": "2-15"
+        },
+        {
+          "team": "New England Patriots",
+          "prediction": "11-6"
+        },
+        {
+          "team": "New York Jets",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Baltimore Ravens",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Cincinnati Bengals",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Cleveland Browns",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Pittsburgh Steelers",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Houston Texans",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Indianapolis Colts",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Jacksonville Jaguars",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Tennessee Titans",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Denver Broncos",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Kansas City Chiefs",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Las Vegas Raiders",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Los Angeles Chargers",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Dallas Cowboys",
+          "prediction": "11-6"
+        },
+        {
+          "team": "New York Giants",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Philadelphia Eagles",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Washington Commanders",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Chicago Bears",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Detroit Lions",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Green Bay Packers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Minnesota Vikings",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Atlanta Falcons",
+          "prediction": "4-13"
+        },
+        {
+          "team": "Carolina Panthers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "New Orleans Saints",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Tampa Bay Buccaneers",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Arizona Cardinals",
+          "prediction": "2-15"
+        },
+        {
+          "team": "Los Angeles Rams",
+          "prediction": "13-4"
+        },
+        {
+          "team": "San Francisco 49ers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Seattle Seahawks",
+          "prediction": "12-5"
+        }
+      ]
+    },
+    {
+      "name": "RodgersDeakins",
+      "picks": [
+        {
+          "team": "Buffalo Bills  (Csak a győzelmek számát írd be)",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Miami Dolphins",
+          "prediction": "3-14"
+        },
+        {
+          "team": "New England Patriots",
+          "prediction": "10-7"
+        },
+        {
+          "team": "New York Jets",
+          "prediction": "5-12"
+        },
+        {
+          "team": "Baltimore Ravens",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Cincinnati Bengals",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Cleveland Browns",
+          "prediction": "4-13"
+        },
+        {
+          "team": "Pittsburgh Steelers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Houston Texans",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Indianapolis Colts",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Jacksonville Jaguars",
+          "prediction": "11-6"
+        },
+        {
+          "team": "Tennessee Titans",
+          "prediction": "6-11"
+        },
+        {
+          "team": "Denver Broncos",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Kansas City Chiefs",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Las Vegas Raiders",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Los Angeles Chargers",
+          "prediction": "9-8"
+        },
+        {
+          "team": "Dallas Cowboys",
+          "prediction": "9-8"
+        },
+        {
+          "team": "New York Giants",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Philadelphia Eagles",
+          "prediction": "12-5"
+        },
+        {
+          "team": "Washington Commanders",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Chicago Bears",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Detroit Lions",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Green Bay Packers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Minnesota Vikings",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Atlanta Falcons",
+          "prediction": "7-10"
+        },
+        {
+          "team": "Carolina Panthers",
+          "prediction": "8-9"
+        },
+        {
+          "team": "New Orleans Saints",
+          "prediction": "8-9"
+        },
+        {
+          "team": "Tampa Bay Buccaneers",
+          "prediction": "10-7"
+        },
+        {
+          "team": "Arizona Cardinals",
+          "prediction": "3-14"
+        },
+        {
+          "team": "Los Angeles Rams",
+          "prediction": "12-5"
+        },
+        {
+          "team": "San Francisco 49ers",
+          "prediction": "10-7"
         },
         {
           "team": "Seattle Seahawks",

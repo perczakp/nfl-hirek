@@ -1,20 +1,38 @@
 {
-  "updated_at": "2026-09-10T04:07:11.422Z",
+  "updated_at": "2026-09-11T04:07:28.594Z",
   "added": [
     {
       "name": "Michael Mayer",
       "position": "TE",
       "team": "LV",
-      "adds_48h": 1461483,
+      "adds_48h": 1947447,
       "injury_status": null,
       "sleeper_id": "9482",
       "espn_id": null
     },
     {
+      "name": "Kaelon Black",
+      "position": "RB",
+      "team": "SF",
+      "adds_48h": 280357,
+      "injury_status": null,
+      "sleeper_id": "13414",
+      "espn_id": null
+    },
+    {
+      "name": "Darren Waller",
+      "position": "TE",
+      "team": "CAR",
+      "adds_48h": 268740,
+      "injury_status": null,
+      "sleeper_id": "2505",
+      "espn_id": 2576925
+    },
+    {
       "name": "Roschon Johnson",
       "position": "RB",
       "team": "CHI",
-      "adds_48h": 469136,
+      "adds_48h": 268016,
       "injury_status": null,
       "sleeper_id": "10235",
       "espn_id": null
@@ -23,226 +41,208 @@
       "name": "Devaughn Vele",
       "position": "WR",
       "team": "NO",
-      "adds_48h": 354970,
+      "adds_48h": 253134,
       "injury_status": null,
       "sleeper_id": "11834",
+      "espn_id": null
+    },
+    {
+      "name": "Tre Tucker",
+      "position": "WR",
+      "team": "LV",
+      "adds_48h": 196158,
+      "injury_status": null,
+      "sleeper_id": "10213",
       "espn_id": null
     },
     {
       "name": "Malik Davis",
       "position": "RB",
       "team": "DAL",
-      "adds_48h": 266472,
+      "adds_48h": 190485,
       "injury_status": null,
       "sleeper_id": "8800",
       "espn_id": null
     },
     {
-      "name": "Darren Waller",
-      "position": "TE",
-      "team": "CAR",
-      "adds_48h": 258057,
-      "injury_status": null,
-      "sleeper_id": "2505",
-      "espn_id": 2576925
-    },
-    {
-      "name": "Tank Dell",
-      "position": "WR",
-      "team": "HOU",
-      "adds_48h": 225824,
-      "injury_status": "IR",
-      "sleeper_id": "9502",
-      "espn_id": null
-    },
-    {
-      "name": "AJ Barner",
-      "position": "TE",
-      "team": "SEA",
-      "adds_48h": 192000,
-      "injury_status": null,
-      "sleeper_id": "11603",
-      "espn_id": null
-    },
-    {
-      "name": "Kaelon Black",
-      "position": "RB",
-      "team": "SF",
-      "adds_48h": 184905,
-      "injury_status": null,
-      "sleeper_id": "13414",
-      "espn_id": null
-    },
-    {
-      "name": "Matt Gay",
-      "position": "K",
-      "team": "LV",
-      "adds_48h": 180490,
-      "injury_status": null,
-      "sleeper_id": "6083",
-      "espn_id": 4249087
-    },
-    {
       "name": "Mark Andrews",
       "position": "TE",
       "team": "BAL",
-      "adds_48h": 159075,
+      "adds_48h": 177030,
       "injury_status": null,
       "sleeper_id": "5012",
       "espn_id": 3116365
     },
     {
-      "name": "Tre Tucker",
+      "name": "AJ Barner",
+      "position": "TE",
+      "team": "SEA",
+      "adds_48h": 163908,
+      "injury_status": null,
+      "sleeper_id": "11603",
+      "espn_id": null
+    },
+    {
+      "name": "Tank Dell",
       "position": "WR",
-      "team": "LV",
-      "adds_48h": 154356,
-      "injury_status": null,
-      "sleeper_id": "10213",
+      "team": "HOU",
+      "adds_48h": 151368,
+      "injury_status": "IR",
+      "sleeper_id": "9502",
       "espn_id": null
     },
     {
-      "name": "MarShawn Lloyd",
-      "position": "RB",
-      "team": "GB",
-      "adds_48h": 152937,
+      "name": "Chris Bell",
+      "position": "WR",
+      "team": "MIA",
+      "adds_48h": 149296,
       "injury_status": null,
-      "sleeper_id": "11581",
-      "espn_id": null
-    },
-    {
-      "name": "Tyler Allgeier",
-      "position": "RB",
-      "team": "ARI",
-      "adds_48h": 144740,
-      "injury_status": null,
-      "sleeper_id": "8132",
+      "sleeper_id": "13311",
       "espn_id": null
     },
     {
       "name": "Juwan Johnson",
       "position": "TE",
       "team": "NO",
-      "adds_48h": 133656,
+      "adds_48h": 143208,
       "injury_status": null,
       "sleeper_id": "7002",
       "espn_id": 3929645
     },
     {
-      "name": "Chris Bell",
-      "position": "WR",
-      "team": "MIA",
-      "adds_48h": 122150,
+      "name": "Matt Gay",
+      "position": "K",
+      "team": "LV",
+      "adds_48h": 140895,
       "injury_status": null,
-      "sleeper_id": "13311",
-      "espn_id": null
-    },
-    {
-      "name": "Caleb Douglas",
-      "position": "WR",
-      "team": "MIA",
-      "adds_48h": 108864,
-      "injury_status": null,
-      "sleeper_id": "13296",
-      "espn_id": null
-    },
-    {
-      "name": "Charlie Kolar",
-      "position": "TE",
-      "team": "LAC",
-      "adds_48h": 106023,
-      "injury_status": null,
-      "sleeper_id": "8127",
-      "espn_id": null
+      "sleeper_id": "6083",
+      "espn_id": 4249087
     },
     {
       "name": "Cooper Kupp",
       "position": "WR",
       "team": "SEA",
-      "adds_48h": 104892,
+      "adds_48h": 109524,
       "injury_status": null,
       "sleeper_id": "4039",
       "espn_id": 2977187
     },
     {
-      "name": "Terrance Ferguson",
-      "position": "TE",
-      "team": "LAR",
-      "adds_48h": 101752,
-      "injury_status": null,
-      "sleeper_id": "12487",
-      "espn_id": null
-    },
-    {
-      "name": "Odell Beckham",
-      "position": "WR",
-      "team": "NYG",
-      "adds_48h": 99995,
-      "injury_status": null,
-      "sleeper_id": "2078",
-      "espn_id": 16733
-    },
-    {
-      "name": "Malachi Fields",
-      "position": "WR",
-      "team": "NYG",
-      "adds_48h": 98670,
-      "injury_status": null,
-      "sleeper_id": "13285",
-      "espn_id": null
-    },
-    {
-      "name": "Justice Hill",
+      "name": "MarShawn Lloyd",
       "position": "RB",
-      "team": "BAL",
-      "adds_48h": 93096,
+      "team": "GB",
+      "adds_48h": 100836,
       "injury_status": null,
-      "sleeper_id": "5995",
-      "espn_id": 4038441
-    },
-    {
-      "name": "Isiah Pacheco",
-      "position": "RB",
-      "team": "DET",
-      "adds_48h": 88688,
-      "injury_status": "IR",
-      "sleeper_id": "8205",
+      "sleeper_id": "11581",
       "espn_id": null
     },
     {
       "name": "Jalen Nailor",
       "position": "WR",
       "team": "LV",
-      "adds_48h": 85356,
+      "adds_48h": 100026,
       "injury_status": null,
       "sleeper_id": "8180",
       "espn_id": null
     },
     {
-      "name": "Keaton Mitchell",
-      "position": "RB",
+      "name": "Terrance Ferguson",
+      "position": "TE",
+      "team": "LAR",
+      "adds_48h": 97496,
+      "injury_status": null,
+      "sleeper_id": "12487",
+      "espn_id": null
+    },
+    {
+      "name": "Charlie Kolar",
+      "position": "TE",
       "team": "LAC",
-      "adds_48h": 84978,
-      "injury_status": "Questionable",
-      "sleeper_id": "9511",
-      "espn_id": null
-    },
-    {
-      "name": "Tyler Loop",
-      "position": "K",
-      "team": "BAL",
-      "adds_48h": 82482,
+      "adds_48h": 77895,
       "injury_status": null,
-      "sleeper_id": "12711",
+      "sleeper_id": "8127",
       "espn_id": null
     },
     {
-      "name": "Khalil Shakir",
+      "name": "Tyler Allgeier",
+      "position": "RB",
+      "team": "ARI",
+      "adds_48h": 77675,
+      "injury_status": null,
+      "sleeper_id": "8132",
+      "espn_id": null
+    },
+    {
+      "name": "Malachi Fields",
       "position": "WR",
-      "team": "BUF",
-      "adds_48h": 75510,
+      "team": "NYG",
+      "adds_48h": 76190,
       "injury_status": null,
-      "sleeper_id": "8134",
+      "sleeper_id": "13285",
       "espn_id": null
+    },
+    {
+      "name": "Drew Lock",
+      "position": "QB",
+      "team": "SEA",
+      "adds_48h": 74400,
+      "injury_status": null,
+      "sleeper_id": "5854",
+      "espn_id": 3924327
+    },
+    {
+      "name": "Caleb Douglas",
+      "position": "WR",
+      "team": "MIA",
+      "adds_48h": 73280,
+      "injury_status": null,
+      "sleeper_id": "13296",
+      "espn_id": null
+    },
+    {
+      "name": "Justice Hill",
+      "position": "RB",
+      "team": "BAL",
+      "adds_48h": 69840,
+      "injury_status": null,
+      "sleeper_id": "5995",
+      "espn_id": 4038441
+    },
+    {
+      "name": "Odell Beckham",
+      "position": "WR",
+      "team": "NYG",
+      "adds_48h": 67487,
+      "injury_status": null,
+      "sleeper_id": "2078",
+      "espn_id": 16733
+    },
+    {
+      "name": "Brenton Strange",
+      "position": "TE",
+      "team": "JAX",
+      "adds_48h": 66339,
+      "injury_status": null,
+      "sleeper_id": "9480",
+      "espn_id": null
+    },
+    {
+      "name": "Demarcus Robinson",
+      "position": "WR",
+      "team": "SF",
+      "adds_48h": 64734,
+      "injury_status": null,
+      "sleeper_id": "3286",
+      "espn_id": 3043116
+    },
+    {
+      "name": "Kirk Cousins",
+      "position": "QB",
+      "team": "LV",
+      "adds_48h": 63232,
+      "injury_status": null,
+      "sleeper_id": "1166",
+      "espn_id": 14880
     }
   ],
   "dropped": [
@@ -250,223 +250,241 @@
       "name": "Roschon Johnson",
       "position": "RB",
       "team": "CHI",
-      "drops_48h": 256272,
+      "drops_48h": 238896,
       "injury_status": null,
       "sleeper_id": "10235",
+      "espn_id": null
+    },
+    {
+      "name": "Michael Mayer",
+      "position": "TE",
+      "team": "LV",
+      "drops_48h": 130554,
+      "injury_status": null,
+      "sleeper_id": "9482",
       "espn_id": null
     },
     {
       "name": "Oronde Gadsden",
       "position": "TE",
       "team": "LAC",
-      "drops_48h": 133260,
+      "drops_48h": 115770,
       "injury_status": null,
       "sleeper_id": "12493",
       "espn_id": null
     },
     {
-      "name": "Darius Slayton",
-      "position": "WR",
-      "team": "N/A",
-      "drops_48h": 130794,
-      "injury_status": null,
-      "sleeper_id": "6149",
-      "espn_id": 3916945
-    },
-    {
       "name": "Kenyon Sadiq",
       "position": "TE",
       "team": "NYJ",
-      "drops_48h": 128709,
+      "drops_48h": 115659,
       "injury_status": null,
       "sleeper_id": "13330",
+      "espn_id": null
+    },
+    {
+      "name": "Romeo Doubs",
+      "position": "WR",
+      "team": "NE",
+      "drops_48h": 114416,
+      "injury_status": null,
+      "sleeper_id": "8121",
       "espn_id": null
     },
     {
       "name": "Brenton Strange",
       "position": "TE",
       "team": "JAX",
-      "drops_48h": 123084,
+      "drops_48h": 107262,
       "injury_status": null,
       "sleeper_id": "9480",
       "espn_id": null
     },
     {
+      "name": "Darius Slayton",
+      "position": "WR",
+      "team": "N/A",
+      "drops_48h": 102648,
+      "injury_status": null,
+      "sleeper_id": "6149",
+      "espn_id": 3916945
+    },
+    {
       "name": "Alvin Kamara",
       "position": "RB",
       "team": "NO",
-      "drops_48h": 120480,
+      "drops_48h": 101616,
       "injury_status": "Questionable",
       "sleeper_id": "4035",
       "espn_id": 3054850
     },
     {
-      "name": "Jaydon Blue",
-      "position": "RB",
-      "team": "PHI",
-      "drops_48h": 109096,
-      "injury_status": null,
-      "sleeper_id": "12457",
-      "espn_id": null
-    },
-    {
       "name": "Cyrus Allen",
       "position": "WR",
       "team": "KC",
-      "drops_48h": 105522,
+      "drops_48h": 89448,
       "injury_status": null,
       "sleeper_id": "13413",
-      "espn_id": null
-    },
-    {
-      "name": "Travis Hunter",
-      "position": "DB",
-      "team": "JAX",
-      "drops_48h": 99714,
-      "injury_status": null,
-      "sleeper_id": "12530",
-      "espn_id": null
-    },
-    {
-      "name": "Tyreek Hill",
-      "position": "WR",
-      "team": "N/A",
-      "drops_48h": 99704,
-      "injury_status": null,
-      "sleeper_id": "3321",
-      "espn_id": 3116406
-    },
-    {
-      "name": "Michael Mayer",
-      "position": "TE",
-      "team": "LV",
-      "drops_48h": 96039,
-      "injury_status": null,
-      "sleeper_id": "9482",
-      "espn_id": null
-    },
-    {
-      "name": "Keaton Mitchell",
-      "position": "RB",
-      "team": "LAC",
-      "drops_48h": 90837,
-      "injury_status": "Questionable",
-      "sleeper_id": "9511",
       "espn_id": null
     },
     {
       "name": "Malik Davis",
       "position": "RB",
       "team": "DAL",
-      "drops_48h": 89802,
+      "drops_48h": 88281,
       "injury_status": null,
       "sleeper_id": "8800",
+      "espn_id": null
+    },
+    {
+      "name": "Keaton Mitchell",
+      "position": "RB",
+      "team": "LAC",
+      "drops_48h": 87363,
+      "injury_status": "Questionable",
+      "sleeper_id": "9511",
+      "espn_id": null
+    },
+    {
+      "name": "Tyreek Hill",
+      "position": "WR",
+      "team": "N/A",
+      "drops_48h": 85280,
+      "injury_status": null,
+      "sleeper_id": "3321",
+      "espn_id": 3116406
+    },
+    {
+      "name": "Travis Hunter",
+      "position": "DB",
+      "team": "JAX",
+      "drops_48h": 85098,
+      "injury_status": null,
+      "sleeper_id": "12530",
+      "espn_id": null
+    },
+    {
+      "name": "Jaydon Blue",
+      "position": "RB",
+      "team": "PHI",
+      "drops_48h": 80928,
+      "injury_status": null,
+      "sleeper_id": "12457",
       "espn_id": null
     },
     {
       "name": "Kaelon Black",
       "position": "RB",
       "team": "SF",
-      "drops_48h": 85708,
+      "drops_48h": 79821,
       "injury_status": null,
       "sleeper_id": "13414",
+      "espn_id": null
+    },
+    {
+      "name": "Terrance Ferguson",
+      "position": "TE",
+      "team": "LAR",
+      "drops_48h": 78480,
+      "injury_status": null,
+      "sleeper_id": "12487",
       "espn_id": null
     },
     {
       "name": "Malik Washington",
       "position": "WR",
       "team": "MIA",
-      "drops_48h": 78704,
+      "drops_48h": 75872,
       "injury_status": null,
       "sleeper_id": "11610",
-      "espn_id": null
-    },
-    {
-      "name": "Omar Cooper",
-      "position": "WR",
-      "team": "NYJ",
-      "drops_48h": 76312,
-      "injury_status": null,
-      "sleeper_id": "13276",
-      "espn_id": null
-    },
-    {
-      "name": "Jalen Nailor",
-      "position": "WR",
-      "team": "LV",
-      "drops_48h": 76248,
-      "injury_status": null,
-      "sleeper_id": "8180",
       "espn_id": null
     },
     {
       "name": "Chris Rodriguez",
       "position": "RB",
       "team": "JAX",
-      "drops_48h": 76131,
+      "drops_48h": 75456,
       "injury_status": null,
       "sleeper_id": "10219",
-      "espn_id": null
-    },
-    {
-      "name": "Fernando Mendoza",
-      "position": "QB",
-      "team": "LV",
-      "drops_48h": 74360,
-      "injury_status": null,
-      "sleeper_id": "13269",
-      "espn_id": null
-    },
-    {
-      "name": "Emmett Johnson",
-      "position": "RB",
-      "team": "KC",
-      "drops_48h": 74313,
-      "injury_status": null,
-      "sleeper_id": "13337",
-      "espn_id": null
-    },
-    {
-      "name": "Tank Bigsby",
-      "position": "RB",
-      "team": "PHI",
-      "drops_48h": 73766,
-      "injury_status": null,
-      "sleeper_id": "9225",
       "espn_id": null
     },
     {
       "name": "Josh Jacobs",
       "position": "RB",
       "team": "GB",
-      "drops_48h": 71620,
+      "drops_48h": 75310,
       "injury_status": "NA",
       "sleeper_id": "5850",
       "espn_id": 4047365
     },
     {
-      "name": "Romeo Doubs",
-      "position": "WR",
-      "team": "NE",
-      "drops_48h": 71576,
+      "name": "Emmett Johnson",
+      "position": "RB",
+      "team": "KC",
+      "drops_48h": 73008,
       "injury_status": null,
-      "sleeper_id": "8121",
+      "sleeper_id": "13337",
+      "espn_id": null
+    },
+    {
+      "name": "Darren Waller",
+      "position": "TE",
+      "team": "CAR",
+      "drops_48h": 69642,
+      "injury_status": null,
+      "sleeper_id": "2505",
+      "espn_id": 2576925
+    },
+    {
+      "name": "Tank Bigsby",
+      "position": "RB",
+      "team": "PHI",
+      "drops_48h": 69118,
+      "injury_status": null,
+      "sleeper_id": "9225",
+      "espn_id": null
+    },
+    {
+      "name": "KC Concepcion",
+      "position": "WR",
+      "team": "CLE",
+      "drops_48h": 68544,
+      "injury_status": null,
+      "sleeper_id": "13298",
       "espn_id": null
     },
     {
       "name": "Brian Robinson",
       "position": "RB",
       "team": "ATL",
-      "drops_48h": 71436,
+      "drops_48h": 68442,
       "injury_status": null,
       "sleeper_id": "8154",
+      "espn_id": null
+    },
+    {
+      "name": "Fernando Mendoza",
+      "position": "QB",
+      "team": "LV",
+      "drops_48h": 68104,
+      "injury_status": null,
+      "sleeper_id": "13269",
+      "espn_id": null
+    },
+    {
+      "name": "Omar Cooper",
+      "position": "WR",
+      "team": "NYJ",
+      "drops_48h": 66112,
+      "injury_status": null,
+      "sleeper_id": "13276",
       "espn_id": null
     },
     {
       "name": "Jordyn Tyson",
       "position": "WR",
       "team": "NO",
-      "drops_48h": 70176,
+      "drops_48h": 65672,
       "injury_status": "IR",
       "sleeper_id": "13281",
       "espn_id": null
@@ -475,27 +493,18 @@
       "name": "Jerry Jeudy",
       "position": "WR",
       "team": "CLE",
-      "drops_48h": 70146,
+      "drops_48h": 63927,
       "injury_status": null,
       "sleeper_id": "6783",
       "espn_id": 4241463
     },
     {
-      "name": "Darren Waller",
-      "position": "TE",
-      "team": "CAR",
-      "drops_48h": 69786,
-      "injury_status": null,
-      "sleeper_id": "2505",
-      "espn_id": 2576925
-    },
-    {
-      "name": "KC Concepcion",
+      "name": "Jalen Nailor",
       "position": "WR",
-      "team": "CLE",
-      "drops_48h": 65925,
+      "team": "LV",
+      "drops_48h": 62451,
       "injury_status": null,
-      "sleeper_id": "13298",
+      "sleeper_id": "8180",
       "espn_id": null
     }
   ]

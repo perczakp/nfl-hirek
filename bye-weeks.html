@@ -85,44 +85,6 @@
     margin: 0;
   }
 
-  .nfln-nav {
-    max-width: 700px;
-    margin: 0 auto 24px;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .nfln-nav a {
-    padding: 9px 17px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background .18s ease, border-color .18s ease, transform .18s ease;
-  }
-
-  .nfln-nav a.active {
-    background: var(--patriots-red);
-    color: #fff;
-    border: 1px solid var(--patriots-red);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.14);
-  }
-
-  .nfln-nav a.inactive {
-    background: rgba(255,255,255,0.94);
-    color: var(--patriots-blue);
-    border: 1px solid var(--silver-dark);
-  }
-
-  .nfln-nav a.inactive:hover {
-    background: var(--patriots-blue);
-    color: #fff;
-    border-color: var(--patriots-blue);
-    transform: translateY(-1px);
-  }
-
   .nfln-back {
     display: block;
     max-width: 700px;
@@ -191,12 +153,7 @@
     padding: 6px 0 2px;
   }
 </style>
-<style id="site-navigation-layout-fix-v3">
-.nfln-nav{display:grid!important;grid-template-columns:repeat(3,max-content)!important;justify-content:center!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:900px!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important;overflow:visible!important;white-space:normal!important}
-.nfln-nav a{display:block!important;width:max-content!important;min-width:0!important;flex:none!important;white-space:nowrap!important;box-sizing:border-box!important}
-@media(max-width:760px){.nfln-nav{grid-template-columns:repeat(2,max-content)!important}}
-@media(max-width:500px){.nfln-nav{grid-template-columns:1fr!important}.nfln-nav a{width:100%!important;text-align:center!important}}
-</style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 
@@ -209,17 +166,8 @@
   <p>2026 NFL season &middot; Weeks 5-14</p>
 </div>
 
-<div class="nfln-nav" aria-label="Site navigation">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-  <a href="bye-weeks.html" class="active">Bye Weeks</a>
-  <a href="my-team.html" class="inactive">My Fantasy Team</a>
-  <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
-  <a href="IDP26rankings.html" class="inactive">2026 IDP Rankings</a>
-  <a href="nfl-games.html" class="inactive">NFL Games</a>
-</div>
+<div id="nfln-nav-root"></div>
+<script src="nav.js"></script>
 
   <div class="bye-week-block">
     <div class="bye-week-title">Week 5 <span class="bye-week-badge">2 teams</span></div>

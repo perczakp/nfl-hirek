@@ -51,35 +51,6 @@
   .nfln-header h1 { margin: 0 0 5px; color: var(--patriots-blue); font-size: 28px; letter-spacing: -.5px; }
   .nfln-header p { margin: 0; color: var(--muted); font-size: 14px; }
 
-  .nfln-nav {
-    display: grid;
-    grid-template-columns: repeat(3, max-content);
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 24px;
-  }
-
-  .nfln-nav a {
-    display: block;
-    width: max-content;
-    padding: 9px 17px;
-    border: 1px solid var(--silver-dark);
-    border-radius: 8px;
-    color: var(--patriots-blue);
-    background: rgba(255,255,255,.94);
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    transition: background .18s ease, border-color .18s ease, transform .18s ease;
-  }
-
-  .nfln-nav a.active { color: #fff; background: var(--patriots-red); border-color: var(--patriots-red); box-shadow: 0 3px 10px rgba(0,0,0,.14); }
-  .nfln-nav a.inactive:hover { color: #fff; background: var(--patriots-blue); border-color: var(--patriots-blue); transform: translateY(-1px); }
-
   .idp-card { max-width: 1200px; margin: 0 auto; overflow: hidden; background: #fff; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 7px 18px rgba(0,0,0,.14); }
   .idp-card-head { padding: 22px; border-bottom: 1px solid #dfe3e6; text-align: center; }
   .idp-card-head h2 { margin: 0 0 8px; color: var(--patriots-blue); font-size: 22px; }
@@ -101,9 +72,10 @@
   .idp-note { margin: 0; padding: 14px 18px; color: var(--muted); background: #fff; border-top: 1px solid #dfe3e6; font-size: 12px; line-height: 1.5; text-align: center; }
 
   @media (max-width: 950px) { .rankings-grid { grid-template-columns: 1fr; max-width: 620px; margin: 0 auto; } .table-wrap { max-height: 520px; } }
-  @media (max-width: 760px) { .nfln-nav { grid-template-columns: repeat(2, max-content); } }
-  @media (max-width: 500px) { body { padding: 18px 10px 40px; } .nfln-nav { grid-template-columns: 1fr; } .nfln-nav a { width: 100%; } .nfln-header h1 { font-size: 25px; } .idp-card-head { padding: 18px 14px; } .rankings-grid { padding: 10px; } }
+  @media (max-width: 760px) { }
+  @media (max-width: 500px) { body { padding: 18px 10px 40px; } .nfln-header h1 { font-size: 25px; } .idp-card-head { padding: 18px 14px; } .rankings-grid { padding: 10px; } }
 </style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 <div class="nfln-back"><a href="https://fantasyneked.cms.webnode.hu/">&larr; Back to homepage</a></div>
@@ -113,17 +85,8 @@
   <p>Fantasy rankings for Defensive Linemen, Linebackers and Defensive Backs</p>
 </header>
 
-<nav class="nfln-nav" aria-label="Site navigation">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-  <a href="my-team.html" class="inactive">My Fantasy Team</a>
-  <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
-  <a href="IDP26rankings.html" class="active">2026 IDP Rankings</a>
-  <a href="nfl-games.html" class="inactive">NFL Games</a>
-</nav>
+<div id="nfln-nav-root"></div>
+<script src="nav.js"></script>
 
 <main class="idp-card">
   <div class="idp-card-head">

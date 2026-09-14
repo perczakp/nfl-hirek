@@ -11,28 +11,13 @@
 .controls{max-width:1000px;margin:0 auto 22px;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}.controls button{border:1px solid var(--silver-dark);background:#fff;color:var(--patriots-blue);border-radius:8px;padding:9px 14px;font-weight:bold;cursor:pointer}.controls button:hover{background:var(--patriots-blue);color:#fff}.controls button.active{background:var(--patriots-red);color:#fff;border-color:var(--patriots-red)}.controls select{border:1px solid var(--silver-dark);border-radius:8px;background:#fff;padding:9px 12px;font-size:14px}.timezone-group{display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:1px solid #c5c9cc}.timezone-label{font-size:12px;font-weight:bold;color:var(--muted);white-space:nowrap}.timezone-group button{padding:9px 12px}.status{max-width:1000px;margin:0 auto 14px;text-align:center;color:var(--muted);font-size:13px}.status.error{color:#b42318;font-weight:bold}.status.stale{color:#9a6700;font-weight:bold}.games{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.game-day{grid-column:1/-1}.game-day-title{margin:0 0 8px;color:var(--patriots-blue);font-size:15px;font-weight:bold}.game-day-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.game{background:var(--patriots-blue);color:#fff;border:1px solid #173c60;border-radius:10px;padding:17px 18px;box-shadow:0 7px 18px rgba(0,0,0,.18);min-width:0}.game-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;font-size:12px;color:#d5dfe8;flex-wrap:wrap}.badge{font-weight:bold;padding:4px 9px;border-radius:999px;background:#fff;color:var(--patriots-blue);white-space:nowrap}.teams{display:grid;gap:8px}.team{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;font-weight:bold;min-width:0}.team-left{display:flex;align-items:center;gap:9px;min-width:0;overflow-wrap:anywhere}.abbr{display:inline-flex;min-width:38px;justify-content:center;font-size:12px;color:#d5dfe8;flex-shrink:0}.score{font-size:19px;flex-shrink:0}.venue{border-top:1px solid rgba(255,255,255,.14);margin-top:14px;padding-top:10px;font-size:12px;color:#d5dfe8;line-height:1.45;overflow-wrap:anywhere}.empty,.error{max-width:700px;margin:30px auto;text-align:center;background:#fff;border-radius:10px;padding:18px;color:var(--muted)}.error{color:#b42318}@media(max-width:700px){body{padding:18px 12px 48px}.header h1{font-size:25px}.controls{align-items:stretch}.controls>button,.controls>select{flex:1 1 calc(50% - 5px);min-width:0}.timezone-group{margin-left:0;padding-left:0;border-left:0;width:100%;justify-content:center;flex-wrap:wrap}.timezone-group button{flex:1 1 0;min-width:120px}.games{grid-template-columns:1fr}.game-day-games{grid-template-columns:1fr}.game{padding:15px}.game-top{align-items:flex-start}}@media(max-width:420px){.controls>button,.controls>select{flex-basis:100%;width:100%}.timezone-group{display:grid;grid-template-columns:1fr 1fr}.timezone-label{grid-column:1/-1;text-align:center}.timezone-group button{min-width:0;width:100%}.game{padding:14px}.team{font-size:15px}.score{font-size:18px}}
 </style>
 
-<style id="site-navigation-layout-fix-nfl-games">
-.nfln-nav { max-width: 1000px; margin: 0 auto 24px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-.nfln-nav a { padding: 9px 17px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
-.nfln-nav a.active { background: var(--patriots-red); color: #fff; border: 1px solid var(--patriots-red); box-shadow: 0 3px 10px rgba(0,0,0,0.14); }
-.nfln-nav a.inactive { background: rgba(255,255,255,0.94); color: var(--patriots-blue); border: 1px solid var(--silver-dark); }
-.nfln-nav a.inactive:hover { background: var(--patriots-blue); color: #fff; border-color: var(--patriots-blue); transform: translateY(-1px); }
-</style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 <div class="back"><a href="index.html">&larr; Back to Players Trending</a></div>
 <div class="header"><h1>NFL Games</h1><p>Real NFL game data from ESPN</p></div>
-<nav class="nfln-nav" aria-label="Site navigation">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-  <a href="my-team.html" class="inactive">My Fantasy Team</a>
-  <a href="strength-of-schedule.html" class="inactive">Strength of Schedule</a>
-  <a href="IDP26rankings.html" class="inactive">2026 IDP Rankings</a>
-  <a href="nfl-games.html" class="active">NFL Games</a>
-</nav>
+<div id="nfln-nav-root"></div>
+<script src="nav.js"></script>
 <div class="controls">
 <button id="prev">&larr; Previous week</button>
 <select id="week" aria-label="NFL week"></select>

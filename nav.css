@@ -1,0 +1,66 @@
+/* Shared site navigation styling - single source of truth for the nfln-nav menu.
+   Colors are hardcoded on purpose (not tied to each page's own CSS variables,
+   since those were not consistently defined across pages) so this file looks
+   the same everywhere regardless of which page includes it. */
+
+.nfln-nav {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 24px;
+  box-sizing: border-box;
+  overflow: visible;
+  white-space: normal;
+}
+
+.nfln-nav a {
+  display: block;
+  width: max-content;
+  min-width: 0;
+  padding: 9px 17px;
+  border: 1px solid #8f959a;
+  border-radius: 8px;
+  color: #0b2a4a;
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.nfln-nav a.active {
+  color: #fff;
+  background: #c8102e;
+  border-color: #c8102e;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+}
+
+.nfln-nav a.inactive:hover {
+  color: #fff;
+  background: #0b2a4a;
+  border-color: #0b2a4a;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .nfln-nav {
+    grid-template-columns: repeat(2, max-content);
+  }
+}
+
+@media (max-width: 500px) {
+  .nfln-nav {
+    grid-template-columns: 1fr;
+  }
+  .nfln-nav a {
+    width: 100%;
+    text-align: center;
+  }
+}

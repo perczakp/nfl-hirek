@@ -12,9 +12,6 @@ body{margin:0;background:#d5d8da;font-family:Arial,Helvetica,sans-serif;color:#1
 .nfln-header{text-align:center;max-width:1000px;margin:16px auto 14px}
 .nfln-header h1{margin:0;color:#0b2a4a;font-size:30px}
 .nfln-header p{margin:6px 0 0;color:#737b83}
-.nfln-nav{max-width:1000px;margin:0 auto 24px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.nfln-nav a{padding:10px 16px;border:1px solid #9da6ad;border-radius:9px;background:#fff;color:#0b2a4a;text-decoration:none;font-weight:700;font-size:14px}
-.nfln-nav a.active{background:#d7082f;border-color:#d7082f;color:#fff}
 .nfln-panel{max-width:1000px;margin:0 auto;background:#fff;border:1px solid #b7bec4;border-radius:10px;padding:22px}
 .nfln-panel h2{margin:0 0 8px;color:#0b2a4a}
 .nfln-panel p{color:#68727b;line-height:1.5}
@@ -27,12 +24,7 @@ td{font-size:14px}
 tbody tr:hover{background:#f8fafb}
 .source{margin-top:14px;font-size:11px;color:#7b838a}
 </style>
-<style id="site-navigation-layout-fix-v3">
-.nfln-nav{display:grid!important;grid-template-columns:repeat(3,max-content)!important;justify-content:center!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:900px!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important;overflow:visible!important;white-space:normal!important}
-.nfln-nav a{display:block!important;width:max-content!important;min-width:0!important;flex:none!important;white-space:nowrap!important;box-sizing:border-box!important}
-@media(max-width:760px){.nfln-nav{grid-template-columns:repeat(2,max-content)!important}}
-@media(max-width:500px){.nfln-nav{grid-template-columns:1fr!important}.nfln-nav a{width:100%!important;text-align:center!important}}
-</style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 <div class="nfln-back"><a href="index.html">&larr; Back to homepage</a></div>
@@ -40,17 +32,8 @@ tbody tr:hover{background:#f8fafb}
   <h1>Strength of Schedule</h1>
   <p>2026 NFL schedule difficulty</p>
 </div>
-<div class="nfln-nav" aria-label="Site navigation">
-  <a href="index.html" class="inactive">Players Trending</a>
-  <a href="trade-chart.html" class="inactive">Dynasty Trade Calculator</a>
-  <a href="rookie-idp-rankings.html" class="inactive">IDP Rankings (Rookies)</a>
-  <a href="tips.html" class="inactive">Tips</a>
-  <a href="bye-weeks.html" class="inactive">Bye Weeks</a>
-  <a href="my-team.html" class="inactive">My Fantasy Team</a>
-  <a href="strength-of-schedule.html" class="active">Strength of Schedule</a>
-  <a href="IDP26rankings.html" class="inactive">2026 IDP Rankings</a>
-  <a href="nfl-games.html" class="inactive">NFL Games</a>
-</div>
+<div id="nfln-nav-root"></div>
+<script src="nav.js"></script>
 <section class="nfln-panel">
   <h2>2026 Strength of Schedule</h2>
   <p>A sorsolás nehézségét az ellenfelek 2025-ös összesített győzelmi aránya alapján mutatja.</p>

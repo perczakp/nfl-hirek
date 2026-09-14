@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-09-10
+**Last updated:** 2026-09-14
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent, stable, and explainable.
@@ -24,30 +24,33 @@ Planned:
 10. Preseason
 
 ### Navigation
-Navigation is a site-wide component. Every page must contain the same current links and the same layout rules.
+Navigation is a site-wide component. All production pages must use the same current links and responsive layout.
 
 Current 9-tab target:
 - desktop: 3 + 3 + 3;
-- medium/tablet: 2 columns;
+- tablet: 2 columns;
 - narrow mobile: 1 column.
 
-The navigation buttons use the same standard button-style treatment as the page controls, with the current page shown as active.
+The navigation uses a shared implementation:
+- `nav.js` is the single source of truth for navigation links and active-page state;
+- `nav.css` is the single source of truth for navigation layout and styling;
+- each production page contains the `nfln-nav-root` placeholder and loads the shared files.
 
-Do not change navigation on only one page.
+The shared navigation was browser-tested by the user and confirmed working, including the responsive layout.
 
-## 3. Permanent filename rule
+Do not maintain separate copied navigation markup on individual pages.
+
+## 3. Permanent filename and rollback rules
 When an existing production file is modified, it keeps its original filename.
 
-Examples:
-- `index.html` stays `index.html`
-- `my-team.html` stays `my-team.html`
-- `tips.html` stays `tips.html`
+Do not create `-fixed`, `-final`, `-v2`, `index2`, `.backup`, or similar production duplicates.
 
-Do not create `-fixed`, `-final`, `-v2`, `index2`, or similar names as replacements for production files.
+**Git version history is the default rollback mechanism.** Do not create backup copies in the production repository merely for rollback. For larger or riskier changes, use a dedicated Git branch as a safety checkpoint.
 
-Backups are separate safety copies and may use timestamped `*.backup-*` filenames or dedicated backup branches.
+The branch `elotte-kozos-nav` is the rollback checkpoint for the shared-navigation refactor and points to the pre-refactor state.
 
-## 4. Current main files
+## 4. Current production architecture
+Core production files include:
 - `index.html`
 - `trade-chart.html`
 - `rookie-idp-rankings.html`
@@ -58,27 +61,83 @@ Backups are separate safety copies and may use timestamped `*.backup-*` filename
 - `strength-of-schedule.html`
 - `nfl-games.html`
 - `nfl-games.js`
-- `nfl-games-normalization-test.html`
+- `nav.js`
+- `nav.css`
+- `player-news.json`
+- `players.json`
 - `fantasycalc-values.json`
 - `FANTASYCALC-CACHE.md`
 - `PROJECT_STATE.md`
-- `PROJECT_STATE_HU.md`
 
-Future:
-- `preseason.html`
+Historical development/test files may be referenced in documentation when useful, but deleted test pages and backup copies are not production dependencies.
 
-The repository also contains timestamped development backups. These are safety copies, not alternate production filenames.
+# RECENT COMPLETED CHANGES
+
+## 5. Shared site-wide navigation refactor
+The duplicated navigation markup across the nine production pages was replaced with a shared implementation.
+
+`nav.js`:
+- contains the canonical nine navigation links;
+- determines the current page from the URL;
+- applies the active state;
+- renders the navigation into `nfln-nav-root`.
+
+`nav.css`:
+- contains the canonical navigation layout and styling;
+- desktop: 3 columns;
+- tablet: 2 columns;
+- mobile: 1 column;
+- active page uses the standard active button treatment;
+- no page-specific navigation CSS is required.
+
+Updated production pages:
+- `index.html`
+- `tips.html`
+- `nfl-games.html`
+- `strength-of-schedule.html`
+- `trade-chart.html`
+- `bye-weeks.html`
+- `rookie-idp-rankings.html`
+- `IDP26rankings.html`
+- `my-team.html`
+
+The user uploaded the refactor files manually after the initial ZIP upload/delete sequence. The resulting multiple commits are intentional and do not require history rewriting.
+
+The user completed the browser test and confirmed the shared navigation works correctly.
+
+## 6. Player news session cache and request deduplication
+`index.html` now caches the `player-news.json` request for the lifetime of the page session.
+
+Implementation behavior:
+- the first request creates a shared Promise;
+- subsequent player/news requests reuse the same Promise;
+- concurrent requests are deduplicated;
+- successful data remains cached during the page session;
+- the `?ts=Date.now()` cache-buster was removed from `player-news.json`;
+- a failed request clears the cached Promise so a later retry can succeed.
+
+Commit:
+`5845a1debcd80cbf2833dc18c8d0568ee81b6e02`
+
+The user runtime-tested this feature and confirmed:
+- no timestamp query parameter is sent;
+- repeated player opens reuse one request;
+- concurrent/in-flight requests are deduplicated;
+- a blocked request shows the expected error;
+- after unblocking, retry succeeds.
+
+The unrelated `news.json` cache-busting behavior was intentionally left unchanged.
 
 # MY FANTASY TEAM
 
-## 5. Purpose
+## 7. Purpose
 `my-team.html` synchronizes a user's real Sleeper fantasy league and analyzes the roster.
 
 Core flow:
 
 Sleeper → current-season league discovery → league selection → league/users/rosters sync → player identification → optional player/value/ranking data → roster rendering → Roster Strength + Position Needs + Injury Risk context
 
-## 6. Sleeper integration
+## 8. Sleeper integration
 Sleeper is the source of truth for:
 - league discovery;
 - selected league settings;
@@ -87,12 +146,7 @@ Sleeper is the source of truth for:
 - the user's actual roster;
 - player IDs/metadata when available.
 
-### Current League Sync design
-The current implementation uses the Sleeper NFL state endpoint to determine the active league season and then discovers leagues for that season only.
-
-This is intentional. Earlier multi-season discovery produced more leagues than actually existed for the user's current season (for example, 3 real leagues becoming 6 displayed leagues).
-
-The current sync separates core league/roster synchronization from optional player metadata and external valuation/ranking data. Optional data-source failure must not prevent the core roster from loading.
+The implementation uses the Sleeper NFL state endpoint to determine the active league season and discovers leagues for that season only. Earlier multi-season discovery could duplicate displayed leagues.
 
 Core sync:
 - selected `/league/<league_id>`;
@@ -104,14 +158,12 @@ Optional enrichment:
 - local `fantasycalc-values.json`;
 - local `IDP26rankings.html` / RPO rankings.
 
-If player metadata is unavailable, the roster can fall back to player IDs rather than failing the entire sync.
+Optional data-source failure must not prevent the core roster from loading.
 
-## 7. Sleeper starter/bench/taxi mapping
+## 9. Sleeper starter/bench/taxi mapping
 Sleeper's `starters` array is ordered by starter slot, while `roster_positions` also contains `BN` slots.
 
 **Important implementation rule:** filter out `BN` slots before pairing `roster.starters` with `roster_positions`.
-
-Otherwise starter players become shifted into the wrong slots after the first bench position.
 
 Current roster display:
 - Starter: exact non-BN Sleeper slot order;
@@ -120,7 +172,7 @@ Current roster display:
 
 The starter order is driven by the selected league's actual `roster_positions`, not a hard-coded generic order.
 
-## 8. Player identification and ranking concepts
+## 10. Player identification and ranking concepts
 Offensive positions:
 - QB
 - RB
@@ -136,7 +188,7 @@ IDP positions are normalized to:
 
 Ranking, market value, and roster need are separate concepts and must not be treated as interchangeable.
 
-## 9. FantasyCalc
+## 11. FantasyCalc
 `fantasycalc-values.json` is the local market-value dataset used by My Fantasy Team.
 
 Current concepts include:
@@ -147,14 +199,14 @@ Current concepts include:
 
 Do not invent FantasyCalc values. If reliable value data is missing, use an explicitly documented fallback or leave the value unavailable.
 
-The repository currently receives automated FantasyCalc cache updates; the cache itself remains an input and does not override the rule against invented values.
+The repository receives automated FantasyCalc cache updates; the cache remains an input and does not override the rule against invented values.
 
-## 10. RPO IDP rankings in My Fantasy Team
+## 12. RPO IDP rankings in My Fantasy Team
 `my-team.html` loads the local `IDP26rankings.html` and parses its ranking sections for DL/LB/DB quality context.
 
 The local page is self-contained so My Fantasy Team does not depend on an external iframe being available at runtime.
 
-## 11. Roster Strength
+## 13. Roster Strength
 Roster Strength answers:
 
 > How strong is this roster relative to the other teams in the selected league?
@@ -172,11 +224,11 @@ Current player-quality inputs:
 - IDP: RPO Football ranking converted to a quality scale;
 - missing data: explicit fallback rather than invented market value.
 
-The current model is **not** a claimed 1:1 reproduction of FantasyPros. FantasyPros was used as a reference for concepts such as VORP, league-relative comparison, starter value, and position strength, but its complete proprietary formula is not known.
+The model is **not** a claimed 1:1 reproduction of FantasyPros. FantasyPros is a reference for concepts such as VORP, league-relative comparison, starter value, and position strength, but its complete proprietary formula is not known.
 
 A displayed `100/100` must not be interpreted as a mathematically perfect fantasy roster.
 
-## 12. Position Needs
+## 14. Position Needs
 Position Needs answers:
 
 > Which position should this roster improve first?
@@ -196,12 +248,12 @@ Output categories:
 
 The exact formula remains an open design item and must not be changed silently.
 
-## 13. Injury Risk
+## 15. Injury Risk
 Permanent design decision:
 
 **Injury Risk must NOT change the player's base value.**
 
-The intended architecture is:
+Intended architecture:
 
 `Base Player Value + separate Injury Risk information`
 
@@ -210,25 +262,7 @@ not:
 `Base Player Value × hidden injury penalty`
 
 ### Current implementation note
-The current `my-team.html` quality calculation still contains an `injuryPenalty()` deduction inside the quality score. This conflicts with the permanent design decision above and is therefore a **known issue to fix before calling the Injury Risk model final**.
-
-Do not expand or rely on this penalty logic as a permanent part of the valuation model.
-
-## 14. Bye Weeks
-`bye-weeks.html` provides NFL bye-week information.
-
-Bye-week information is relevant to roster analysis and can help identify availability problems.
-
-## 15. Strength of Schedule
-`strength-of-schedule.html` is a separate navigation tab.
-
-Current preseason concept:
-- 2026 NFL schedule difficulty;
-- opponent strength based on opponents' previous-season combined winning percentage;
-- all 32 NFL teams;
-- SOS Rank, Team, Abbreviation, Rank, Opponent Win %.
-
-SOS should not automatically alter base player value unless explicitly decided and documented.
+The current `my-team.html` quality calculation still contains an `injuryPenalty()` deduction inside the quality score. This conflicts with the permanent design decision and remains a **known issue to fix before calling the Injury Risk model final**.
 
 # NFL GAMES
 
@@ -252,7 +286,7 @@ Current functionality:
 - slower automatic refresh for pre-game data and faster refresh for LIVE games;
 - non-destructive error handling that keeps the last successful data visible when a later request fails;
 - responsive desktop/mobile layout;
-- site-wide 9-item navigation.
+- shared site-wide navigation.
 
 ## 17. ESPN game-data normalization
 `nfl-games.js` converts ESPN scoreboard events into a stable application-specific game shape.
@@ -275,14 +309,12 @@ ESPN status mapping:
 
 The normalized status also preserves ESPN status metadata such as state, name, description, completed flag, clock, display clock, and period where available.
 
-This creates a separation between the ESPN data format and the web page's data format.
+This creates a separation between ESPN's external data format and the page's application data format.
 
 ## 18. NFL Games runtime verification
-`nfl-games-normalization-test.html` verified the normalization layer against real ESPN data before the NFL Games page was built.
-
-Browser testing by the user then verified the live GitHub Pages page, including:
+The user browser-tested the live GitHub Pages page and confirmed:
 - Week 1 loads 16 games;
-- another regular-season week changes the game data correctly (Week 7 showed 14 games);
+- another regular-season week changes the game data correctly;
 - real teams, kickoff times, venues, and statuses render;
 - HOME → AWAY ordering is correct;
 - day grouping works;
@@ -291,10 +323,10 @@ Browser testing by the user then verified the live GitHub Pages page, including:
 - timezone switching changes displayed times correctly;
 - neutral-site indication works for the Melbourne game;
 - responsive/mobile layout works;
-- the 9-item site-wide navigation is visible and usable;
+- the shared 9-item navigation is visible and usable;
 - navigation buttons use the intended standard button size/style.
 
-The normal user-facing NFL Games flow is therefore runtime-validated. Auto-refresh timing and the failure-preservation path were implemented and code-reviewed but were not directly forced through a browser failure/runtime test.
+The normal user-facing NFL Games flow is runtime-validated. Auto-refresh timing and the failure-preservation path were implemented and code-reviewed but were not directly forced through a browser failure/runtime test.
 
 # IDP / PRESEASON
 
@@ -314,7 +346,7 @@ The page intentionally stores the verified ranking data locally instead of relyi
 ## 20. Rookie IDP page
 Canonical filename: `rookie-idp-rankings.html`.
 
-The incorrectly named space-containing version was removed. All navigation must use the canonical filename.
+All navigation must use the canonical filename.
 
 ## 21. Planned Preseason tab
 Future `Preseason` tab should cover:
@@ -356,21 +388,9 @@ Roster analysis needs:
 
 Validate against multiple real examples rather than tuning to reproduce one screenshot.
 
-# NAVIGATION
-
-## 24. Site-wide navigation rule
-A navigation change is a site-wide change.
-
-All pages must:
-- contain the same current links;
-- use the same layout rules;
-- retain the same responsive behavior.
-
-Current stable implementation uses CSS Grid with the 9 current navigation items.
-
 # DEVELOPMENT WORKFLOW
 
-## 25. Mandatory pre-change audit
+## 24. Mandatory pre-change audit
 For a substantive change, **do not start by editing code**.
 
 First:
@@ -384,23 +404,23 @@ First:
 
 This rule was added after the League Sync / Roster Strength debugging cycle demonstrated that partial fixes can create new failures or preserve the wrong data flow.
 
-## 26. Backup-first rule
-Before modifying an existing production file:
+## 25. Git-first change safety
+Git history is the normal safety mechanism.
 
-1. Fetch the current production file.
-2. Create a backup copy.
-3. Verify that the backup exists.
-4. Modify the original file.
-5. Verify the resulting file.
+Before a substantive production change:
+1. Fetch the current production file(s).
+2. Inspect the current implementation and relevant history/diff.
+3. Define the smallest safe modification.
+4. Use a dedicated branch when the change is large or risky.
+5. Commit the change with a clear message.
+6. Verify the resulting files and diff.
 
-If the backup cannot be created, **do not modify the original**.
+Do not create backup copies in the production tree just to provide rollback. Roll back with Git history/revert or use a dedicated safety branch.
 
-Backups are safety copies, not production alternatives.
-
-## 27. Minimal-change and verification rule
-After the backup:
+## 26. Minimal-change and verification rule
+After a change:
 1. Make the smallest necessary modification.
-2. Preserve all unrelated working functionality.
+2. Preserve unrelated working functionality.
 3. Check syntax and structural consistency.
 4. Test page loading, JavaScript/data flow, navigation, visual structure, and relevant calculations whenever the environment permits.
 5. Explicitly report what was and was not actually tested.
@@ -410,7 +430,7 @@ Never claim a runtime test that was not performed.
 # KNOWN MISTAKES TO AVOID
 
 - Do not create `-fixed`, `-final`, `-v2`, or similar production duplicates.
-- Do not rename production files unnecessarily.
+- Do not create backup copies in `main` merely for rollback.
 - Do not modify only one page's navigation.
 - Do not assume remembered/older code is current.
 - Do not replace working JavaScript with mock or placeholder code.
@@ -427,22 +447,20 @@ Never claim a runtime test that was not performed.
 
 # CURRENT VERIFIED BASELINE
 
-As of 2026-09-10, the latest production change is the NFL Games navigation button styling.
+The current `main` branch contains the shared-navigation refactor and the player-news session cache/deduplication change described above.
 
-Latest production commit:
-`1276292953fb1d829b6c5efd4cdaab3d8a781905`
+The user has browser-validated:
+- the shared 9-item navigation;
+- NFL Games normal user flow;
+- player-news caching, in-flight deduplication, failure recovery, and retry behavior.
 
-The latest My Fantasy Team code baseline remains the Sleeper starter-slot mapping correction:
+The current My Fantasy Team code baseline remains the Sleeper starter-slot mapping correction:
 `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
 
-That correction was preceded by a dedicated backup commit:
-`f07891578f39c535e32539fac72afd3e8fc0c8e4`
+The dedicated pre-refactor rollback checkpoint is:
+`elotte-kozos-nav`
 
-The current repository history also shows later automated updates to the FantasyCalc cache and news/tips data; these are data refreshes and do not replace the My Fantasy Team code baseline.
-
-The latest user feedback after the starter mapping and League Sync/Roster Strength corrections was that the result looked correct. This is not a substitute for a full browser/runtime test with a real Sleeper league.
-
-The NFL Games feature is now integrated into the site-wide navigation and has been browser-validated for its normal user flow.
+The My Fantasy Team feature still needs a full browser/runtime test with a real Sleeper league.
 
 # CURRENT PRIORITIES
 
@@ -461,22 +479,20 @@ The NFL Games feature is now integrated into the site-wide navigation and has be
 10. Audit the GitHub Actions news/tips and FantasyCalc refresh workflows for failure handling and stale-data behavior.
 11. Review the size and loading behavior of large JSON datasets such as `player-news.json` and `players.json` before peak season traffic.
 12. Keep `PROJECT_STATE.md` synchronized after every substantive project change.
-13. Gradually move development backups out of the production `main` tree and keep safety copies in dedicated backup branches where practical.
 
 ## P2 — Testing and code quality
-14. Expand the current browser normalization test into a lightweight regression suite for the most important data flows.
-15. Audit dynamic HTML rendering and external-data handling for maintainability and safe DOM practices.
-16. Perform a full cross-page mobile/desktop regression pass after major navigation or layout changes.
+13. Establish a lightweight regression suite for the most important data flows.
+14. Audit dynamic HTML rendering and external-data handling for maintainability and safe DOM practices.
+15. Perform a full cross-page mobile/desktop regression pass after major navigation or layout changes.
 
 ## Next major feature
-17. Build Preseason tab.
-18. Establish a real free preseason data source.
-19. Define the preseason JSON schema.
-20. Add games, passing, rushing, and target-share data.
-21. Define and test the update process after each preseason game.
+16. Build Preseason tab.
+17. Establish a real free preseason data source.
+18. Define the preseason JSON schema.
+19. Add games, passing, rushing, and target-share data.
+20. Define and test the update process after each preseason game.
 
 # PROJECT PHILOSOPHY
-
 The project should prefer:
 
 **Real data → transparent logic → small safe changes → explicit testing → documented state.**

@@ -229,24 +229,32 @@ The model is **not** a claimed 1:1 reproduction of FantasyPros. FantasyPros is a
 A displayed `100/100` must not be interpreted as a mathematically perfect fantasy roster.
 
 ## 14. Position Needs
-Position Needs answers:
+Position Needs is a **relative improvement-priority score**, not a binary "good/bad roster" score.
 
-> Which position should this roster improve first?
+It answers:
 
-It considers:
-- league starting requirements;
-- number of players at the position;
-- starter quality;
-- depth;
-- positional weakness;
-- injury situation where appropriate.
+> Which position should this roster improve first, and how urgent is that improvement?
 
-Output categories:
-- HIGH
-- MEDIUM
-- LOW
+A strong position should therefore have a **low but non-zero Need score** in normal circumstances. `Need = 0` must not be interpreted as "this position cannot be improved" or "this is a perfect position group."
 
-The exact formula remains an open design item and must not be changed silently.
+The intended interpretation of the 0–100 scale is:
+- **80–100:** HIGH / critical need;
+- **60–79:** strong development need;
+- **40–59:** moderate need / worth improving;
+- **20–39:** relatively strong position, but still improvable;
+- **1–19:** very strong position;
+- **0:** reserved for exceptional/edge cases and should not be the normal result for a merely strong roster.
+
+Roster Strength and Position Needs are separate concepts:
+- **Roster Strength** measures how strong the roster/position group is;
+- **Position Needs** measures how much improvement priority remains.
+
+A possible healthy result is therefore, for example:
+`WR Strength = 92`, `WR Need = 12`.
+
+Position Needs may consider league starting requirements, roster count, starter quality, depth, and positional weakness. Injury Risk must remain a separate signal and must not silently alter base player value.
+
+**Important:** the exact production `needScore()` formula is not changed yet. This design decision is now the specification that the formula and tests must satisfy. Any implementation change requires explicit review and regression testing.
 
 ## 15. Injury Risk
 Permanent design decision:
@@ -452,49 +460,9 @@ The current `main` branch contains the shared-navigation refactor and the player
 The user has browser-validated:
 - the shared 9-item navigation;
 - NFL Games normal user flow;
-- player-news caching, in-flight deduplication, failure recovery, and retry behavior.
+- player-news caching, in-flight deduplication, and retry behavior.
 
-The current My Fantasy Team code baseline remains the Sleeper starter-slot mapping correction:
-`2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
+My Fantasy Team refactor has a Git safety checkpoint branch:
+`before-my-team-refactor`
 
-The dedicated pre-refactor rollback checkpoint is:
-`elotte-kozos-nav`
-
-The My Fantasy Team feature still needs a full browser/runtime test with a real Sleeper league.
-
-# CURRENT PRIORITIES
-
-## P0 — My Fantasy Team stability and correctness
-1. Fully runtime-test `my-team.html` with a real Sleeper league.
-2. Verify current-season League Sync returns exactly the user's current leagues.
-3. Verify roster loading and exact Sleeper starter slot mapping.
-4. Verify player identification for the real roster.
-5. Verify FantasyCalc values and missing-value fallbacks.
-6. Verify Roster Strength across multiple real league examples.
-7. Verify Position Needs.
-8. Remove the current hidden `injuryPenalty()` effect from base player quality and show Injury Risk separately.
-
-## P1 — Project reliability and maintenance
-9. Verify navigation consistency on every production page after the 9-tab integration.
-10. Audit the GitHub Actions news/tips and FantasyCalc refresh workflows for failure handling and stale-data behavior.
-11. Review the size and loading behavior of large JSON datasets such as `player-news.json` and `players.json` before peak season traffic.
-12. Keep `PROJECT_STATE.md` synchronized after every substantive project change.
-
-## P2 — Testing and code quality
-13. Establish a lightweight regression suite for the most important data flows.
-14. Audit dynamic HTML rendering and external-data handling for maintainability and safe DOM practices.
-15. Perform a full cross-page mobile/desktop regression pass after major navigation or layout changes.
-
-## Next major feature
-16. Build Preseason tab.
-17. Establish a real free preseason data source.
-18. Define the preseason JSON schema.
-19. Add games, passing, rushing, and target-share data.
-20. Define and test the update process after each preseason game.
-
-# PROJECT PHILOSOPHY
-The project should prefer:
-
-**Real data → transparent logic → small safe changes → explicit testing → documented state.**
-
-Do not optimize for adding features quickly at the expense of data correctness or stability.
+The refactor is currently in the audit/test stage. No production My Team code has been extracted or split yet.

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T09:27:43.223Z",
+  "updated_at": "2026-09-15T09:07:45.346Z",
   "players": [
     {
       "name": "A.J. Bouye",
@@ -3262,6 +3262,16 @@
       "espn_id": null
     },
     {
+      "name": "Chandler Brayboy",
+      "team": "NE",
+      "position": "WR",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Chandler Martin",
       "team": "NYG",
       "position": "LB",
@@ -4265,8 +4275,8 @@
       "name": "Cooper McDonald",
       "team": "KC",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Knee",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -4525,8 +4535,8 @@
       "name": "Da'Shawn Hand",
       "team": "ATL",
       "position": "DT",
-      "injury_status": "Questionable",
-      "injury_body_part": "Knee",
+      "injury_status": "Out",
+      "injury_body_part": "Quadriceps",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": 3126352
@@ -4605,8 +4615,8 @@
       "name": "Dallen Bentley",
       "team": "DEN",
       "position": "TE",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -5412,6 +5422,16 @@
       "espn_id": null
     },
     {
+      "name": "Dean Clark",
+      "team": "NYJ",
+      "position": "DB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "Dean Connors",
       "team": "LAR",
       "position": "RB",
@@ -5795,8 +5815,8 @@
       "name": "Derius Davis",
       "team": "LAC",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Undisclosed",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -7635,8 +7655,8 @@
       "name": "Garrett Nussmeier",
       "team": "KC",
       "position": "QB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -9275,8 +9295,8 @@
       "name": "Jalen Coker",
       "team": "CAR",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Ankle",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -9835,8 +9855,8 @@
       "name": "Jared Wiley",
       "team": "KC",
       "position": "TE",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -10962,6 +10982,16 @@
       "espn_id": null
     },
     {
+      "name": "Jonah Williams",
+      "team": "NO",
+      "position": "DE",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": 4032481
+    },
+    {
       "name": "Jonas Sanker",
       "team": "NO",
       "position": "DB",
@@ -11195,8 +11225,8 @@
       "name": "Jordan Jackson",
       "team": "DEN",
       "position": "DL",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -11245,8 +11275,8 @@
       "name": "Jordan Mason",
       "team": "MIN",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Thumb",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -13602,6 +13632,16 @@
       "espn_id": 3051889
     },
     {
+      "name": "Lardarius Webb",
+      "team": "BAL",
+      "position": "DB",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
       "name": "LaRoy Reynolds",
       "team": "NE",
       "position": "LB",
@@ -14255,8 +14295,8 @@
       "name": "Mansoor Delane",
       "team": "KC",
       "position": "DB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Shoulder",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -14535,8 +14575,8 @@
       "name": "Marvin Mims",
       "team": "DEN",
       "position": "WR",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Hip",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -15555,8 +15595,8 @@
       "name": "Nate Landman",
       "team": "LAR",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Shoulder",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -16115,8 +16155,8 @@
       "name": "Omar Speights",
       "team": "LAR",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Hip",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -16477,6 +16517,16 @@
       "position": "DL",
       "injury_status": "Sus",
       "injury_body_part": "Suspension",
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
+      "name": "Phil Mafah",
+      "team": "NYG",
+      "position": "RB",
+      "injury_status": null,
+      "injury_body_part": null,
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -17535,8 +17585,8 @@
       "name": "Sam Ehlinger",
       "team": "DEN",
       "position": "QB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -18705,8 +18755,8 @@
       "name": "Terrel Bernard",
       "team": "BUF",
       "position": "LB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Questionable",
+      "injury_body_part": "Calf",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -19805,8 +19855,8 @@
       "name": "Tyler Badie",
       "team": "DEN",
       "position": "RB",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -19925,8 +19975,8 @@
       "name": "Tyler Onyedim",
       "team": "DEN",
       "position": "DT",
-      "injury_status": null,
-      "injury_body_part": null,
+      "injury_status": "Out",
+      "injury_body_part": "Coach's Decision",
       "injury_start_date": null,
       "practice_participation": null,
       "espn_id": null
@@ -20545,6 +20595,16 @@
       "name": "Xavier Guillory",
       "team": "BAL",
       "position": "WR",
+      "injury_status": null,
+      "injury_body_part": null,
+      "injury_start_date": null,
+      "practice_participation": null,
+      "espn_id": null
+    },
+    {
+      "name": "Xavier Holmes",
+      "team": "NE",
+      "position": "DL",
       "injury_status": null,
       "injury_body_part": null,
       "injury_start_date": null,

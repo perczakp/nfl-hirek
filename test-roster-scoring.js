@@ -205,6 +205,29 @@ check("IDP scoring uses rankit z-scores derived from RPO rank, not market value"
   assert.ok(result.strength > resultB.strength);
 });
 
+/* ---------- Regression test for the reported "empty lineup slot" bug ---------- */
+/*
+ * Real-world case reported by the user: Team A has plenty of rostered
+ * IDP depth (q1 + q4 in this simplified QB example), but the literal
+ * Sleeper `starters` slot for this position is unset/empty ("0").
+ * The team must still be scored from its best ROSTERED player, not
+ * zeroed out just because the lineup slot is empty.
+ */
+check("An empty/unset starter slot does not zero out a team that has rostered depth", function () {
+  var s = buildLeague();
+  s.rosters[0].starters = ["0"]; // Team A's QB slot is unset, despite owning q1 (100) and q4 (40)
+  var result = RS.scorePosition({
+    rosters: s.rosters, players: s.players, league: s.league, pos: "QB",
+    classify: s.classify, getValue: s.getValue, getIdpRank: s.getIdpRank,
+    userRosterOwnerId: "A"
+  });
+  // Should be scored exactly as before (top rostered player = q1),
+  // NOT forced to strength=0/need=100.
+  assert.strictEqual(result.strength, 83);
+  assert.strictEqual(result.need, 17);
+  assert.strictEqual(result.priority, "LOW");
+});
+
 /* ---------- Summary ---------- */
 
 if (failures) {

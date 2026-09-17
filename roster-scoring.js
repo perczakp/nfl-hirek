@@ -200,23 +200,28 @@
     return numTeams * startsPerTeam + 1;
   }
 
-  /* ---------- 4. Per-team starters at a position ---------- */
+  /* ---------- 4. Per-team top players at a position ---------- */
 
-  function teamStarterIdsAtPosition(rosterObj, rosterPositions, players, pos, classify) {
-    var slots = (rosterPositions || []).map(function (s) { return String(s).toUpperCase(); })
-      .filter(function (s) { return s !== "BN"; });
-    var starterIds = (rosterObj.starters || []).map(String);
-    // Pair starters with slots positionally (same rule as the rest of
-    // the app: filter BN before pairing).
-    var out = [];
-    for (var i = 0; i < Math.min(slots.length, starterIds.length); i++) {
-      var id = starterIds[i];
-      if (id === "0" || !id) continue; // Sleeper uses "0" for an empty slot
+  /**
+   * Ranks a team's ROSTERED players at a position by z-score and
+   * returns the top `target`-many. This intentionally ignores the
+   * team's literal Sleeper `starters` lineup assignment, because an
+   * unset or bye-week-empty starter slot is a lineup-management gap,
+   * not a roster-strength gap — a team with plenty of rostered depth
+   * at a position should not be scored as if it had none just because
+   * a lineup slot happens to be empty at the moment of syncing.
+   */
+  function teamTopPlayersAtPosition(rosterObj, players, pos, classify, zById, target) {
+    var ids = (rosterObj.players || []).map(String).filter(function (id) {
       var meta = players[id];
-      if (!meta) continue;
-      if (classify(meta) === pos) out.push(id);
-    }
-    return out;
+      return meta && classify(meta) === pos;
+    });
+    ids.sort(function (a, b) {
+      var za = zById[a] !== undefined ? zById[a] : -Infinity;
+      var zb = zById[b] !== undefined ? zById[b] : -Infinity;
+      return zb - za;
+    });
+    return { rosterIds: ids, topIds: ids.slice(0, target) };
   }
 
   /* ---------- 5. Top-level orchestration ---------- */
@@ -255,16 +260,17 @@
     var rr = replacementRank(numTeams, startsPerTeam);
     var replZ = pool.replacementZ(rr);
 
-    // Team-by-team total starter VOR at this position.
+    // Team-by-team total starter VOR at this position, based on each
+    // team's best ROSTERED players (not their momentary lineup).
     var teamTotals = rosters.map(function (r) {
-      var ids = teamStarterIdsAtPosition(r, league.roster_positions, players, pos, classify);
+      var picked = teamTopPlayersAtPosition(r, players, pos, classify, pool.zById, startsPerTeam);
       var total = 0;
-      ids.forEach(function (id) {
+      picked.topIds.forEach(function (id) {
         var z = pool.zById[id];
-        if (z === undefined) z = replZ - 1; // unknown starter: treat as clearly below replacement
+        if (z === undefined) z = replZ - 1; // unknown player: treat as clearly below replacement
         total += (z - replZ);
       });
-      return { ownerId: String(r.owner_id), total: total, starterCount: ids.length, required: startsPerTeam };
+      return { ownerId: String(r.owner_id), total: total, rosterCount: picked.rosterIds.length, required: startsPerTeam };
     });
 
     var userTeam = teamTotals.filter(function (t) { return t.ownerId === String(opts.userRosterOwnerId); })[0];
@@ -272,8 +278,10 @@
       return { strength: null, need: null, priority: "N/A", warnings: ["A felhasználó rostere nem található a liga csapatai között."] };
     }
 
-    // Hard shortage override: not enough players even to fill the slots.
-    if (userTeam.starterCount < startsPerTeam) {
+    // Hard shortage override: not enough players ROSTERED at this
+    // position to even theoretically fill the slots — a real depth
+    // problem, distinct from an unset lineup slot.
+    if (userTeam.rosterCount < startsPerTeam) {
       return {
         strength: 0,
         need: 100,
@@ -302,7 +310,7 @@
     buildPositionPool: buildPositionPool,
     requiredStartsPerTeam: requiredStartsPerTeam,
     replacementRank: replacementRank,
-    teamStarterIdsAtPosition: teamStarterIdsAtPosition,
+    teamTopPlayersAtPosition: teamTopPlayersAtPosition,
     scorePosition: scorePosition
   };
 

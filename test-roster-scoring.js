@@ -140,6 +140,87 @@ check("QB scoring: Team C (worst roster) gets low strength / high need", functio
   assert.strictEqual(result.priority, "HIGH");
 });
 
+/* ---------- FLEX allocation tests ---------- */
+
+/*
+ * The FLEX logic must use what this league is ACTUALLY starting in
+ * the flex slot, not a guessed RB/WR/TE split.
+ *
+ * Synthetic league: 10 teams, one FLEX slot each.
+ * Current FLEX usage: 6 WR, 3 RB, 1 TE.
+ * Therefore one FLEX starter contributes:
+ *   WR = 0.60, RB = 0.30, TE = 0.10 required starts per team.
+ */
+check("FLEX allocation follows the league's actual starter usage", function () {
+  var players = {};
+  var rosters = [];
+  var flexPositions = ["WR", "WR", "WR", "WR", "WR", "WR", "RB", "RB", "RB", "TE"];
+
+  flexPositions.forEach(function (pos, i) {
+    var id = pos.toLowerCase() + i;
+    players[id] = { position: pos };
+    rosters.push({
+      owner_id: String(i + 1),
+      players: [id],
+      starters: [id]
+    });
+  });
+
+  var league = { roster_positions: ["FLEX"], total_rosters: 10 };
+  function classify(meta) { return meta.position; }
+
+  var allocation = RS.estimateFlexAllocation(
+    rosters, players, league.roster_positions, classify
+  );
+  var req = RS.requiredStartsPerTeam(league.roster_positions, allocation);
+
+  assert.ok(approx(req.WR, 0.60, 0.0001));
+  assert.ok(approx(req.RB, 0.30, 0.0001));
+  assert.ok(approx(req.TE, 0.10, 0.0001));
+});
+
+/*
+ * If every team's FLEX slot is empty/unusable, there is no empirical
+ * information to use. The implementation must then split the slot
+ * evenly across its eligible positions instead of inventing an
+ * assumed league tendency.
+ */
+check("Empty FLEX data falls back to an even eligible-position split", function () {
+  var players = {};
+  var rosters = [
+    { owner_id: "1", players: [], starters: ["0"] },
+    { owner_id: "2", players: [], starters: ["0"] },
+    { owner_id: "3", players: [], starters: ["0"] }
+  ];
+  var league = { roster_positions: ["FLEX"], total_rosters: 3 };
+  function classify() { return null; }
+
+  var allocation = RS.estimateFlexAllocation(
+    rosters, players, league.roster_positions, classify
+  );
+  var req = RS.requiredStartsPerTeam(league.roster_positions, allocation);
+
+  assert.ok(approx(req.RB, 1 / 3, 0.0001));
+  assert.ok(approx(req.WR, 1 / 3, 0.0001));
+  assert.ok(approx(req.TE, 1 / 3, 0.0001));
+});
+
+/*
+ * Backward compatibility: the old one-argument call intentionally has
+ * no flex allocation information, so FLEX-type slots must not suddenly
+ * contribute invented demand to the position totals.
+ */
+check("requiredStartsPerTeam keeps the old one-argument behavior", function () {
+  var positions = ["QB", "RB", "WR", "TE", "FLEX", "BN"];
+  var req = RS.requiredStartsPerTeam(positions);
+
+  assert.strictEqual(req.QB, 1);
+  assert.strictEqual(req.RB, 1);
+  assert.strictEqual(req.WR, 1);
+  assert.strictEqual(req.TE, 1);
+  assert.strictEqual(req.IDP, 0);
+});
+
 /* ---------- Hard shortage override ---------- */
 
 check("A team with fewer players than required starters is forced to HIGH need", function () {

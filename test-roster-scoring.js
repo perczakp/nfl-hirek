@@ -221,7 +221,86 @@ check("requiredStartsPerTeam keeps the old one-argument behavior", function () {
   assert.strictEqual(req.IDP, 0);
 });
 
+/* ---------- FLEX -> scorePosition integration tests ---------- */
+
+/*
+ * Integration check: a FLEX-only position must be recognized by the
+ * top-level scorePosition() path, not just by the helper functions.
+ * With one FLEX slot and actual usage of WR/RB/TE, WR has a positive
+ * fractional required-start demand and therefore must not return N/A.
+ */
+check("scorePosition integrates empirical FLEX demand", function () {
+  var players = {
+    wr1: { position: "WR" }, wr2: { position: "WR" },
+    rb1: { position: "RB" }, te1: { position: "TE" }
+  };
+  var values = { wr1: 100, wr2: 80, rb1: 90, te1: 70 };
+  var rosters = [
+    { owner_id: "A", players: ["wr1"], starters: ["wr1"] },
+    { owner_id: "B", players: ["wr2"], starters: ["wr2"] },
+    { owner_id: "C", players: ["rb1"], starters: ["rb1"] },
+    { owner_id: "D", players: ["te1"], starters: ["te1"] }
+  ];
+  var league = { roster_positions: ["FLEX"], total_rosters: 4 };
+
+  function classify(meta) { return meta.position; }
+  function getValue(id) { return values[id]; }
+
+  var result = RS.scorePosition({
+    rosters: rosters, players: players, league: league, pos: "WR",
+    classify: classify, getValue: getValue,
+    getIdpRank: function () { return undefined; },
+    userRosterOwnerId: "A"
+  });
+
+  assert.notStrictEqual(result.strength, null);
+  assert.notStrictEqual(result.need, null);
+  assert.notStrictEqual(result.priority, "N/A");
+});
+
+/*
+ * Integration check for the mixed fixed+FLEX case:
+ * one fixed WR starter + one FLEX slot. If 3/4 teams actually use
+ * the FLEX for WR, WR demand becomes 1.75 starts/team and rounds to
+ * 2 only where scorePosition needs a whole-player count.
+ */
+check("scorePosition uses FLEX allocation in mixed fixed+FLEX demand", function () {
+  var players = {
+    a1: { position: "WR" }, a2: { position: "WR" },
+    b1: { position: "WR" }, b2: { position: "WR" },
+    c1: { position: "WR" }, d1: { position: "WR" }, d2: { position: "RB" }
+  };
+  var values = { a1: 100, a2: 90, b1: 80, b2: 75, c1: 70, d1: 60, d2: 50 };
+  var rosters = [
+    { owner_id: "A", players: ["a1", "a2"], starters: ["a1", "a2"] },
+    { owner_id: "B", players: ["b1", "b2"], starters: ["b1", "b2"] },
+    { owner_id: "C", players: ["c1"], starters: ["c1", "c1"] },
+    { owner_id: "D", players: ["d1", "d2"], starters: ["d1", "d2"] }
+  ];
+  var league = { roster_positions: ["WR", "FLEX"], total_rosters: 4 };
+
+  function classify(meta) { return meta.position; }
+  function getValue(id) { return values[id]; }
+
+  var resultA = RS.scorePosition({
+    rosters: rosters, players: players, league: league, pos: "WR",
+    classify: classify, getValue: getValue,
+    getIdpRank: function () { return undefined; },
+    userRosterOwnerId: "A"
+  });
+  var resultB = RS.scorePosition({
+    rosters: rosters, players: players, league: league, pos: "WR",
+    classify: classify, getValue: getValue,
+    getIdpRank: function () { return undefined; },
+    userRosterOwnerId: "B"
+  });
+
+  assert.ok(resultA.strength > resultB.strength);
+  assert.ok(resultA.need < resultB.need);
+});
+
 /* ---------- Hard shortage override ---------- */
+
 
 check("A team with fewer players than required starters is forced to HIGH need", function () {
   var s = buildLeague();

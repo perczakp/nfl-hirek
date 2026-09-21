@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-09-14
+**Last updated:** 2026-09-21
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent, stable, and explainable.
@@ -445,9 +445,169 @@ Never claim a runtime test that was not performed.
 - Do not let optional data-source failures prevent core League Sync.
 - Do not fix a complex subsystem piecemeal without first auditing its end-to-end data flow.
 
+
+## 27. Roster Scoring — FLEX / SUPERFLEX model
+
+The roster-scoring engine was extended to account for flex-type starting slots instead of silently ignoring them.
+
+Supported flex slot types include:
+- FLEX
+- SUPER_FLEX / SUPERFLEX
+- WRRB_FLEX
+- REC_FLEX
+- RB_FLEX
+- OP
+
+### Empirical flex allocation
+
+Flex demand is derived from the **actual current starter usage in the selected Sleeper league**.
+
+For each flex-type slot:
+- inspect every team's `starters` array;
+- align it with the league's `roster_positions`;
+- classify the actual player started in that slot;
+- count the position usage across the league;
+- convert the counts into fractional required starts per team.
+
+If no usable live data exists for a flex slot, the eligible positions receive an even fallback split.
+
+Normal FLEX and SUPER_FLEX are treated as **separate slot types**. Their allocations must not be mixed.
+
+### Fractional starting demand
+
+Flex allocation can produce fractional demand, for example:
+- 0.75 RB from a normal FLEX;
+- 0.25 WR from the same FLEX.
+
+The scoring engine keeps this demand fractional through the VOR calculation rather than rounding it prematurely.
+
+For example:
+- 1.6 required starts means one full player plus 60% of the next-best player;
+- integer rounding is used only where an actual integer index/count is required, such as replacement-rank indexing and shortage checks.
+
+This prevents small empirical flex allocations from being exaggerated into full additional starters.
+
+### Verified real 12-team league regression
+
+Verified league:
+- 12-Team Superflex Dynasty
+- Sleeper league ID: `1335199581952020480`
+- season: 2026
+
+Current normal FLEX usage verified from the 12 teams:
+- RB: 9
+- WR: 3
+- TE: 0
+
+Therefore normal FLEX demand is:
+- RB: 0.75
+- WR: 0.25
+- TE: 0
+
+Combined with fixed starters:
+- QB: 1.00
+- RB: 2.75
+- WR: 2.25
+- TE: 1.00
+
+A regression test in `test-roster-scoring.js` protects these real-league values.
+
+The regression intentionally isolates the normal FLEX slot. SUPER_FLEX is a separate follow-up test area and must be verified independently so the two flex types cannot contaminate each other's allocation.
+
+## 28. Roster Scoring regression testing
+
+`test-roster-scoring.js` is a plain Node.js test file with no test framework dependency.
+
+Run locally with:
+
+```
+node test-roster-scoring.js
+```
+
+The test suite currently covers:
+- basic statistics;
+- z-score conversion;
+- rankit z-score ordering/symmetry;
+- synthetic QB VOR scoring;
+- hard roster shortages;
+- positions with zero league demand;
+- IDP rankit scoring;
+- empty/unset starter-slot regression;
+- empirical FLEX allocation;
+- empty FLEX fallback;
+- backward compatibility of `requiredStartsPerTeam()`;
+- FLEX integration into `scorePosition()`;
+- fractional fixed + FLEX demand;
+- the verified real 12-team normal FLEX regression.
+
+Latest verified test workflow:
+- GitHub Actions workflow: `Roster Scoring Tests`
+- run #7
+- run ID: `35611875109`
+- conclusion: **success**
+- job ID: `106372749845`
+
+The test workflow is separate from GitHub Pages deployment.
+
+## 29. GitHub Actions and GitHub Pages deployment flow
+
+The current project uses separate automated stages:
+
+```
+Git commit / push
+      ↓
+GitHub Actions
+      ↓
+Roster Scoring Tests
+      ↓
+      PASS
+      ↓
+GitHub Pages deployment
+      ↓
+Published website
+```
+
+GitHub Actions executes the automated Node.js regression tests. GitHub Pages is responsible for publishing the repository's web content; the test file itself is not a backend component and is not part of the user-facing UI.
+
+For commit `e8ea6cbf2612237ac6890d45397ac7ed8836ae57`:
+- roster scoring tests: **success**;
+- GitHub Pages deployment: **success**;
+- Pages deployment run ID: `35611872731`;
+- Pages deployment completed successfully on 2026-09-21.
+
+The important distinction is:
+- **Git** = version control system;
+- **GitHub** = hosted platform for the repository and related services;
+- **GitHub Actions** = automation/CI environment;
+- **GitHub Pages** = publishing/hosting service;
+- **test-roster-scoring.js** = test code, not backend;
+- **roster-scoring.js** = browser-capable application logic used by the frontend and also importable by Node for testing.
+
+## 30. Git / GitHub learning map
+
+The project is also being used as a practical Git/GitHub learning environment.
+
+Useful mental associations:
+
+- **Git** → the version-control system that records project history.
+- **GitHub** → the online platform hosting the Git repository and automation/publishing services.
+- **Repository** → the project's central Git storage.
+- **Branch** → a branch of a tree 🌳; `main` is the main branch and feature branches are side branches where work can be isolated.
+- **Commit** → a saved checkpoint/snapshot in Git history.
+- **Push** → sending local Git commits to the GitHub repository.
+- **Pull** → bringing changes from the remote repository into the local Git environment.
+- **Merge** → combining changes from one branch back into another.
+- **GitHub Actions** → an automated robot that performs defined jobs such as tests.
+- **Test file** → an invisible-to-the-user checker that verifies code behavior; it is not a branch and not a backend.
+- **GitHub Pages** → the project's public "shop window": it publishes the web-facing site from the repository.
+- **Frontend** → code that runs in the user's browser and creates/controls the user-facing site.
+- **Backend** → server-side application logic; the current project does not have a traditional custom backend.
+
+The terminology should always be tied to the concrete project files and workflow rather than learned as isolated jargon.
+
 # CURRENT VERIFIED BASELINE
 
-The current `main` branch contains the shared-navigation refactor and the player-news session cache/deduplication change described above.
+The current `main` branch contains the shared-navigation refactor, player-news session cache/deduplication change, and the Roster Scoring FLEX/fractional-demand changes described above.
 
 The user has browser-validated:
 - the shared 9-item navigation;

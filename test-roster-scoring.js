@@ -299,7 +299,68 @@ check("scorePosition uses FLEX allocation in mixed fixed+FLEX demand", function 
   assert.ok(resultA.need < resultB.need);
 });
 
+/* ---------- Real 12-team league FLEX regression ---------- */
+/*
+ * Mirrors the verified 2026 Fantáziafoci league structure:
+ * 12 teams, 2 fixed RB, 2 fixed WR, 1 fixed TE, and 1 normal FLEX.
+ *
+ * Verified current normal FLEX usage:
+ *   9 RB, 3 WR, 0 TE
+ *
+ * Therefore the empirical FLEX allocation is:
+ *   RB = 0.75, WR = 0.25, TE = 0
+ *
+ * Combined with fixed starters:
+ *   RB = 2.75 starts/team
+ *   WR = 2.25 starts/team
+ *   TE = 1.00 starts/team
+ *
+ * This regression protects the real league behavior from future changes
+ * to FLEX allocation or fractional replacement-demand handling.
+ */
+check("Real 12-team league: empirical FLEX demand is RB 0.75 / WR 0.25 / TE 0", function () {
+  var players = {};
+  var rosters = [];
+  var flexPositions = [
+    "RB", "RB", "RB", "RB", "RB", "RB",
+    "RB", "RB", "RB", "WR", "WR", "WR"
+  ];
+
+  flexPositions.forEach(function (pos, i) {
+    var id = "flex" + i;
+    players[id] = { position: pos };
+    rosters.push({
+      owner_id: String(i + 1),
+      players: [id],
+      starters: ["0", "0", "0", "0", "0", "0", id]
+    });
+  });
+
+  var positions = [
+    "QB", "RB", "RB", "WR", "WR", "TE", "FLEX",
+    "SUPER_FLEX", "K", "DEF", "DL", "DL", "LB", "LB",
+    "DB", "DB", "IDP_FLEX", "BN"
+  ];
+
+  var league = { roster_positions: positions, total_rosters: 12 };
+  function classify(meta) { return meta.position; }
+
+  var allocation = RS.estimateFlexAllocation(
+    rosters, players, positions, classify
+  );
+  var req = RS.requiredStartsPerTeam(positions, allocation);
+
+  assert.ok(approx(allocation.RB, 0.75, 0.0001));
+  assert.ok(approx(allocation.WR, 0.25, 0.0001));
+  assert.ok(approx(allocation.TE, 0, 0.0001));
+
+  assert.ok(approx(req.RB, 2.75, 0.0001));
+  assert.ok(approx(req.WR, 2.25, 0.0001));
+  assert.ok(approx(req.TE, 1.00, 0.0001));
+});
+
 /* ---------- Hard shortage override ---------- */
+
 
 
 check("A team with fewer players than required starters is forced to HIGH need", function () {

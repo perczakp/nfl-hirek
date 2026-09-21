@@ -350,9 +350,9 @@ check("Real 12-team league: empirical FLEX demand is RB 0.75 / WR 0.25 / TE 0", 
   );
   var req = RS.requiredStartsPerTeam(positions, allocation);
 
-  assert.ok(approx(allocation.RB, 0.75, 0.0001));
-  assert.ok(approx(allocation.WR, 0.25, 0.0001));
-  assert.ok(approx(allocation.TE, 0, 0.0001));
+  assert.strictEqual(allocation.counts.FLEX.RB, 9);
+  assert.strictEqual(allocation.counts.FLEX.WR, 3);
+  assert.strictEqual(allocation.counts.FLEX.TE || 0, 0);
 
   assert.ok(approx(req.RB, 2.75, 0.0001));
   assert.ok(approx(req.WR, 2.25, 0.0001));

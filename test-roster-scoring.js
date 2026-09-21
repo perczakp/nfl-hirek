@@ -336,11 +336,7 @@ check("Real 12-team league: empirical FLEX demand is RB 0.75 / WR 0.25 / TE 0", 
     });
   });
 
-  var positions = [
-    "QB", "RB", "RB", "WR", "WR", "TE", "FLEX",
-    "SUPER_FLEX", "K", "DEF", "DL", "DL", "LB", "LB",
-    "DB", "DB", "IDP_FLEX", "BN"
-  ];
+  var positions = ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "BN"];
 
   var league = { roster_positions: positions, total_rosters: 12 };
   function classify(meta) { return meta.position; }

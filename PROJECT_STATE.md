@@ -512,7 +512,7 @@ Combined with fixed starters:
 
 A regression test in `test-roster-scoring.js` protects these real-league values.
 
-The regression intentionally isolates the normal FLEX slot. SUPER_FLEX is a separate follow-up test area and must be verified independently so the two flex types cannot contaminate each other's allocation.
+The regression intentionally isolates the normal FLEX slot. SUPER_FLEX is now independently regression-tested as a separate allocation bucket using the verified 12-team league behavior: all 12 SUPER_FLEX starters are QBs, so SUPER_FLEX contributes QB = 1.00 required start/team and RB/WR/TE = 0. The two flex types cannot contaminate each other's allocation.
 
 ## 28. Roster Scoring regression testing
 
@@ -538,7 +538,8 @@ The test suite currently covers:
 - backward compatibility of `requiredStartsPerTeam()`;
 - FLEX integration into `scorePosition()`;
 - fractional fixed + FLEX demand;
-- the verified real 12-team normal FLEX regression.
+- the verified real 12-team normal FLEX regression;
+- the verified real 12-team SUPER_FLEX regression (QB 100%).
 
 Latest verified test workflow:
 - GitHub Actions workflow: `Roster Scoring Tests`
@@ -607,7 +608,7 @@ The terminology should always be tied to the concrete project files and workflow
 
 # CURRENT VERIFIED BASELINE
 
-The current `main` branch contains the shared-navigation refactor, player-news session cache/deduplication change, and the Roster Scoring FLEX/fractional-demand changes described above.
+The current `main` branch contains the shared-navigation refactor, player-news session cache/deduplication change, and the Roster Scoring FLEX/fractional-demand changes, including the independently verified SUPER_FLEX QB-demand regression described above.
 
 The user has browser-validated:
 - the shared 9-item navigation;

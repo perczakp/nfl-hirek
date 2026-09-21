@@ -333,7 +333,22 @@
       var zb = zById[b] !== undefined ? zById[b] : -Infinity;
       return zb - za;
     });
-    return { rosterIds: ids, topIds: ids.slice(0, target) };
+
+    // FLEX demand can be fractional. A target of 1.6 means:
+    // 100% of the best player + 60% of the second-best player.
+    // This preserves the meaning of an empirical FLEX allocation
+    // instead of rounding 0.6 (or 0.1) up to a full player.
+    var whole = Math.floor(Math.max(0, target));
+    var fraction = Math.max(0, target - whole);
+    var selected = [];
+    for (var i = 0; i < whole && i < ids.length; i++) {
+      selected.push({ id: ids[i], weight: 1 });
+    }
+    if (fraction > 0 && whole < ids.length) {
+      selected.push({ id: ids[whole], weight: fraction });
+    }
+
+    return { rosterIds: ids, topIds: ids.slice(0, whole + (fraction > 0 ? 1 : 0)), selected: selected };
   }
 
   /* ---------- 5. Top-level orchestration ---------- */
@@ -368,11 +383,11 @@
       return { strength: null, need: null, priority: "N/A", warnings: ["A liga nem indít ezen a pozíción."] };
     }
 
-    // Whole-player count used for "how many top players count towards
-    // a team's total" and for the depth-shortage check below. The
-    // fractional raw value (from flex-slot sharing) still drives the
-    // replacement rank calculation for precision.
-    var startsPerTeam = Math.max(1, Math.round(startsPerTeamRaw));
+    // Keep fractional FLEX demand fractional throughout the VOR
+    // calculation. A value such as 1.6 means one full starter plus
+    // 60% of the next-best player. Only the shortage check needs an
+    // integer number of rostered players, so it uses ceil().
+    var startsPerTeam = startsPerTeamRaw;
 
     if (pool.size < numTeams * startsPerTeam) {
       warnings.push("Kevesebb ismert értékű/rangsorolt játékos van a ligában ezen a pozíción, mint amennyi starter-slot létezik; a replacement szint a legrosszabb ismert játékoshoz lett rögzítve.");
@@ -386,10 +401,10 @@
     var teamTotals = rosters.map(function (r) {
       var picked = teamTopPlayersAtPosition(r, players, pos, classify, pool.zById, startsPerTeam);
       var total = 0;
-      picked.topIds.forEach(function (id) {
-        var z = pool.zById[id];
+      picked.selected.forEach(function (entry) {
+        var z = pool.zById[entry.id];
         if (z === undefined) z = replZ - 1; // unknown player: treat as clearly below replacement
-        total += (z - replZ);
+        total += (z - replZ) * entry.weight;
       });
       return { ownerId: String(r.owner_id), total: total, rosterCount: picked.rosterIds.length, required: startsPerTeam };
     });
@@ -402,7 +417,7 @@
     // Hard shortage override: not enough players ROSTERED at this
     // position to even theoretically fill the slots — a real depth
     // problem, distinct from an unset lineup slot.
-    if (userTeam.rosterCount < startsPerTeam) {
+    if (userTeam.rosterCount < Math.ceil(startsPerTeam)) {
       return {
         strength: 0,
         need: 100,

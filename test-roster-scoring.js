@@ -357,78 +357,47 @@ check("Real 12-team league: empirical FLEX demand is RB 0.75 / WR 0.25 / TE 0", 
 
 /* ---------- Real 12-team league SUPER_FLEX regression ---------- */
 /*
- * Mirrors the verified 2026 league structure:
- *   QB, RB, RB, WR, WR, TE, FLEX, SUPER_FLEX, ...
+ * Verified 2026 league behavior:
+ * all 12 teams currently use QB in their SUPER_FLEX slot.
  *
- * Verified current SUPER_FLEX usage:
- *   12 QB, 0 RB, 0 WR, 0 TE
- *
- * Therefore SUPER_FLEX contributes exactly:
- *   QB = 1.00 required start/team
- *   RB = 0
- *   WR = 0
- *   TE = 0
- *
- * Combined with fixed starters + normal FLEX this gives:
- *   QB = 2.00
- *   RB = 2.75
- *   WR = 2.25
- *   TE = 1.00
- *
- * The key regression is that SUPER_FLEX is counted separately from
- * normal FLEX and does not contaminate the normal FLEX allocation.
+ * This regression deliberately isolates QB + SUPER_FLEX so the test
+ * proves the SUPER_FLEX allocation itself without mixing in normal
+ * FLEX or IDP demand.
  */
-check("Real 12-team league: SUPER_FLEX is QB 100% and adds exactly one QB start", function () {
+check("Real 12-team league: SUPER_FLEX is QB 100% and adds one QB start", function () {
   var players = {};
   var rosters = [];
 
   for (var i = 0; i < 12; i++) {
     var id = "sfqb" + i;
     players[id] = { position: "QB" };
-
-    // Index 7 is SUPER_FLEX in this league's roster_positions.
-    var starters = ["0", "0", "0", "0", "0", "0", "0", id];
     rosters.push({
       owner_id: String(i + 1),
       players: [id],
-      starters: starters
+      // Index 1 is SUPER_FLEX in this isolated fixture.
+      starters: ["0", id]
     });
   }
 
-  var positions = [
-    "QB", "RB", "RB", "WR", "WR", "TE",
-    "FLEX", "SUPER_FLEX",
-    "K", "DEF", "DL", "DL", "LB", "LB", "DB", "DB",
-    "IDP_FLEX",
-    "BN", "BN", "BN", "BN", "BN", "BN", "BN"
-  ];
-
+  var positions = ["QB", "SUPER_FLEX"];
+  var league = { roster_positions: positions, total_rosters: 12 };
   function classify(meta) { return meta.position; }
 
-  var league = { roster_positions: positions, total_rosters: 12 };
   var allocation = RS.estimateFlexAllocation(
     rosters, players, positions, classify
   );
   var req = RS.requiredStartsPerTeam(positions, allocation);
 
-  // SUPER_FLEX must be its own bucket.
   assert.strictEqual(allocation.counts.SUPER_FLEX.QB, 12);
   assert.strictEqual(allocation.counts.SUPER_FLEX.RB || 0, 0);
   assert.strictEqual(allocation.counts.SUPER_FLEX.WR || 0, 0);
   assert.strictEqual(allocation.counts.SUPER_FLEX.TE || 0, 0);
 
-  // Normal FLEX has no usable data in this isolated fixture, so its
-  // fallback is deliberately ignored here: the SUPER_FLEX result
-  // itself must remain exactly QB-only.
-  assert.ok(approx(
-    allocation.counts.SUPER_FLEX.QB / 12,
-    1.00,
-    0.0001
-  ));
-
-  // Fixed QB + SUPER_FLEX QB = 2.00 QB starts/team.
+  // Fixed QB + empirical SUPER_FLEX QB allocation = 2.00 starts/team.
   assert.ok(approx(req.QB, 2.00, 0.0001));
-  assert.ok(approx(req.RB, 2.00 + 0.75, 0.0001) === false);
+  assert.ok(approx(req.RB, 0, 0.0001));
+  assert.ok(approx(req.WR, 0, 0.0001));
+  assert.ok(approx(req.TE, 0, 0.0001));
 });
 
 /* ---------- Hard shortage override ---------- */

@@ -10,6 +10,29 @@
  *
  * Exposed as `window.RosterScoring` in the browser and as
  * `module.exports` in Node.
+ *
+ * CHANGE LOG (this revision)
+ * ------------------------------------------------------------------
+ * - Added FLEX / SUPER_FLEX / WRRB_FLEX / REC_FLEX / RB_FLEX / OP slot
+ *   support. Previously these slot types were silently ignored by
+ *   requiredStartsPerTeam(), which understated real demand for RB/WR
+ *   (and QB, in superflex leagues) and skewed the replacement level
+ *   and Strength/Need numbers for those positions.
+ * - Flex-slot demand is now allocated empirically: for each flex-type
+ *   slot, we look at what position every team in the league is
+ *   ACTUALLY starting there right now, and split that slot's "1
+ *   required start" across eligible positions in that same
+ *   proportion. If a slot has no usable data yet (e.g. every team's
+ *   flex spot happens to be empty this week), it falls back to an
+ *   even split across the slot's eligible positions rather than a
+ *   guessed default.
+ * - requiredStartsPerTeam() and replacementRank() now tolerate
+ *   fractional starts-per-team values (rounded only where an integer
+ *   is actually needed: picking a team's top-N rostered players, and
+ *   the replacement rank index). Calling requiredStartsPerTeam() with
+ *   only one argument (no flexAllocation) preserves the old
+ *   behaviour, so existing tests that don't exercise flex slots are
+ *   unaffected.
  * ------------------------------------------------------------------
  */
 (function (root) {
@@ -180,9 +203,81 @@
     };
   }
 
-  /* ---------- 3. Required starts & replacement rank ---------- */
+  /* ---------- 3. Required starts, FLEX allocation & replacement rank ---------- */
 
-  function requiredStartsPerTeam(rosterPositions) {
+  /* Which positions are eligible to fill each named flex-type slot.
+     Covers the common Sleeper slot names; unrecognized "*FLEX*" / "OP"
+     slots fall back to a name-based guess (see eligibilityForSlot). */
+  var FLEX_ELIGIBILITY = {
+    FLEX: ["RB", "WR", "TE"],
+    WRRB_FLEX: ["WR", "RB"],
+    REC_FLEX: ["WR", "TE"],
+    WR_TE_FLEX: ["WR", "TE"],
+    RB_FLEX: ["RB"],
+    SUPER_FLEX: ["QB", "RB", "WR", "TE"],
+    SUPERFLEX: ["QB", "RB", "WR", "TE"],
+    OP: ["QB", "RB", "WR", "TE"]
+  };
+
+  function eligibilityForSlot(slot) {
+    if (FLEX_ELIGIBILITY[slot]) return FLEX_ELIGIBILITY[slot];
+    if (slot.indexOf("FLEX") >= 0) {
+      var elig = [];
+      if (slot.indexOf("SUPER") >= 0) elig.push("QB");
+      elig.push("RB", "WR", "TE");
+      return elig;
+    }
+    return null;
+  }
+
+  /**
+   * Empirically determines how each flex-type roster slot is actually
+   * being used across the league right now, by reading every team's
+   * live `starters` array (which is positionally aligned with
+   * `roster_positions`). Returns, per flex slot name, a count of how
+   * many teams currently have each eligible position started there.
+   *
+   * This intentionally does NOT invent a default split (e.g. "FLEX is
+   * usually RB-heavy") — it reads what THIS league's managers are
+   * actually doing, which is more objective and stays correct however
+   * the position mix in this particular league shifts over a season.
+   */
+  function estimateFlexAllocation(rosters, players, rosterPositions, classify) {
+    var slots = (rosterPositions || []).map(function (s) { return String(s).toUpperCase(); });
+    var flexSlotNames = [];
+    slots.forEach(function (slot) {
+      if (eligibilityForSlot(slot) && flexSlotNames.indexOf(slot) < 0) flexSlotNames.push(slot);
+    });
+
+    var counts = {};
+    flexSlotNames.forEach(function (slot) { counts[slot] = {}; });
+    if (!flexSlotNames.length) return { counts: counts };
+
+    rosters.forEach(function (r) {
+      var starters = (r.starters || []).map(String);
+      slots.forEach(function (slot, i) {
+        var elig = eligibilityForSlot(slot);
+        if (!elig) return;
+        var id = starters[i];
+        if (!id || id === "0") return;
+        var meta = players[id];
+        if (!meta) return;
+        var bucket = classify(meta);
+        if (!bucket || elig.indexOf(bucket) < 0) return;
+        counts[slot][bucket] = (counts[slot][bucket] || 0) + 1;
+      });
+    });
+
+    return { counts: counts };
+  }
+
+  /**
+   * @param {Array} rosterPositions
+   * @param {Object} [flexAllocation] - result of estimateFlexAllocation().
+   *   Omit to get the old behaviour (flex-type slots contribute 0 to
+   *   every position's required starts).
+   */
+  function requiredStartsPerTeam(rosterPositions, flexAllocation) {
     var req = { QB: 0, RB: 0, WR: 0, TE: 0, IDP: 0 };
     (rosterPositions || []).forEach(function (slot) {
       slot = String(slot).toUpperCase();
@@ -191,13 +286,30 @@
       else if (slot === "WR") req.WR++;
       else if (slot === "TE") req.TE++;
       else if (["DL", "LB", "DB", "IDP", "IDP_FLEX"].indexOf(slot) >= 0) req.IDP++;
+      else if (flexAllocation) {
+        var elig = eligibilityForSlot(slot);
+        if (!elig) return;
+        var slotCounts = flexAllocation.counts && flexAllocation.counts[slot];
+        var total = 0;
+        if (slotCounts) elig.forEach(function (p) { total += (slotCounts[p] || 0); });
+        if (total > 0) {
+          elig.forEach(function (p) { req[p] += (slotCounts[p] || 0) / total; });
+        } else {
+          // No live data yet for this slot (e.g. every team's flex is
+          // empty right now) — split evenly across eligible positions
+          // rather than guessing a league-typical split.
+          elig.forEach(function (p) { req[p] += 1 / elig.length; });
+        }
+      }
     });
     return req;
   }
 
   function replacementRank(numTeams, startsPerTeam) {
     // The first player who would NOT start anywhere in the league.
-    return numTeams * startsPerTeam + 1;
+    // startsPerTeam may be fractional (flex-slot allocation); round
+    // only here, where an integer rank index is actually required.
+    return Math.round(numTeams * startsPerTeam) + 1;
   }
 
   /* ---------- 4. Per-team top players at a position ---------- */
@@ -246,18 +358,27 @@
     var warnings = [];
 
     var pool = buildPositionPool(rosters, players, pos, classify, opts.getValue, opts.getIdpRank);
-    var req = requiredStartsPerTeam(league.roster_positions);
-    var startsPerTeam = req[pos] || 0;
+
+    var flexAllocation = estimateFlexAllocation(rosters, players, league.roster_positions, classify);
+    var req = requiredStartsPerTeam(league.roster_positions, flexAllocation);
+    var startsPerTeamRaw = req[pos] || 0;
     var numTeams = rosters.length || (league.total_rosters || 1);
 
-    if (startsPerTeam === 0) {
+    if (startsPerTeamRaw <= 0) {
       return { strength: null, need: null, priority: "N/A", warnings: ["A liga nem indít ezen a pozíción."] };
     }
+
+    // Whole-player count used for "how many top players count towards
+    // a team's total" and for the depth-shortage check below. The
+    // fractional raw value (from flex-slot sharing) still drives the
+    // replacement rank calculation for precision.
+    var startsPerTeam = Math.max(1, Math.round(startsPerTeamRaw));
+
     if (pool.size < numTeams * startsPerTeam) {
       warnings.push("Kevesebb ismert értékű/rangsorolt játékos van a ligában ezen a pozíción, mint amennyi starter-slot létezik; a replacement szint a legrosszabb ismert játékoshoz lett rögzítve.");
     }
 
-    var rr = replacementRank(numTeams, startsPerTeam);
+    var rr = replacementRank(numTeams, startsPerTeamRaw);
     var replZ = pool.replacementZ(rr);
 
     // Team-by-team total starter VOR at this position, based on each
@@ -308,6 +429,8 @@
     invNormalCDF: invNormalCDF,
     rankitZ: rankitZ,
     buildPositionPool: buildPositionPool,
+    eligibilityForSlot: eligibilityForSlot,
+    estimateFlexAllocation: estimateFlexAllocation,
     requiredStartsPerTeam: requiredStartsPerTeam,
     replacementRank: replacementRank,
     teamTopPlayersAtPosition: teamTopPlayersAtPosition,

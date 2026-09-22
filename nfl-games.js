@@ -114,8 +114,8 @@ function buildEspnDateUrl(date) {
 
 /** Build the ESPN scoreboard URL that exposes the current regular-season week. */
 function buildEspnCurrentWeekUrl() {
-  const params = new URLSearchParams({ seasontype: "2" });
-  return `${ESPN_SCOREBOARD_URL}?${params.toString()}`;
+  // ESPN returns the current NFL week when no week/seasontype is forced.
+  return ESPN_SCOREBOARD_URL;
 }
 
 if (typeof window !== "undefined") {

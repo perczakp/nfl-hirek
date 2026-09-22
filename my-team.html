@@ -56,4 +56,4 @@ $('find').onclick=findLeagues;
 $('sync').onclick=function(){var id=$('league').value;if(!id||!S.me)return msg('Először keress felhasználót és válassz ligát.','err');$('sync').disabled=true;msg('Liga és roster betöltése...');Promise.all([api('/league/'+encodeURIComponent(id)),api('/league/'+encodeURIComponent(id)+'/users'),api('/league/'+encodeURIComponent(id)+'/rosters')]).then(function(d){S.league=d[0];S.users=d[1]||[];S.rosters=d[2]||[];S.me=S.users.filter(function(u){return String(u.user_id)===String(S.me.user_id)})[0]||S.me;findRoster();S.players={};S.marketValues=[];S.marketValueBySleeperId={};S.marketValueByName={};S.rp=[];build();render();msg('Liga és roster betöltve. Elemzési adatok betöltése...','ok');return loadOptionalData()}).then(function(){build();render();msg('Liga, roster és Roster Strength adatok betöltve: '+S.league.name,'ok')}).catch(function(e){console.error(e);msg(e.message||'Nem sikerült a liga szinkronizálása.','err')}).finally(function(){$('sync').disabled=false})};
 $('username').onkeydown=function(e){if(e.key==='Enter')$('find').click()};
 })();
-</script></body></html></script></body></html>
+</script></body></html>

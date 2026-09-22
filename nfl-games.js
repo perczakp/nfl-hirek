@@ -111,6 +111,13 @@ function buildEspnDateUrl(date) {
   return `${ESPN_SCOREBOARD_URL}?${params.toString()}`;
 }
 
+
+/** Build the ESPN scoreboard URL that exposes the current regular-season week. */
+function buildEspnCurrentWeekUrl() {
+  const params = new URLSearchParams({ seasontype: "2" });
+  return `${ESPN_SCOREBOARD_URL}?${params.toString()}`;
+}
+
 if (typeof window !== "undefined") {
   window.NFLGamesData = {
     ESPN_SCOREBOARD_URL,
@@ -120,6 +127,7 @@ if (typeof window !== "undefined") {
     normalizeEspnVenue,
     normalizeEspnScoreboard,
     buildEspnWeekUrl,
-    buildEspnDateUrl
+    buildEspnDateUrl,
+    buildEspnCurrentWeekUrl
   };
 }

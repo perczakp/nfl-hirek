@@ -395,75 +395,37 @@
 
     var rr = replacementRank(numTeams, startsPerTeamRaw);
     var replZ = pool.replacementZ(rr);
-    var debugTrace = opts.debugTrace ? {
-      position: pos,
-      numTeams: numTeams,
-      flexAllocation: flexAllocation,
-      requiredStarts: req,
-      startsPerTeam: startsPerTeam,
-      poolSize: pool.size,
-      replacementRank: rr,
-      replacementZ: replZ,
-      teams: []
-    } : null;
 
     // Team-by-team total starter VOR at this position, based on each
     // team's best ROSTERED players (not their momentary lineup).
     var teamTotals = rosters.map(function (r) {
       var picked = teamTopPlayersAtPosition(r, players, pos, classify, pool.zById, startsPerTeam);
       var total = 0;
-      var selectedDebug = [];
       picked.selected.forEach(function (entry) {
         var z = pool.zById[entry.id];
         var knownZ = z !== undefined;
         if (z === undefined) z = replZ - 1; // unknown player: treat as clearly below replacement
         var contribution = (z - replZ) * entry.weight;
         total += contribution;
-        if (debugTrace) {
-          selectedDebug.push({
-            id: entry.id,
-            weight: entry.weight,
-            z: z,
-            contribution: contribution,
-            knownZ: knownZ
-          });
-        }
       });
       var teamTotal = { ownerId: String(r.owner_id), total: total, rosterCount: picked.rosterIds.length, required: startsPerTeam };
-      if (debugTrace) {
-        teamTotal.selected = selectedDebug;
-        debugTrace.teams.push(teamTotal);
-      }
       return teamTotal;
     });
 
     var userTeam = teamTotals.filter(function (t) { return t.ownerId === String(opts.userRosterOwnerId); })[0];
     if (!userTeam) {
-      return { strength: null, need: null, priority: "N/A", warnings: ["A felhasználó rostere nem található a liga csapatai között."], debug: debugTrace };
-    }
-    if (debugTrace) {
-      debugTrace.userRosterOwnerId = String(opts.userRosterOwnerId);
-      debugTrace.userTeamVOR = userTeam.total;
-      debugTrace.teamVORs = teamTotals.map(function (t) { return t.total; }).sort(function (a, b) { return b - a; });
+      return { strength: null, need: null, priority: "N/A", warnings: ["A felhasználó rostere nem található a liga csapatai között."] };
     }
 
     // Hard shortage override: not enough players ROSTERED at this
     // position to even theoretically fill the slots — a real depth
     // problem, distinct from an unset lineup slot.
     if (userTeam.rosterCount < Math.ceil(startsPerTeam)) {
-      if (debugTrace) {
-        debugTrace.shortageOverride = true;
-        debugTrace.percentile = 0;
-        debugTrace.strength = 0;
-        debugTrace.need = 100;
-        debugTrace.priority = "HIGH";
-      }
       return {
         strength: 0,
         need: 100,
         priority: "HIGH",
-        warnings: warnings.concat(["Nincs elég játékos ezen a pozíción a kezdő helyek feltöltéséhez."]),
-        debug: debugTrace
+        warnings: warnings.concat(["Nincs elég játékos ezen a pozíción a kezdő helyek feltöltéséhez."])
       };
     }
 
@@ -476,17 +438,8 @@
     var need = 100 - strength;
     var priority = need >= 70 ? "HIGH" : need >= 45 ? "MEDIUM" : "LOW";
 
-    if (debugTrace) {
-      debugTrace.below = below;
-      debugTrace.equal = equal;
-      debugTrace.totalTeams = totals.length;
-      debugTrace.percentile = percentile;
-      debugTrace.strength = strength;
-      debugTrace.need = need;
-      debugTrace.priority = priority;
-    }
 
-    return { strength: strength, need: need, priority: priority, warnings: warnings, debug: debugTrace };
+    return { strength: strength, need: need, priority: priority, warnings: warnings };
   }
 
   var api = {

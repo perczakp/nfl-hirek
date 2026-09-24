@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-09-21
+**Last updated:** 2026-09-24
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent, stable, and explainable.
@@ -58,6 +58,7 @@ Core production files include:
 - `tips.html`
 - `bye-weeks.html`
 - `my-team.html`
+- `error-handler.js`
 - `strength-of-schedule.html`
 - `nfl-games.html`
 - `nfl-games.js`
@@ -127,6 +128,18 @@ The user runtime-tested this feature and confirmed:
 - after unblocking, retry succeeds.
 
 The unrelated `news.json` cache-busting behavior was intentionally left unchanged.
+
+### Global error handler
+A shared `error-handler.js` safety net is loaded by all nine production HTML pages.
+
+It handles:
+- uncaught `window.error` events;
+- unhandled Promise rejections;
+- a visible bottom error banner with reload and dismiss actions;
+- repeated-error counting;
+- known `ResizeObserver` noise is ignored.
+
+This is a global client-side error catcher, not a backend. The implementation is present and code-reviewed, but it has not yet been fully forced through a real browser runtime error test.
 
 # MY FANTASY TEAM
 
@@ -608,15 +621,18 @@ The terminology should always be tied to the concrete project files and workflow
 
 # CURRENT VERIFIED BASELINE
 
-The current `main` branch contains the shared-navigation refactor, player-news session cache/deduplication change, and the Roster Scoring FLEX/fractional-demand changes, including the independently verified SUPER_FLEX QB-demand regression described above.
+The current `main` branch contains the shared-navigation refactor, player-news session cache/deduplication change, global error-handler integration, the Roster Scoring FLEX/fractional-demand changes, and the Sleeper co-owner roster lookup fix, including the independently verified SUPER_FLEX QB-demand regression described above.
 
 The user has browser-validated:
 - the shared 9-item navigation;
 - NFL Games normal user flow;
 - player-news caching, in-flight deduplication, failure recovery, and retry behavior.
 
-The current My Fantasy Team code baseline remains the Sleeper starter-slot mapping correction:
-`2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
+The current My Fantasy Team code baseline includes the Sleeper starter-slot mapping correction and the co-owner roster lookup fix:
+- starter-slot mapping correction: `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
+- co-owner roster lookup fix: `a6736d5b2c39d5e7ad392cec7c684b8c9134e667`
+
+`findRoster()` now accepts the primary `owner_id` or a matching Sleeper user ID in `co_owners`. The co-owner case still needs a real Sleeper runtime test.
 
 The dedicated pre-refactor rollback checkpoint is:
 `elotte-kozos-nav`

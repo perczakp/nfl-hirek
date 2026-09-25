@@ -158,7 +158,7 @@ Behavior:
 Commit:
 `e464331197dfae6110815dfeb58512a9d3a76e18`
 
-The code change is implemented and code-reviewed. A real browser runtime re-test is still required before marking checklist item 3.1 complete.
+The code change is implemented and code-reviewed. The user browser-tested two Sync operations and confirmed that only one `players/nfl` request is made during the page session, so checklist item 3.1 is independently validated. A separate render-order test remains for checklist item 3.2.
 `my-team.html` synchronizes a user's real Sleeper fantasy league and analyzes the roster.
 
 Core flow:
@@ -642,6 +642,21 @@ The user has browser-validated:
 - the shared 9-item navigation;
 - NFL Games normal user flow;
 - player-news caching, in-flight deduplication, failure recovery, and retry behavior.
+
+### Player enrichment render state
+
+The initial roster render no longer presents missing Sleeper player metadata as fake `Player <ID>` / `N/A · FA` player data.
+
+Current behavior:
+- if player metadata is still loading, roster cards show an explicit loading state;
+- Roster Strength and Position Needs show an explicit loading state instead of calculating from incomplete player metadata;
+- if the Sleeper player metadata request fails, the roster structure remains visible but the analysis values are hidden with an explicit warning;
+- the existing `players/nfl` session cache and shared Promise behavior is unchanged.
+
+Commit:
+`7d2e593666cf372747a9c78036166af14710cc56`
+
+This is code-reviewed only. Checklist item 3.2 still requires a real browser runtime test confirming that the temporary `Player <ID>` state is gone and that real player names appear correctly after metadata loading.
 
 The current My Fantasy Team code baseline includes the Sleeper starter-slot mapping correction and the co-owner roster lookup fix:
 - starter-slot mapping correction: `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`

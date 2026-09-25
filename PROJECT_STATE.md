@@ -660,6 +660,10 @@ The user browser-tested the live GitHub Pages page after Sync and confirmed the 
 
 ### Player identity runtime validation
 
+### FantasyCalc normal-value runtime validation
+
+The user runtime-tested a normal FantasyCalc value path using Jahmyr Gibbs. The live `fantasycalc-values.json` response contained `sleeperId: 9221`, `RB`, `DET`, and the current value `10346`. The My Fantasy Team page then displayed Roster Strength and Position Needs normally without the FantasyCalc-missing-data warning. The normal FantasyCalc enrichment path is therefore independently validated; the missing-value fallback path remains to be tested separately.
+
 The user independently compared representative roster entries against the same Sleeper roster and confirmed exact name, position, and NFL team agreement for:
 - Patrick Mahomes — QB · KC;
 - Jahmyr Gibbs — RB · DET;

@@ -658,6 +658,17 @@ Commit:
 
 The user browser-tested the live GitHub Pages page after Sync and confirmed the new loading state is shown instead of the temporary `Player <ID>` / `N/A · FA` fallback. Real player data then loads normally. Checklist item 3.2 is independently validated and **KÉSZ**.
 
+### Player identity runtime validation
+
+The user independently compared representative roster entries against the same Sleeper roster and confirmed exact name, position, and NFL team agreement for:
+- Patrick Mahomes — QB · KC;
+- Jahmyr Gibbs — RB · DET;
+- Emeka Egbuka — WR · TB;
+- Will Anderson — DL · HOU (project-normalized IDP position);
+- Talanoa Hufanga — DB · DEN (project-normalized IDP position).
+
+The broader visible roster was also reviewed for offensive, IDP, K, FLEX, SUPER_FLEX, IDP_FLEX, and DST rendering. Checklist item 3.3 (player identity / name-position-team mapping) is independently validated and **KÉSZ**.
+
 The current My Fantasy Team code baseline includes the Sleeper starter-slot mapping correction and the co-owner roster lookup fix:
 - starter-slot mapping correction: `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`
 - co-owner roster lookup fix: `a6736d5b2c39d5e7ad392cec7c684b8c9134e667`

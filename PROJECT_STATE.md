@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-09-24
+**Last updated:** 2026-09-25
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent, stable, and explainable.
@@ -144,6 +144,21 @@ This is a global client-side error catcher, not a backend. The implementation is
 # MY FANTASY TEAM
 
 ## 7. Purpose
+
+### Player metadata session cache
+The Sleeper `/players/nfl` enrichment request now uses a page-session shared Promise/cache.
+
+Behavior:
+- the first enrichment request downloads the player metadata;
+- repeated Sync operations reuse the already-loaded player data;
+- concurrent/in-flight enrichment requests reuse the same Promise;
+- a failed player metadata request clears the cached Promise so a later Sync can retry;
+- the Sync reset no longer clears `S.players`, preserving the session cache.
+
+Commit:
+`e464331197dfae6110815dfeb58512a9d3a76e18`
+
+The code change is implemented and code-reviewed. A real browser runtime re-test is still required before marking checklist item 3.1 complete.
 `my-team.html` synchronizes a user's real Sleeper fantasy league and analyzes the roster.
 
 Core flow:

@@ -656,7 +656,7 @@ Current behavior:
 Commit:
 `7d2e593666cf372747a9c78036166af14710cc56`
 
-This is code-reviewed only. Checklist item 3.2 still requires a real browser runtime test confirming that the temporary `Player <ID>` state is gone and that real player names appear correctly after metadata loading.
+The user browser-tested the live GitHub Pages page after Sync and confirmed the new loading state is shown instead of the temporary `Player <ID>` / `N/A · FA` fallback. Real player data then loads normally. Checklist item 3.2 is independently validated and **KÉSZ**.
 
 The current My Fantasy Team code baseline includes the Sleeper starter-slot mapping correction and the co-owner roster lookup fix:
 - starter-slot mapping correction: `2a9dbc6f4e75efe96ffea366001c6f720aedf8ce`

@@ -662,7 +662,11 @@ The user browser-tested the live GitHub Pages page after Sync and confirmed the 
 
 ### FantasyCalc normal-value runtime validation
 
-The user runtime-tested a normal FantasyCalc value path using Jahmyr Gibbs. The live `fantasycalc-values.json` response contained `sleeperId: 9221`, `RB`, `DET`, and the current value `10346`. The My Fantasy Team page then displayed Roster Strength and Position Needs normally without the FantasyCalc-missing-data warning. The normal FantasyCalc enrichment path is therefore independently validated; the missing-value fallback path remains to be tested separately.
+The user runtime-tested a normal FantasyCalc value path using Jahmyr Gibbs. The live `fantasycalc-values.json` response contained `sleeperId: 9221`, `RB`, `DET`, and the current value `10346`. The My Fantasy Team page then displayed Roster Strength and Position Needs normally without the FantasyCalc-missing-data warning. The normal FantasyCalc enrichment path is therefore independently validated.
+
+### FantasyCalc fallback runtime validation
+
+The current 12-team league had no naturally missing QB/RB/WR/TE FantasyCalc values, so the fallback was tested in a controlled browser runtime using the real Jahmyr Gibbs record (`sleeperId: 9221`). His FantasyCalc record was temporarily removed from the browser response only. The value pool changed from 419 to 418 records, the scoring continued without error, and the RB Strength / RB Need values changed as expected. After restoring the normal fetch behavior and running Sync again, the RB results returned to their original values. No production file or `fantasycalc-values.json` data was modified by this test. Checklist item 3.4 (FantasyCalc normal value path and missing-value fallback) is independently validated and **KÉSZ**.
 
 The user independently compared representative roster entries against the same Sleeper roster and confirmed exact name, position, and NFL team agreement for:
 - Patrick Mahomes — QB · KC;

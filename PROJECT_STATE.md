@@ -289,8 +289,25 @@ not:
 
 `Base Player Value × hidden injury penalty`
 
-### Current implementation note
-The current `my-team.html` quality calculation still contains an `injuryPenalty()` deduction inside the quality score. This conflicts with the permanent design decision and remains a **known issue to fix before calling the Injury Risk model final**.
+### Current verified status
+
+The current production scoring flow does **not** apply an Injury Risk or `injuryPenalty()` deduction to base player value.
+
+Verified data flow:
+- Sleeper `injury_status` may be displayed on the player card;
+- `injury_status` is not passed into `RosterScoring.scorePosition()`;
+- it does not affect FantasyCalc market value;
+- it does not affect RPO IDP rank / z-score;
+- it does not affect replacement level or VOR;
+- it does not affect Roster Strength, Position Needs, or Priority.
+
+Therefore the permanent design decision is currently satisfied in production:
+
+**Base Player Value + separate Injury Risk information**
+
+The previous `injuryPenalty()` implementation note was outdated and has been superseded by this verified status.
+
+**3.6 audit status: PASS — production code unchanged.**
 
 # NFL GAMES
 
@@ -757,7 +774,7 @@ The My Fantasy Team feature still needs a full browser/runtime test with a real 
 5. Verify FantasyCalc values and missing-value fallbacks.
 6. Verify Roster Strength across multiple real league examples.
 7. Verify Position Needs.
-8. Remove the current hidden `injuryPenalty()` effect from base player quality and show Injury Risk separately.
+8. Define and, if needed, expand the separate Injury Risk presentation without allowing it to alter base player value.
 
 ## P1 — Project reliability and maintenance
 9. Verify navigation consistency on every production page after the 9-tab integration.

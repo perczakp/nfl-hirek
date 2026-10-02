@@ -1,6 +1,6 @@
 # NFL Fantasy Project — PROJECT STATE
 
-**Last updated:** 2026-09-25
+**Last updated:** 2026-10-02
 
 ## 1. Project goal
 Build a free NFL fantasy web application hosted on GitHub Pages, using real data where possible and keeping calculations transparent, stable, and explainable.
@@ -667,6 +667,34 @@ The user runtime-tested a normal FantasyCalc value path using Jahmyr Gibbs. The 
 ### FantasyCalc fallback runtime validation
 
 The current 12-team league had no naturally missing QB/RB/WR/TE FantasyCalc values, so the fallback was tested in a controlled browser runtime using the real Jahmyr Gibbs record (`sleeperId: 9221`). His FantasyCalc record was temporarily removed from the browser response only. The value pool changed from 419 to 418 records, the scoring continued without error, and the RB Strength / RB Need values changed as expected. After restoring the normal fetch behavior and running Sync again, the RB results returned to their original values. No production file or `fantasycalc-values.json` data was modified by this test. Checklist item 3.4 (FantasyCalc normal value path and missing-value fallback) is independently validated and **KÉSZ**.
+
+### Roster Strength / Position Needs independent audit — checklist item 3.5
+
+Checklist item 3.5 is independently validated and **KÉSZ** after both the production result and an independent reconstruction were compared against the same live 12-team league data.
+
+WR audit:
+- production Strength: 29;
+- production Need: 71;
+- required WR starts/team: 2.166666666666665;
+- replacement rank: 27;
+- replacement value: 2725;
+- independent VOR calculation reproduced the production percentile and Strength/Need result exactly.
+
+IDP audit:
+- production Strength: 96;
+- production Need: 4;
+- production Priority: LOW;
+- independent Strength: 96;
+- independent Need: 4;
+- independent Priority: LOW;
+- all three production/independent results matched exactly;
+- the current league-wide IDP pool contained 117 players, of which 12 (10.26%) had no matching RPO rank in the current local RPO source;
+- the user's own 10 IDP players had 0 missing RPO ranks;
+- the current missing-IDP fallback is \`worstKnownZ - 0.5\` in the scoring engine, preventing undefined/NaN scoring when an RPO rank is unavailable but reducing precision for those players.
+
+No production scoring code was changed during this audit. The audit covered the actual production data flow, replacement/VOR logic, league-relative percentile calculation, and the displayed Strength/Need/Priority outputs.
+
+**Documentation note:** the descriptive text in section 14 still lists several conceptual factors (such as roster count, depth, and injury situation), but the current implementation derives Position Need directly as \`100 - Strength\`. The formula should be documented more precisely in a later documentation-only cleanup; the 3.5 audit did not change the scoring logic.
 
 The user independently compared representative roster entries against the same Sleeper roster and confirmed exact name, position, and NFL team agreement for:
 - Patrick Mahomes — QB · KC;

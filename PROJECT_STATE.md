@@ -696,6 +696,37 @@ No production scoring code was changed during this audit. The audit covered the 
 
 **Documentation note:** the descriptive text in section 14 still lists several conceptual factors (such as roster count, depth, and injury situation), but the current implementation derives Position Need directly as `100 - Strength`. The formula should be documented more precisely in a later documentation-only cleanup; the 3.5 audit did not change the scoring logic.
 
+### 3.5.3 — IDP RPO coverage discrepancy audit
+
+**Audit result: PASS**
+
+A full production-math audit was performed to investigate the discrepancy between the IDP RPO source pool and the players currently resolved by the production lookup.
+
+Coverage result:
+- league IDP players: 117;
+- current production RPO coverage: 89 known / 28 missing;
+- position-independent lookup: 104 known / 13 missing;
+- 15 additional players are recoverable through position-independent exact/loose name matching.
+
+Production scoring impact:
+- replacement rank: 85 in both methods;
+- replacement Z: -1.63943 → -0.88715;
+- user-team VOR: 17.94616 → 14.15159;
+- Strength: 96 → 96;
+- Need: 4 → 4;
+- Priority: LOW → LOW.
+
+Therefore the increased RPO coverage changes the underlying replacement Z-score and user-team VOR, but does not change the final IDP Strength, Need, or Priority result.
+
+Two current user-roster players are affected by the position-independent lookup:
+- Will Anderson → DL #4;
+- Demetrius Knight → LB #47.
+
+The position-independent lookup is **not adopted into production** as part of 3.5.3. No production scoring or lookup code was changed during this audit.
+
+**Future modification planned — Dynamic IDP Layer:** the current static IDP RPO lookup/scoring layer is not considered the final architecture. A future **Dynamic IDP Layer** is planned as a new IDP engine that will replace the current static IDP layer. This is intentionally deferred and is **not part of 3.5.3**.
+
+
 The user independently compared representative roster entries against the same Sleeper roster and confirmed exact name, position, and NFL team agreement for:
 - Patrick Mahomes — QB · KC;
 - Jahmyr Gibbs — RB · DET;
